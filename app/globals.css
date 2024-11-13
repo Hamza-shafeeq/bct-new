@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  /* font-family: Arial, Helvetica, sans-serif; */
+
+  font-family: "Poppins", sans-serif;
+}
+
+.hide-scrollbar {
+  /* For most modern browsers */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #494d59 #222429; /* For Firefox */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+  background-color: #222429; /* Scrollbar background */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #494d59; /* Scrollbar thumb color */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #222429; /* Scrollbar track background */
+  border-radius: 50px;
+}
+
+.css-1xtozoh-MuiTableRow-root {
+  color: white !important;
+  background-color: #0a0a0a !important;
+}
+
+/* Custom DataTable header and row styling */
+.custom-data-table .p-datatable-thead > tr > th {
+  background-color: rgb(34 36 41);
+  color: #858585;
+  text-align: left;
+  padding: 0.75rem; /* Increase padding for better spacing */
+}
+
+.custom-data-table .p-datatable-tbody > tr > td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #212325; /* Light border between rows */
+}
+
+.custom-data-table .p-datatable-tbody > tr:last-child > td {
+  border-bottom: none; /* Remove border on the last row */
+}
+
+/* Style for custom icons - adjust or replace with actual asset icons */
+.icon-tether {
+  background-color: #22d3ee;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+}
+
+.icon-bitcoin {
+  background-color: #f7931a;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+}
+
+.icon-usdt {
+  background-color: #2775ca;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+}
+
+/* Custom scrollbar styling */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #494d59;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #222429;
+}
+
+.p-column-header-content {
+  justify-content: right;
+}
+
+.custom-data-table .p-datatable-tbody > tr > td {
+  text-align: end;
+}

@@ -1,0 +1,147 @@
+// app/components/Header.js
+"use client";
+import Link from "next/link";
+import { useState } from "react";
+import logo from "../../public/assets/logo.png";
+import hamburger from "../../public/assets/hamburger.png";
+import cross from "../../public/assets/crossNew.png";
+import drop from "../../public/assets/drop.png";
+import Image from "next/image";
+import WalletModal from "./WalletModal";
+import Mainbutton from "../utilities/Mainbutton";
+
+export default function Header() {
+  const [menu, setMenu] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleMenu = () => {
+    setMenu(!menu);
+  };
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  const handleConnect = () => {
+    console.log("wallet connecting...");
+  };
+
+  const wallets = ["Softflair", "Burner Wallet", "Phantom", "Trust"];
+
+  return (
+    <header className="bg-[#222429] relative text-white py-4 px-12 shadow-md">
+      {/* Desktop Header */}
+      <div className="items-center justify-between mx-auto font-semibold hidden lg:flex">
+        <div className="flex items-center space-x-3">
+          <Image src={logo} width={50} height={50} alt="App Logo" />
+        </div>
+
+        <WalletModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          // available={modalData.available}
+          wallets={wallets}
+          onConnect={handleConnect}
+        />
+
+        <div className="flex gap-10 items-center">
+          <nav className="flex space-x-16 font-poppins text-[14px]">
+            <Link href="/">BCT</Link>
+            <Link
+              href="/aboutUs"
+              className=" flex items-center text-center text-[#E41E34] gap-1"
+            >
+              EVERYTHING ABOUT US
+              <Image
+                className="flex align-middle"
+                src={drop}
+                width={8}
+                height={7}
+                alt="Dropdown"
+              />
+            </Link>
+            <Link href="/aboutUs">ROADMAP</Link>
+            <Link href="/aboutUs">FAQS</Link>
+            <Link href="/aboutUs">CONTACT</Link>
+          </nav>
+          <Mainbutton title="SELECT WALLET" func={handleOpenModal} />
+        </div>
+      </div>
+
+      {/* Mobile Header */}
+      <div className="lg:hidden flex items-center justify-between">
+        <Image
+          src={logo}
+          width={50}
+          height={50}
+          alt="App Logo"
+          className={`transition-transform duration-300 ease-in-out ${
+            menu ? "translate-x-[140px]" : "translate-x-0"
+          }`}
+        />
+        <Image
+          className="bg-transparent cursor-pointer"
+          src={hamburger}
+          onClick={handleMenu}
+          width={40}
+          height={40}
+          alt="Menu Toggle"
+        />
+      </div>
+
+      {/* Mobile Menu with Animation */}
+      <div
+        className={`fixed inset-0 top-0 h-full bg-[#222429] z-50 p-6 flex flex-col items-end transition-transform duration-300 ease-in-out ${
+          menu ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="w-full flex items-center justify-between">
+          {/* Animated Cross Icon */}
+          <Image
+            className={`bg-transparent cursor-pointer transition-opacity duration-300 ease-in-out transform ${
+              menu ? "opacity-100 scale-100" : "opacity-0 scale-75"
+            }`}
+            src={cross}
+            onClick={handleMenu}
+            width={40}
+            height={40}
+            alt="Close Menu"
+          />
+
+          {/* Sliding Logo Inside Menu */}
+          <Image
+            src={logo}
+            width={50}
+            height={50}
+            alt="App Logo"
+            className={`transition-transform duration-300 ease-in-out ${
+              menu ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
+            }`}
+          />
+        </div>
+        <nav className="flex flex-col mt-14 text-right gap-8 text-lg font-poppins text-[11px]">
+          <Link href="/" onClick={() => setMenu(false)}>
+            BCT
+          </Link>
+          <Link
+            href="/aboutUs"
+            className=" text-[#E41E34] flex items-center gap-1"
+            onClick={() => setMenu(false)}
+          >
+            EVERYTHING ABOUT US
+          </Link>
+          <Link href="/aboutUs" onClick={() => setMenu(false)}>
+            ROADMAP
+          </Link>
+          <Link href="/aboutUs" onClick={() => setMenu(false)}>
+            FAQS
+          </Link>
+          <Link href="/aboutUs" onClick={() => setMenu(false)}>
+            CONTACT
+          </Link>
+        </nav>
+        <div className="flex items-right space-x-2 bg-[#E41E34] p-2 rounded-md font-poppins text-[12px] mt-10">
+          <button className="text-sm">SELECT WALLET</button>
+        </div>
+      </div>
+    </header>
+  );
+}
