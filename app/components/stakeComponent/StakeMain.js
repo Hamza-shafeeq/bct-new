@@ -7,7 +7,6 @@ import StakeUnstakeBtn from "./stakeComponents/StakeUnstakeBtn";
 import CurrentBalance from "./stakeComponents/CurrentBalance";
 import StakeUnstakeCard from "./stakeComponents/StakeUnstakeCard";
 
-
 export default function StakeComponent() {
   const [dayActive, setDayActive] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,7 +60,7 @@ export default function StakeComponent() {
         style={{ border: "2px solid #222429" }}
       >
         {/* Top content */}
-       <StakeMainCard />
+        <StakeMainCard />
 
         {/* // bottom content */}
         <div className="flex mt-6 text-left flex-col md:flex-row gap-14 items-end">
@@ -71,9 +70,9 @@ export default function StakeComponent() {
       </div>
 
       {/* bottom section having two blocks */}
-      <div className="grid md:grid-cols-[calc(55%-0.5rem)_calc(45%-0.5rem)] gap-4 mt-5">
+      <div className="grid grid-flow-row md:grid-flow-col md:grid-cols-[calc(55%-0.5rem)_calc(45%-0.5rem)] gap-4 mt-5">
         <div
-          className="flex flex-col bg-gradient-to-b from-[rgba(34,36,41,0.5)] text-left to-[#050505] rounded-[22px] px-3 md:px-6 py-6 gap-6 hide-scrollbar "
+          className="flex flex-col bg-gradient-to-b from-[rgba(34,36,41,0.5)]  to-[#050505] text-left rounded-[22px] px-3 md:px-6 py-6 gap-6 hide-scrollbar max-w-full"
           style={{
             border: "2px solid #222429",
             overflow: "auto",

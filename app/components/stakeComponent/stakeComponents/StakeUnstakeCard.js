@@ -50,7 +50,7 @@ const StakeUnstakeCard = ({
 
   return (
     <div
-      className="bg-gradient-to-b flex flex-col justify-around from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] px-8 md:px-[70px] py-8"
+      className="bg-gradient-to-b flex flex-col justify-around from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] px-8 md:px-[70px] py-8 max-w-full"
       style={{ border: "2px solid #222429", height: "-webkit-fill-available" }}
     >
       <div>
@@ -107,7 +107,7 @@ const StakeUnstakeCard = ({
         type="text"
         value={stakeAmount}
         onChange={(e) => setStakeAmount(e.target.value)}
-        className="text-[#FFFFFF] h-[40px] text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+        className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
       />
 
       <p className="text-[#858585] text-[11px] font-normal">

@@ -14,7 +14,7 @@ export default function Strategy() {
   return (
     <>
       <div
-        className="bg-[#2E3037]  rounded-[22px] px-7 py-5"
+        className="bg-[#2E3037]  rounded-[22px] px-7 py-5 max-w-full"
         style={{ border: "2px solid #222429" }}
       >
         <div className="grid grid-flow-col gap-4">

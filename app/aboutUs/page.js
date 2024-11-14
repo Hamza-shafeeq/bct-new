@@ -29,7 +29,7 @@ export default function AboutUs() {
 
   return (
     <main
-      className="flex md:px-12 bg-[050505]"
+      className="flex md:px-12 bg-[#050505]"
       style={{
         minHeight: "calc(100vh - 72px)",
         textAlign: "center",
@@ -38,7 +38,7 @@ export default function AboutUs() {
       }}
     >
       <div
-        className="flex gap-4 md:gap-14 pt-12 border-b-[1px] border-[#222429] md:px-[62px] text-[13px] md:text-[15px]"
+        className="flex gap-4 md:gap-14 pt-12 border-b-[1px] border-[#222429] md:px-[62px] text-[12px] md:text-[15px]"
         style={{ height: "87px" }}
       >
         <p
