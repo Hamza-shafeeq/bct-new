@@ -142,7 +142,7 @@ export default function TransactionHistory() {
 
   // Custom render functions for columns
   const assetTemplate = (rowData) => (
-    <div className="flex items-center gap-2 justify-center">
+    <div className=" flex items-center gap-2 justify-center">
       <span className={`icon-${rowData.asset.toLowerCase()}`} />{" "}
       {/* Placeholder for asset icon */}
       <span className="text-white">{rowData.asset}</span>
@@ -167,10 +167,18 @@ export default function TransactionHistory() {
   );
 
   const statusTemplate = (rowData) => (
-    <Tag
-      value={rowData.status === "completed" ? "✓" : "✗"}
-      severity={rowData.status === "completed" ? "success" : "danger"}
-    />
+    <div className="w-[100%] flex justify-end">
+      <div
+        className={` flex items-center justify-center w-6 h-6 rounded-full text-right 
+                ${
+                  rowData.status === "completed"
+                    ? "border-2 border-green-500 text-green-500"
+                    : "border-2 border-red-500 text-red-500"
+                }`}
+      >
+        {rowData.status === "completed" ? "✓" : "✗"}
+      </div>
+    </div>
   );
 
   const actionTemplate = () => (
