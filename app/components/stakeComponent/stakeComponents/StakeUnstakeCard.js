@@ -9,13 +9,26 @@ const StakeUnstakeCard = ({
   dayActive,
   handleOpenModal,
 }) => {
-  const [stakeAmount, setStakeAmount] = useState("4996.2476");
+  const [stakeAmount, setStakeAmount] = useState("0");
+  //  const [stakeTab, setStakeTab] = useState(0); // 0 for staking, 1 for unstaking
+  const [blcDetail, setBlcDetail] = useState({
+    total: 5000, // Simulating total balance
+    staked: 2980, // Simulating staked balance
+    available: 5000 - 2980, // Available balance is total - staked
+  });
+
+  // Handle stakeTab change (either stake or unstake)
   const handleStake = (index) => {
     setStakeTab(index);
   };
 
   const handleMaxClick = () => {
-    setStakeAmount("4996.2476"); // Set this to the max stake value
+    // When user clicks max, set stakeAmount to available balance for staking
+    if (stakeTab === 0) {
+      setStakeAmount(blcDetail.available.toString()); // Max stake is the available balance
+    } else {
+      setStakeAmount(blcDetail.staked.toString()); // Max unstake is the staked balance
+    }
   };
 
   const getButtonStyles = (index) => ({
@@ -98,7 +111,9 @@ const StakeUnstakeCard = ({
             className="flex items-center justify-center space-x-2 py-2 px-4 rounded-md font-poppins text-[12px] font-bold mt-2"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
           >
-            <button className="text-sm w-full">Claim Rewards</button>
+            <button className="text-sm w-full" onClick={handleOpenModal}>
+              Claim Rewards
+            </button>
           </div>
         </>
       )}
@@ -106,13 +121,21 @@ const StakeUnstakeCard = ({
       <input
         type="text"
         value={stakeAmount}
-        onChange={(e) => setStakeAmount(e.target.value)}
+        onChange={(e) => {
+          // Allow only numbers and decimal points
+          const regex = /^[0-9]*\.?[0-9]*$/;
+          if (regex.test(e.target.value)) {
+            setStakeAmount(e.target.value);
+          }
+        }}
         className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
       />
 
       <p className="text-[#858585] text-[11px] font-normal">
         {stakeTab === 1 ? "Staked balance:" : "Available balance:"}{" "}
-        <span className="text-[#E1E1E1]">4996.2476 USDT</span>
+        <span className="text-[#E1E1E1]">
+          {stakeTab === 1 ? blcDetail.staked : blcDetail.available} USDT
+        </span>
       </p>
 
       <div className="flex justify-center mt-3">
@@ -221,9 +244,7 @@ const StakeUnstakeCard = ({
             className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
           >
-            <button className="text-sm w-full" onClick={handleOpenModal}>
-              Unstake
-            </button>
+            <button className="text-sm w-full">Unstake</button>
           </div>
         </div>
       )}

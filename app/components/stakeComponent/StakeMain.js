@@ -81,9 +81,9 @@ export default function StakeComponent() {
         >
           <p className="font-semibold">Recommended Strategies</p>
           <Strategy />
+          {/* <Strategy />
           <Strategy />
-          <Strategy />
-          <Strategy />
+          <Strategy /> */}
         </div>
 
         <StakeUnstakeCard

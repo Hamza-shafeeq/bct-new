@@ -67,9 +67,10 @@ const Faqmain = () => {
               className="flex items-start gap-9 cursor-pointer"
             >
               <span
-                className={`text-2xl ${
+                className={`text-2xl w-6 h-6 flex justify-center align-middle items-center rounded-full ${
                   activeIndex === index ? "text-[#E41E34]" : "text-[#E41E34]"
                 }`}
+                style={{ border: "1px solid #E41E34" }}
               >
                 {activeIndex === index ? "−" : "+"}
               </span>
