@@ -118,18 +118,33 @@ const StakeUnstakeCard = ({
         </>
       )}
 
-      <input
-        type="text"
-        value={stakeAmount}
-        onChange={(e) => {
-          // Allow only numbers and decimal points
-          const regex = /^[0-9]*\.?[0-9]*$/;
-          if (regex.test(e.target.value)) {
-            setStakeAmount(e.target.value);
-          }
-        }}
-        className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
-      />
+      {stakeTab === 1 ? (
+        <input
+          type="text"
+          value={stakeAmount}
+          onChange={(e) => {
+            // Allow only numbers and decimal points
+            const regex = /^[0-9]*\.?[0-9]*$/;
+            if (regex.test(e.target.value)) {
+              setStakeAmount(e.target.value);
+            }
+          }}
+          className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+        />
+      ) : (
+        <input
+          type="text"
+          value={stakeAmount}
+          onChange={(e) => {
+            // Allow only numbers and decimal points
+            const regex = /^[0-9]*\.?[0-9]*$/;
+            if (regex.test(e.target.value)) {
+              setStakeAmount(e.target.value);
+            }
+          }}
+          className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+        />
+      )}
 
       <p className="text-[#858585] text-[11px] font-normal">
         {stakeTab === 1 ? "Staked balance:" : "Available balance:"}{" "}

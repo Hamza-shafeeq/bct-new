@@ -115,19 +115,19 @@ export default function () {
             arrowIcon={up}
           />
           <ReturnsSquare
-            hTwo="Current monthly returns"
+            hTwo="Expected daily returns"
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
           />
           <ReturnsSquare
-            hTwo="Current monthly returns"
+            hTwo="Expected weekly returns"
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
           />
           <ReturnsSquare
-            hTwo="Current monthly returns"
+            hTwo="Expected annual returns"
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
