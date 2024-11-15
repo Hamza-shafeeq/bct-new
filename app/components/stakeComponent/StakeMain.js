@@ -72,11 +72,12 @@ export default function StakeComponent() {
       {/* bottom section having two blocks */}
       <div className="grid grid-flow-row md:grid-flow-col md:grid-cols-[calc(55%-0.5rem)_calc(45%-0.5rem)] gap-4 mt-5">
         <div
-          className="flex flex-col bg-gradient-to-b from-[rgba(34,36,41,0.5)]  to-[#050505] text-left rounded-[22px] px-3 md:px-6 py-6 gap-6 hide-scrollbar max-w-full"
+          className={`flex flex-col bg-gradient-to-b from-[rgba(34,36,41,0.5)] to-[#050505] text-left rounded-[22px] px-3 md:px-6 py-6 gap-6 hide-scrollbar max-w-full ${
+            stakeTab === 1 ? "md:h-[667px]" : "md:h-[610px]"
+          }`}
           style={{
             border: "2px solid #222429",
             overflow: "auto",
-            height: stakeTab === 1 ? "667px" : "610px",
           }}
         >
           <p className="font-semibold">Recommended Strategies</p>
