@@ -26,27 +26,30 @@ export default function Header() {
 
   const wallets = ["Softflair", "Burner Wallet", "Phantom", "Trust"];
 
+  const handleMobWallet = () => {
+    setMenu(false);
+    setIsModalOpen(true);
+  };
+
   return (
     <header className="bg-[#222429] relative text-white py-4 px-12 shadow-md">
       {/* Desktop Header */}
+      <WalletModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        // available={modalData.available}
+        wallets={wallets}
+        onConnect={handleConnect}
+      />
       <div className="items-center justify-between mx-auto font-semibold hidden lg:flex">
         <div className="flex items-center space-x-3">
           <Image src={logo} width={50} height={50} alt="App Logo" />
         </div>
-
-        <WalletModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          // available={modalData.available}
-          wallets={wallets}
-          onConnect={handleConnect}
-        />
-
         <div className="flex gap-10 items-center">
           <nav className="flex space-x-16 font-poppins text-[14px]">
             <Link href="/">BCT</Link>
             <Link
-              href="/aboutUs"
+              href="/"
               className=" flex items-center text-center text-[#E41E34] gap-1"
             >
               EVERYTHING ABOUT US
@@ -58,9 +61,9 @@ export default function Header() {
                 alt="Dropdown"
               />
             </Link>
-            <Link href="/aboutUs">ROADMAP</Link>
-            <Link href="/aboutUs">FAQS</Link>
-            <Link href="/aboutUs">CONTACT</Link>
+            <Link href="/">ROADMAP</Link>
+            <Link href="/">FAQS</Link>
+            <Link href="/">CONTACT</Link>
           </nav>
           <Mainbutton title="SELECT WALLET" func={handleOpenModal} />
         </div>
@@ -117,30 +120,32 @@ export default function Header() {
             }`}
           />
         </div>
-        <nav className="flex flex-col mt-14 text-right gap-8 text-lg font-poppins text-[11px]">
+        <div className="flex items-right space-x-2 bg-[#E41E34] p-2 rounded-md font-poppins text-[12px] mt-10">
+          <button className="text-sm" onClick={handleMobWallet}>
+            SELECT WALLET
+          </button>
+        </div>
+        <nav className="flex flex-col mt-10 text-right gap-8 text-lg font-poppins text-[11px]">
           <Link href="/" onClick={() => setMenu(false)}>
             BCT
           </Link>
           <Link
-            href="/aboutUs"
+            href="/"
             className=" text-[#E41E34] flex items-center gap-1"
             onClick={() => setMenu(false)}
           >
             EVERYTHING ABOUT US
           </Link>
-          <Link href="/aboutUs" onClick={() => setMenu(false)}>
+          <Link href="/" onClick={() => setMenu(false)}>
             ROADMAP
           </Link>
-          <Link href="/aboutUs" onClick={() => setMenu(false)}>
+          <Link href="/" onClick={() => setMenu(false)}>
             FAQS
           </Link>
-          <Link href="/aboutUs" onClick={() => setMenu(false)}>
+          <Link href="/" onClick={() => setMenu(false)}>
             CONTACT
           </Link>
         </nav>
-        <div className="flex items-right space-x-2 bg-[#E41E34] p-2 rounded-md font-poppins text-[12px] mt-10">
-          <button className="text-sm">SELECT WALLET</button>
-        </div>
       </div>
     </header>
   );

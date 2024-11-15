@@ -1,38 +1,94 @@
 "use client"; // Optional, only needed if you use client-side features
-import Link from 'next/link';
+import { useState } from "react";
+import StakeComponent from "../app/components/stakeComponent/StakeMain";
+import OverviewComponent from "../app/components/overviewComponent/OverviewMain";
+import TransactionHistory from "../app/components/history/TransactionHistory";
+import CalculatorMain from "../app/components/overviewComponent copy/CalculatorMain";
+import Faqmain from "../app/components/faq/Faqmain";
 
-export default function HomePage() {
+export default function AboutUs() {
+  const [selectedTab, setSelectedTab] = useState("stake");
+
+  // Component content based on selected tab
+  const getComponentContent = () => {
+    switch (selectedTab) {
+      case "stake":
+        return <StakeComponent />;
+      case "overview":
+        return <OverviewComponent />;
+      case "transactionHistory":
+        return <TransactionHistory />;
+      case "calculator":
+        return <CalculatorMain />;
+      case "faqs":
+        return <Faqmain />;
+      default:
+        return <div>Stake Component</div>;
+    }
+  };
+
   return (
-    <main className="grid grid-cols-2 gap-6 px-12 bg-[050505]" style={{ minHeight: 'calc(100vh - 72px)' }}>
-      {/* Left Column (50% Width, content aligned to left) */}
-      <div className="flex flex-col items-start justify-center space-y-8">
-        <p className="text-lg text-gray-700">
-          HOW TO BECOME PART OF THE BCT ECOSYSTEM
+    <main
+      className="flex md:px-12 bg-[#050505]"
+      style={{
+        minHeight: "calc(100vh - 72px)",
+        textAlign: "center",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <div
+        className="flex gap-4 md:gap-14 pt-12 border-b-[1px] border-[#222429] md:px-[62px] text-[12px] md:text-[15px]"
+        style={{ height: "87px" }}
+      >
+        <p
+          className={`cursor-pointer inline-block border-b-2 ${
+            selectedTab === "stake" ? "border-red-500" : "border-transparent"
+          }`}
+          onClick={() => setSelectedTab("stake")}
+        >
+          Stake
         </p>
-        <h1 className="text-4xl font-bold mb-4">Become a part of the community</h1>
-        <p className="text-lg text-gray-700">
-          Here we explain how you can buy, hold and manage your BCT.
+        <p
+          className={`cursor-pointer inline-block border-b-2 ${
+            selectedTab === "overview" ? "border-red-500" : "border-transparent"
+          }`}
+          onClick={() => setSelectedTab("overview")}
+        >
+          Overview
         </p>
-        <div className="flex gap-3">
-          <div className="flex items-center space-x-2 bg-[#E41E34] p-2 rounded-md font-poppins text-[14px]">
-            <button className="text-sm">Here you can stake the BCT Token</button>
-          </div>
-          <Link href="/staking" className="block p-2 text-center bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            Go
-          </Link>
-          <Link href="/staking" className="block p-2 text-center bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            Go
-          </Link>
-          <Link href="/staking" className="block p-2 text-center bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            Go
-          </Link>
-        </div>
+        <p
+          className={`cursor-pointer inline-block border-b-2 ${
+            selectedTab === "transactionHistory"
+              ? "border-red-500"
+              : "border-transparent"
+          }`}
+          onClick={() => setSelectedTab("transactionHistory")}
+        >
+          Transaction History
+        </p>
+        <p
+          className={`cursor-pointer inline-block border-b-2 ${
+            selectedTab === "calculator"
+              ? "border-red-500"
+              : "border-transparent"
+          }`}
+          onClick={() => setSelectedTab("calculator")}
+        >
+          Calculator
+        </p>
+        <p
+          className={`cursor-pointer inline-block border-b-2 ${
+            selectedTab === "faqs" ? "border-red-500" : "border-transparent"
+          }`}
+          onClick={() => setSelectedTab("faqs")}
+        >
+          FAQ's
+        </p>
       </div>
 
-      {/* Right Column (50% Width, for future content) */}
-      <div className="flex justify-center items-center">
-        <p className="text-lg text-gray-500">Content will go here.</p>
-      </div>
+      {/* Displaying the content of the selected tab */}
+      <div className="mt-8 w-full">{getComponentContent()}</div>
     </main>
   );
 }
