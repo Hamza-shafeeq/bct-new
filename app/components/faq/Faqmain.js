@@ -66,14 +66,14 @@ const Faqmain = () => {
               onClick={() => toggleFaq(index)}
               className="flex items-start gap-9 cursor-pointer"
             >
-              <span
+              <p
                 className={`text-2xl w-6 h-6 flex justify-center align-middle items-center rounded-full ${
                   activeIndex === index ? "text-[#E41E34]" : "text-[#E41E34]"
                 }`}
-                style={{ border: "1px solid #E41E34" }}
+                style={{ border: "1px solid #E41E34", padding: "10px" }}
               >
                 {activeIndex === index ? "−" : "+"}
-              </span>
+              </p>
               <div>
                 <h3 className="text-lg font-medium text-left">
                   {faq.question}
