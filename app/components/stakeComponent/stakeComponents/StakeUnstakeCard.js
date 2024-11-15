@@ -123,7 +123,6 @@ const StakeUnstakeCard = ({
           type="text"
           value={stakeAmount}
           onChange={(e) => {
-            // Allow only numbers and decimal points
             const regex = /^[0-9]*\.?[0-9]*$/;
             if (regex.test(e.target.value)) {
               setStakeAmount(e.target.value);
@@ -136,7 +135,6 @@ const StakeUnstakeCard = ({
           type="text"
           value={stakeAmount}
           onChange={(e) => {
-            // Allow only numbers and decimal points
             const regex = /^[0-9]*\.?[0-9]*$/;
             if (regex.test(e.target.value)) {
               setStakeAmount(e.target.value);
