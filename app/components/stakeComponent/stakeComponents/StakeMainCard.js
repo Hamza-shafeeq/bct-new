@@ -3,7 +3,7 @@ import up from "../../../../public/assets/up.png";
 import down from "../../../../public/assets/downRed.png";
 import diamond from "../../../../public/assets/diamond.png";
 import Image from "next/image";
-const StakeMainCard = () => {
+const StakeMainCard = ({stakedTokens}) => {
   return (
     <div className="grid grid-flow-row md:grid-flow-col gap-4">
       {/* Left content */}
@@ -13,7 +13,7 @@ const StakeMainCard = () => {
           Letztes Update: Vor 45 Minuten
           </p> */}
           <div className="text-[20px] md:text-[24px] text-[#FFFFFF]">
-            Stake BlackChain Token {"{BCT}"}
+            Staked BlackChain Token {`{${stakedTokens}}`}
           </div>
           {/* <p className="text-[#F92C2C] text-[12px] font-normal">
           Letztes Update: Vor 45 Minuten

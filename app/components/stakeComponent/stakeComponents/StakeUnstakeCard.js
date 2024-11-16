@@ -3,7 +3,7 @@ import maxRound from "../../../../public/assets/maxbtn.png";
 import Cryptocurrency from "../../../../public/assets/Cryptocurrency.png";
 import Image from "next/image";
 import { useState } from "react";
-import { claimReward, formatDecimal, getErrorMessageFromFormattedString, getWalletStakes, stakeTokens, TOKEN_ADDRESS, TOKEN_LAMPORTS, unstakeTokens } from "@/app/integration/stake_func";
+import { calculateRewards, claimReward, formatDecimal, getErrorMessageFromFormattedString, getWalletStakes, stakeTokens, TOKEN_ADDRESS, TOKEN_LAMPORTS, unstakeTokens } from "@/app/integration/stake_func";
 import { connection } from "@/app/integration/connection";
 import { sendAndConfirmRawTransaction } from "@solana/web3.js";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
@@ -163,7 +163,7 @@ const StakeUnstakeCard = ({
       const bal = await connection.getTokenAccountBalance(userAta);
       setUserBalance(bal?.value?.uiAmount)
     })();
-  }, [wallet])
+  }, [wallet, refetch])
 
   useEffect(() => {
     (async () => {
@@ -172,9 +172,8 @@ const StakeUnstakeCard = ({
       console.log(data, Number(data[0]?.account?.lastStakedAt))
       setUserStakeData(data[0])
     })();
-  }, [wallet])
+  }, [wallet, refetch])
 
-  console.log(stakeTab)
   return (
     <div
       className="bg-gradient-to-b flex flex-col justify-around from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] px-8 md:px-[70px] py-8 max-w-full"
@@ -224,7 +223,12 @@ const StakeUnstakeCard = ({
             <p className="text-[#E1E1E1] text-[11px] font-normal "> 6.83%</p>
             <p className="text-[#E1E1E1] text-[11px] font-normal ">
               {" "}
-              6.01831087
+              {userStakeData
+                ? formatDecimal((calculateRewards(
+                  Number(userStakeData?.account?.amount),
+                  Number(userStakeData?.account?.lastStakedAt)
+                ) + Number(userStakeData?.account?.rewards)) / TOKEN_LAMPORTS)
+                : 0}
             </p>
           </div>
           <div

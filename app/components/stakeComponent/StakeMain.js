@@ -72,7 +72,9 @@ export default function StakeComponent() {
         style={{ border: "2px solid #222429" }}
       >
         {/* Top content */}
-        <StakeMainCard />
+        <StakeMainCard stakedTokens={userStakeData
+            ? formatDecimal(Number(userStakeData?.account?.amount) / TOKEN_LAMPORTS)
+            : 0} />
 
         {/* // bottom content */}
         <div className="flex mt-6 text-left flex-col md:flex-row gap-14 items-end">
