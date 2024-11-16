@@ -1,5 +1,5 @@
 "use client"; // Optional, only needed if you use client-side features
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import up from "../../../public/assets/up.png";
 import down from "../../../public/assets/downRed.png";
 import diamond from "../../../public/assets/diamond.png";
@@ -20,11 +20,15 @@ import DayButton from "./overviewComponents/DayButton";
 import RewardRedeemModal from "../RewardRedeemModal";
 import OverviewSquare from "./overviewComponents/OverviewSquare";
 import ReturnsSquare from "./overviewComponents/ReturnsSquare";
+import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { getWalletStakes, TOKEN_LAMPORTS } from "@/app/integration/stake_func";
 
 export default function () {
+  const wallet = useAnchorWallet()
   const [dayActive, setDayActive] = useState(0);
   const [stakeTab, setStakeTab] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userStakeData, setUserStakeData] = useState()
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -41,6 +45,76 @@ export default function () {
 
   const hTwo = "Total Staked";
 
+  function formatDecimal(value) {
+    const stringValue = value.toString();
+    const dotIndex = stringValue.indexOf('.');
+
+    if (dotIndex === -1) {
+      return parseFloat(stringValue);
+    }
+    const integerPart = stringValue.slice(0, dotIndex);
+    const decimalPart = stringValue.slice(dotIndex + 1, dotIndex + 4);
+    const formattedValue = decimalPart.length > 0 ? `${integerPart}.${decimalPart}` : integerPart;
+    return parseFloat(formattedValue);
+  }
+
+  function calculateRewards(initialAmount, startTimeUnix,) {
+    const rewardRate = 0.0019933;
+    const rewards = initialAmount * rewardRate * calculateNumberOf12HourPeriodsUTC(startTimeUnix);
+    return rewards;
+  }
+
+  function calculate24hrsRewards(initialAmount) {
+    const rewardRate = 0.0019933;
+    const rewards = initialAmount * rewardRate * 2;
+    return rewards;
+  }
+
+  function formatTimestamp(timestamp) {
+    // Create a new Date object from the timestamp
+    const date = new Date(timestamp * 1000);
+
+    // Options for formatting the date and time
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false, // Use 24-hour format
+    };
+
+    // Format the date and time
+    return date.toLocaleString('en-US', options);
+  }
+
+
+  const calculateNumberOf12HourPeriodsUTC = (unixTimestamp) => {
+    const date = new Date(unixTimestamp * 1000);
+    const currentDate = new Date(); // Current local time
+    const currentUTC = Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate(), currentDate.getUTCHours(), currentDate.getUTCMinutes(), currentDate.getUTCSeconds());
+    const hours = date.getUTCHours(); 
+    let firstPeriodStart;
+    if (hours >= 0 && hours < 12) {
+      firstPeriodStart = new Date(date.setUTCHours(0, 0, 0, 0)); // Set time to 12 AM UTC today
+    } else {
+      firstPeriodStart = new Date(date.setUTCHours(12, 0, 0, 0)); // Set time to 12 PM UTC today
+    }
+    const timeDifference = currentUTC - firstPeriodStart.getTime(); // Difference in milliseconds
+    const numberOfPeriods = Math.floor(timeDifference / (12 * 60 * 60 * 1000)); // 12 hours in milliseconds
+  
+    return numberOfPeriods;
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (!wallet) return
+      const data = await getWalletStakes(wallet)
+      setUserStakeData(data[0])
+    })();
+  }, [wallet])
+  
   return (
     <main
       className=" px-6 bg-[050505] w-full"
@@ -57,24 +131,48 @@ export default function () {
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
           hTwo={hTwo}
+          amount={userStakeData
+            ? formatDecimal(Number(userStakeData?.account?.amount) / TOKEN_LAMPORTS)
+            : 0}
         />
         <OverviewSquare
           graph={graphTwo}
           bitcoin={CryptoBlue}
           arrowIcon={orangeArrow}
           hTwo="Available"
+          amount={userStakeData
+            ? formatDecimal((calculateRewards(
+              Number(userStakeData?.account?.amount),
+              Number(userStakeData?.account?.lastStakedAt)
+            ) + Number(userStakeData?.account?.rewards)) / TOKEN_LAMPORTS)
+            : 0}
         />
         <OverviewSquare
           graph={graph3}
           bitcoin={CryptoBlue}
           arrowIcon={orangeArrow}
           hTwo="Total Rewards"
+          amount={userStakeData
+            ? formatDecimal((
+              calculateRewards(
+                Number(userStakeData?.account?.amount),
+                Number(userStakeData?.account?.lastStakedAt)
+              ) +
+              Number(userStakeData?.account?.claimed)
+              + Number(userStakeData?.account?.rewards)) /
+              TOKEN_LAMPORTS)
+            : 0}
         />
         <OverviewSquare
           graph={graph4}
           bitcoin={CryptoBlue}
           arrowIcon={orangeArrow}
           hTwo="24h Rewards"
+          amount={userStakeData
+            ? formatDecimal(calculate24hrsRewards(
+              Number(userStakeData?.account?.amount)
+            ) / TOKEN_LAMPORTS)
+            : 0}
         />
       </div>
 
@@ -82,14 +180,14 @@ export default function () {
         <div className="flex flex-col  text-left md:px-6 py-6 gap-2 hide-scrollbar">
           <p className="font-semibold text-[19px] md:text-[30px] flex justify-between text-[#FFFFFF]">
             Rewards earned{" "}
-            <span className="text-[#53F3C3] font-semibold">18.01390 BTC</span>
+            <span className="text-[#53F3C3] font-semibold">{userStakeData ? Number(userStakeData?.account?.claimed)/TOKEN_LAMPORTS : 0} BCT</span>
           </p>
 
           <div className="flex justify-between md:flex-row gap-4 md:gap-0 flex-col">
             <p className="text-[#53F3C3] text-[10px] md:text-[15px] flex gap-2">
-              +007.543364 BTC{" "}
+              +007.543364 BCT{" "}
               <span className="text-[#858585] font">
-                Past 24 Hours based on the BTC price of $29,457.03{" "}
+                Past 24 Hours based on the BCT price of $29,457.03{" "}
               </span>
             </p>
             <div className="flex justify-between text-[#FFFFFF]">
@@ -113,24 +211,44 @@ export default function () {
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
+            amount={userStakeData
+              ? formatDecimal((calculate24hrsRewards(
+                Number(userStakeData?.account?.amount)
+              ) * 30) / TOKEN_LAMPORTS)
+              : 0}
           />
           <ReturnsSquare
             hTwo="Expected daily returns"
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
+            amount={userStakeData
+              ? formatDecimal(calculate24hrsRewards(
+                Number(userStakeData?.account?.amount)
+              ) / TOKEN_LAMPORTS)
+              : 0}
           />
           <ReturnsSquare
             hTwo="Expected weekly returns"
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
+            amount={userStakeData
+              ? formatDecimal((calculate24hrsRewards(
+                Number(userStakeData?.account?.amount)
+              ) * 7) / TOKEN_LAMPORTS)
+              : 0}
           />
           <ReturnsSquare
             hTwo="Expected annual returns"
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
+            amount={userStakeData
+              ? formatDecimal((calculate24hrsRewards(
+                Number(userStakeData?.account?.amount)
+              ) * 365) / TOKEN_LAMPORTS)
+              : 0}
           />
         </div>
       </div>

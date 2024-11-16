@@ -1,7 +1,7 @@
 
 
 import Image from 'next/image'
-export default function OverviewSquare ({hTwo, graph, arrowIcon, bitcoin})  {
+export default function OverviewSquare ({hTwo, graph, arrowIcon, bitcoin, amount})  {
   return (
     <div
       className="bg-gradient-to-b from-[rgba(34,36,41,0.5)] to-[#050505]  rounded-[22px] p-6"
