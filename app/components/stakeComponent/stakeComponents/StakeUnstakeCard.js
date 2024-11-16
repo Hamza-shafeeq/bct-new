@@ -368,7 +368,7 @@ const StakeUnstakeCard = ({
             className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
           >
-            <button className="text-sm w-full text-[#FFFFFF]">Stake</button>
+            <button className="text-sm w-full text-[#FFFFFF]" onClick={stakePool}>Stake</button>
           </div>
         </div>
       ) : (
@@ -388,7 +388,7 @@ const StakeUnstakeCard = ({
             className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
           >
-            <button className="text-sm w-full text-[#FFFFFF]">Unstake</button>
+            <button className="text-sm w-full text-[#FFFFFF]" onClick={unstakePool}>Unstake</button>
           </div>
         </div>
       )}
