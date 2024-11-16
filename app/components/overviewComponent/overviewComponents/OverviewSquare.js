@@ -4,7 +4,7 @@ import Image from 'next/image'
 export default function OverviewSquare ({hTwo, graph, arrowIcon, bitcoin, amount})  {
   return (
     <div
-      className="bg-gradient-to-b from-[rgba(34,36,41,0.5)] to-[#050505]  rounded-[22px] p-6"
+      className="bg-gradient-to-b from-[rgba(34,36,41,0.5)] to-[#050505]  rounded-[22px] p-6 text-[#FFFFFF]"
       style={{ border: "2px solid #222429" }}
     >
       <div className="flex justify-start align-middle text-left gap-2">

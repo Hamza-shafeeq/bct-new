@@ -23,8 +23,6 @@ export default function () {
     exitFeeRate: 15,
   };
 
-  const hTwo = "Total Staked";
-
   return (
     <main
       className=" px-6 bg-[050505] w-full"

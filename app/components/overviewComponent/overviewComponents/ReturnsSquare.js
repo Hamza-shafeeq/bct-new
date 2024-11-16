@@ -15,7 +15,9 @@ export default function ReturnsSquare({ hTwo, graph, arrowIcon, bitcoin, amount 
           alt=""
         />
 
-        <h2 className="text-[21px] font-semibold leading-6">{hTwo}</h2>
+        <h2 className="text-[21px] font-semibold leading-6 text-[#FFFFFF]">
+          {hTwo}
+        </h2>
       </div>
 
       <div className="flex justify-between mt-4">
@@ -24,7 +26,7 @@ export default function ReturnsSquare({ hTwo, graph, arrowIcon, bitcoin, amount 
             21.3412 BTC
           </h2>
 
-          <p className="text-[13px] text-[#53F3C3] font-light flex items-center gap-1">
+          <p className="text-[13px] text-[#53F3C3] font-light flex items-center gap-1 text-[#FFFFFF]">
             + 6.75%{" "}
             <Image
               className="mb-[2px]"
