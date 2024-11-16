@@ -55,7 +55,7 @@ export default function AboutUs() {
           }`}
           onClick={() => setSelectedTab("overview")}
         >
-          Overview
+          Übersicht
         </p>
         <p
           className={`cursor-pointer inline-block border-b-2 ${
@@ -65,7 +65,7 @@ export default function AboutUs() {
           }`}
           onClick={() => setSelectedTab("transactionHistory")}
         >
-          Transaction History
+          Transaktionshistorie
         </p>
         <p
           className={`cursor-pointer inline-block border-b-2 ${
@@ -75,7 +75,7 @@ export default function AboutUs() {
           }`}
           onClick={() => setSelectedTab("calculator")}
         >
-          Calculator
+          Rechner
         </p>
         <p
           className={`cursor-pointer inline-block border-b-2 ${
@@ -83,7 +83,7 @@ export default function AboutUs() {
           }`}
           onClick={() => setSelectedTab("faqs")}
         >
-          FAQ's
+          FAQ
         </p>
       </div>
 

@@ -9,15 +9,15 @@ const StakeMainCard = () => {
       {/* Left content */}
       <div className="flex justify-start flex-col md:flex-row text-left">
         <div className="">
-          <p className="text-[#E1E1E1] text-[12px] font-normal">
-            Last update: 45 minutes ago
-          </p>
+          {/* <p className="text-[#E1E1E1] text-[12px] font-normal">
+          Letztes Update: Vor 45 Minuten
+          </p> */}
           <div className="text-[20px] md:text-[24px] text-[#FFFFFF]">
             Stake BlackChain Token {"{BCT}"}
           </div>
-          <p className="text-[#F92C2C] text-[12px] font-normal">
-            Last update: 45 minutes ago 
-          </p>
+          {/* <p className="text-[#F92C2C] text-[12px] font-normal">
+          Letztes Update: Vor 45 Minuten
+          </p> */}
         </div>
       </div>
 
@@ -25,7 +25,7 @@ const StakeMainCard = () => {
       <div className="flex flex-col md:flex-row justify-end align-middle gap-4 md:gap-16">
         <div className="flex justify-end flex-col text-start">
           <p className="text-[#E1E1E1] text-[13px] font-normal italic ">
-            All time profit
+            Gesamtgewinn
           </p>
           <p className="text-[#53F3C3] flex items-center gap-1">
             {" "}
@@ -34,11 +34,11 @@ const StakeMainCard = () => {
         </div>
 
         <div className="flex items-end text-start gap-1">
-          <Image className="mb-4" src={diamond} width={13} height={13} alt="" />
+          {/* <Image className="mb-4" width={13} height={13} alt="" /> */}
 
           <div>
             <p className="text-[#E1E1E1] text-[13px] font-normal italic ">
-              Best performer
+              Bester Performer
             </p>
 
             <p className="text-[#53F3C3] flex items-center gap-1">
@@ -48,14 +48,14 @@ const StakeMainCard = () => {
           </div>
         </div>
 
-        <div className="flex justify-end flex-col text-start">
+        {/* <div className="flex justify-end flex-col text-start">
           <p className="text-[#E1E1E1] text-[13px] font-normal italic ">
             Worst performer
           </p>
           <p className="text-[#F92C2C] flex items-center gap-1">
             <Image src={down} width={10} height={10} alt="" /> 2.52% (+$324.82)
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import maxRound from "../../../../public/assets/maxRound.png";
+import maxRound from "../../../../public/assets/maxbtn.png";
 import Cryptocurrency from "../../../../public/assets/Cryptocurrency.png";
 import Image from "next/image";
 import { useState } from "react";
@@ -49,22 +49,22 @@ const StakeUnstakeCard = ({
 
   const dayData = {
     0: {
-      APY: "0.01831087 BCT",
+      JährlicheRendite: "0.01831087 BCT",
       currentAmount: "0.01831087 BCT",
       dailyRewards: "0.89629221 BCT",
     },
     1: {
-      APY: "0.01941087 BCT",
+      JährlicheRendite: "0.01941087 BCT",
       currentAmount: "0.02831087 BCT",
       dailyRewards: "0.59629221 BCT",
     },
     2: {
-      APY: "0.02231087 BCT",
+      JährlicheRendite: "0.02231087 BCT",
       currentAmount: "0.03831087 BCT",
       dailyRewards: "0.79629221 BCT",
     },
     3: {
-      APY: "0.02431087 BCT",
+      JährlicheRendite: "0.02431087 BCT",
       currentAmount: "0.04831087 BCT",
       dailyRewards: "0.89629221 BCT",
     },
@@ -186,6 +186,7 @@ const StakeUnstakeCard = ({
           style={getButtonStyles(0)}
           index={0}
           onClick={() => handleStake(0)}
+          min="0"
         >
           Stake
         </button>
@@ -194,6 +195,7 @@ const StakeUnstakeCard = ({
           style={getButtonStyles(1)}
           index={1}
           onClick={() => handleStake(1)}
+          min="0"
         >
           Unstake
         </button>
@@ -205,7 +207,7 @@ const StakeUnstakeCard = ({
             <p className="text-[#E1E1E1] text-[11px] font-normal flex gap-1">
               Token
             </p>
-            <p className="text-[#E1E1E1] text-[11px] font-normal ">APY</p>
+            <p className="text-[#E1E1E1] text-[11px] font-normal ">JährlicheRendite</p>
             <p className="text-[#E1E1E1] text-[11px] font-normal ">
               Claimable Rewards
             </p>
@@ -213,7 +215,11 @@ const StakeUnstakeCard = ({
 
           <div className="flex justify-between px-3 pb-3">
             <p className="text-[#E1E1E1] text-[11px] font-normal flex gap-1">
-              <Image src={Cryptocurrency} width={15} height={15} alt="" /> BCT
+            <img
+          src="../../../../assets/logo.png" // Assuming the logo files are named based on asset
+          alt="logo"
+          className="w-8 h-8" // Tailwind CSS classes for size, adjust as needed
+        /> BCT
             </p>
             <p className="text-[#E1E1E1] text-[11px] font-normal "> 6.83%</p>
             <p className="text-[#E1E1E1] text-[11px] font-normal ">
@@ -245,6 +251,7 @@ const StakeUnstakeCard = ({
             setUnstakeAmount(parseFloat(e.target.value));
             // }
           }}
+          min="0"
           className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
         />
       ) : (
@@ -257,6 +264,7 @@ const StakeUnstakeCard = ({
             setStakeAmount(parseFloat(e.target.value));
             // }
           }}
+          min="0"
           className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
         />
       )}
@@ -343,20 +351,20 @@ const StakeUnstakeCard = ({
       {/* <div className="grid grid-cols-2 gap-4 mt-5"> */}
       {stakeTab === 0 ? (
         <div className="flex gap-2 flex-col mt-6">
-          <p className="flex justify-between text-left text-[14px] text-[#FFFFFF] font-semibold">
-            Summary
+          {/* <p className="flex justify-between text-left text-[14px] text-[#FFFFFF] font-semibold">
+            Zusammenfassung
           </p>
           <p className="flex justify-between text-left text-[14px] text-[#858585]">
-            APY <span className="text-[#FFFFFF]">{selectedData.APY}</span>
+            JährlicheRendite <span className="text-[#FFFFFF]">{selectedData.JährlicheRendite}</span>
           </p>
           <p className="flex justify-between text-left text-[14px] text-[#858585]">
-            Current Amount{" "}
+            Aktueller Betrag{" "}
             <span className="text-[#FFFFFF]">{selectedData.currentAmount}</span>
           </p>
           <p className="flex justify-between text-left text-[14px] text-[#858585]">
-            Daily est. rewards{" "}
+            Geschätzte tägliche Belohnungen{" "}
             <span className="text-[#53F3C3]">{selectedData.dailyRewards}</span>
-          </p>
+          </p> */}
           <div
             className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
@@ -366,16 +374,16 @@ const StakeUnstakeCard = ({
         </div>
       ) : (
         <div className="flex gap-2 flex-col mt-6">
-          <p className="flex justify-between text-left text-[14px] text-[#FFFFFF] font-semibold">
-            Summary
+          {/* <p className="flex justify-between text-left text-[14px] text-[#FFFFFF] font-semibold">
+            Zusammenfassung
           </p>
           <p className="flex justify-between text-left text-[14px] text-[#858585]">
-            APY <span className="text-[#FFFFFF]">{selectedData.APY}</span>
+            JährlicheRendite <span className="text-[#FFFFFF]">{selectedData.JährlicheRendite}</span>
           </p>
           <p className="flex justify-between text-left text-[14px] text-[#858585]">
             Claimable rewards
             <span className="text-[#FFFFFF]">{selectedData.currentAmount}</span>
-          </p>
+          </p> */}
 
           <div
             className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"

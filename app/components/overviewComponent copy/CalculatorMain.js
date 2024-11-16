@@ -20,7 +20,7 @@ export default function () {
   const modalData = {
     available: "6.01831087",
     spotWallet: "Spot Wallet",
-    summary: "This is a summary of your rewards.",
+    Zusammenfassung: "This is a Zusammenfassung of your rewards.",
     referrer: "1vDEX=100DEX",
     ratio: "85.0885 DEX",
     earnedDex: "85.0885",
@@ -58,17 +58,17 @@ export default function () {
           style={{ border: "2px solid #222429", overflow: "auto" }}
         >
           <p className=" font-semibold text-[19px] md:text-[30px] flex justify-between text-[#FFFFFF]">
-            Rewards earned{" "}
+            Erworbene Belohnungen{" "}
             <span className="text-[#53F3C3] font-semibold">{userStakeData ? formatDecimal(userStakeData?.account?.claimed / TOKEN_LAMPORTS) : 0} BCT</span>
           </p>
 
           <div className="flex justify-between md:flex-row gap-4 md:gap-0 flex-col">
-            <p className="text-[#53F3C3] text-[10px] md:text-[15px] flex gap-2">
+            {/* <p className="text-[#53F3C3] text-[10px] md:text-[15px] flex gap-2">
               +007.543364 BCT{" "}
               <span className="text-[#858585] font">
                 Past 24 Hours based on the BCT price of $29,457.03{" "}
               </span>
-            </p>
+            </p> */}
             <div className="flex justify-between gap-2">
               <DayButton text="30" index="1" />
               <DayButton text="60" index="2" />

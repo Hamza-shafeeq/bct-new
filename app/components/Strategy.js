@@ -20,16 +20,16 @@ export default function Strategy() {
         <div className="grid grid-flow-col gap-4">
           <div className="flex justify-start text-left">
             <div>
-              <div className="text-[14px] text-[#FFFFFF]">USDC-BUSD LP</div>
+              <div className="text-[14px] text-[#FFFFFF]">BCT Staking</div>
             </div>
           </div>
           <div className="flex justify-end align-middle gap-10">
-            <div
+            {/* <div
               className="flex items-center space-x-2 bg-[#E41E34] p-1 px-4 rounded-md font-poppins text-[12px] font-bold"
               style={{ height: "fit-content", border: "1px solid #E41E34" }}
             >
               <button className="text-sm text-[#FFFFFF]">Stake</button>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -37,26 +37,26 @@ export default function Strategy() {
           <div className="flex gap-5">
             <div className="flex flex-col mt-6 text-left items-baseline">
               <h3 className="text-[#FFFFFF] font-semibold text-left h-[20px] text-[20px] mb-3">
-                29.41%
+                13.96%
               </h3>
-              <p className="text-[#E1E1E1] text-[12px] font-normal">USDC APR</p>
+              <p className="text-[#E1E1E1] text-[12px] font-normal">BCT APR</p>
             </div>
 
-            <div className="flex flex-col text-[34px] mt-6 font-bold text-left items-baseline text-[#FFFFFF]">
+            {/* <div className="flex flex-col text-[34px] mt-6 font-bold text-left items-baseline text-[#FFFFFF]">
               /
-            </div>
+            </div> */}
 
-            <div className="flex flex-col mt-6 text-left items-baseline">
+            {/* <div className="flex flex-col mt-6 text-left items-baseline">
               <h3 className="text-[#FFFFFF] font-semibold text-left h-[20px] text-[20px] mb-3">
                 29.41%
               </h3>
               <p className="text-[#E1E1E1] text-[12px] font-normal">USDC APR</p>
-            </div>
+            </div> */}
           </div>
 
           <div className="flex justify-end flex-col text-start lg:ml-[80px]">
             <p className="text-[#E1E1E1] text-[12px] font-normal italic ">
-              All time profit
+              Gesamtgewinn
             </p>
             <p className="text-[#53F3C3] flex items-center gap-1">
               {" "}

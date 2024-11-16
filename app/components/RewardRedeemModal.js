@@ -6,7 +6,7 @@ const RewardRedeemModal = ({
   onClose,
   available,
   spotWallet,
-  summary,
+  Zusammenfassung,
   referrer,
   ratio,
   earnedDex,
@@ -33,7 +33,7 @@ const RewardRedeemModal = ({
         >
           X
         </button>
-        <h2 className="text-xl font-semibold mb-5">Redeem Rewards</h2>
+        <h2 className="text-xl font-semibold mb-5">Rewards auszahlen</h2>
 
         {/* <div className="text-sm mb-4">
           <p className="text-right  text-white text-[13px] font-normal mr-2"><strong className="text-[#858585]">Available:</strong> {available}</p>
@@ -45,8 +45,8 @@ const RewardRedeemModal = ({
         </div> */}
 
         <div className="text-sm mb-4">
-          <h3 className="font-semibold text-left">Summary</h3>
-          {/* <p>{summary}</p> */}
+          <h3 className="font-semibold text-left">Zusammenfassung</h3>
+          {/* <p>{Zusammenfassung}</p> */}
         </div>
 
         <p className="text-right flex justify-between text-white text-[13px] font-normal mr-2">

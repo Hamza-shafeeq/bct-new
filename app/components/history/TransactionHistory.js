@@ -9,7 +9,7 @@ import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { POOL_ADDR, TOKEN_ADDRESS, TOKEN_LAMPORTS } from "@/app/integration/stake_func";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { connection } from "@/app/integration/connection";
-
+import Image from "next/image";
 const PROGRAM_ID = "7RoyrPeKZSqwQiKxD9nmPmLnynxjVqf2yR7SqXCp1U2V";
 
 export default function TransactionHistory() {
@@ -220,13 +220,18 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
   // Custom render functions for columns
   const assetTemplate = (rowData) => (
     <div className=" flex items-center gap-2 justify-center">
-      <span className={`icon-${rowData.asset.toLowerCase()}`} />{" "}
-      {/* Placeholder for asset icon */}
-      <span className="text-white">{rowData.asset}</span>
+      <span>
+        <img
+          src="../../../assets/logo.png" // Assuming the logo files are named based on asset
+          alt="logo"
+          className="w-8 h-8" // Tailwind CSS classes for size, adjust as needed
+        />
+      </span>
       <span className="text-gray-400 text-xs">
         BCT
-        {/* {rowData.asset === "BCT" ? "BCT" : "BCT"} */}
-      </span>
+      </span> 
+      {/* <span className={`icon-${rowData.asset.toLowerCase()}`}>{" "}</span> */}
+      <span className="text-white">{rowData.asset}</span>
     </div>
   );
 
@@ -291,24 +296,24 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
           )}
         />
         <Column field="asset" header="Assets" body={assetTemplate} />
-        <Column field="type" header="Type" body={typeTemplate} />
-        <Column field="value" header="Value" body={valueTemplate} />
+        <Column field="type" header="Typ" body={typeTemplate} />
+        <Column field="value" header="Wert" body={valueTemplate} />
         <Column
           field="amount"
-          header="Amount"
+          header="Betrag"
           body={(rowData) => (
             <span className="text-white">{rowData.amount/TOKEN_LAMPORTS}</span>
           )}
         />
         <Column
           field="time"
-          header="Time"
+          header="Zeit"
           body={(rowData) => (
             <span className="text-gray-400">{convertUnixTimestampToDate(rowData.time)}</span>
           )}
         />
         <Column field="status" header="Status" body={statusTemplate} />
-        <Column header="Actions" body={actionTemplate} />
+        {/* <Column header="Actions" body={actionTemplate} /> */}
       </DataTable>}
     </main>
   );

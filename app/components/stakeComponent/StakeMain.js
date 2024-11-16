@@ -22,7 +22,7 @@ export default function StakeComponent() {
   const modalData = {
     available: "6.01831087",
     spotWallet: "Spot Wallet",
-    summary: "This is a summary of your rewards.",
+    Zusammenfassung: "This is a Zusammenfassung of your rewards.",
     referrer: "1vDEX=100DEX",
     ratio: "85.0885 DEX",
     earnedDex: "85.0885",
@@ -60,7 +60,7 @@ export default function StakeComponent() {
         onClose={handleCloseModal}
         available={modalData.available}
         spotWallet={modalData.spotWallet}
-        summary={modalData.summary}
+        Zusammenfassung={modalData.Zusammenfassung}
         referrer={modalData.referrer}
         ratio={modalData.ratio}
         earnedDex={modalData.earnedDex}

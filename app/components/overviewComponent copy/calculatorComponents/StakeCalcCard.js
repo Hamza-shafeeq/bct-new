@@ -34,22 +34,22 @@ const StakeCalcCard = ({
 
   const dayData = {
     0: {
-      APY: "0.01831087 BCT",
+      JährlicheRendite: "0.01831087 BCT",
       currentAmount: "0.01831087 BCT",
       dailyRewards: "0.89629221 BCT",
     },
     1: {
-      APY: "0.01941087 BCT",
+      JährlicheRendite: "0.01941087 BCT",
       currentAmount: "0.02831087 BCT",
       dailyRewards: "0.59629221 BCT",
     },
     2: {
-      APY: "0.02231087 BCT",
+      JährlicheRendite: "0.02231087 BCT",
       currentAmount: "0.03831087 BCT",
       dailyRewards: "0.79629221 BCT",
     },
     3: {
-      APY: "0.02431087 BCT",
+      JährlicheRendite: "0.02431087 BCT",
       currentAmount: "0.04831087 BCT",
       dailyRewards: "0.89629221 BCT",
     },
@@ -92,6 +92,7 @@ const StakeCalcCard = ({
         value={stakeAmount}
         onChange={(e) => setStakeAmount(parseFloat(e.target.value))}
         className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-8 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+        min="0"
       />
 
       <p className="flex justify-center text-center text-[16px] text-[#FFFFFF] font-semibold">
@@ -127,36 +128,21 @@ const StakeCalcCard = ({
         </div>
       )}
 
-      <div className="flex gap-2 flex-col mt-6">
-        <p className="flex justify-between text-left text-[14px] text-[#FFFFFF] font-semibold">
-          Summary
-        </p>
-        <p className="flex justify-between text-left text-[14px] text-[#858585]">
-          APY <span className="text-[#FFFFFF]">{selectedData.APY}</span>
-        </p>
-        <p className="flex justify-between text-left text-[14px] text-[#858585]">
-          Current Amount{" "}
-          <span className="text-[#FFFFFF]">{selectedData.currentAmount}</span>
-        </p>
-        <p className="flex justify-between text-left text-[14px] text-[#858585]">
-          Daily est. rewards{" "}
-          <span className="text-[#53F3C3]">{selectedData.dailyRewards}</span>
-        </p>
-        <p className="text-[#53F3C3] mt-3 font-semibold md:text-[50px] ">
-          {totalRewards ? formatDecimal(totalRewards) : 0}
-        </p>
-        <p className="flex justify-center text-left text-[14px] mt-[-10px] text-[#858585]">
-          12D Staking yield (annualized)
-        </p>
-        <div
-          className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
-          style={{ height: "fit-content", border: "1px solid #E41E34" }}
-        >
-          <button className="text-sm w-full text-[#FFFFFF]">
-            START STAKING
-          </button>
-        </div>
-      </div>
+<div className="flex flex-col items-center mt-6">
+  <p className="text-center text-[14px] text-[#FFFFFF] font-semibold">
+    Zusammenfassung
+  </p>
+  <p className="text-center text-[14px] text-[#858585]">
+    JährlicheRendite <span className="text-[#FFFFFF]">{selectedData.APY}</span>
+  </p>
+  <p className="text-[#53F3C3] mt-3 font-semibold md:text-[50px] text-center">
+    {totalRewards ? formatDecimal(totalRewards) : 0}
+  </p>
+  <p className="text-center text-[14px] mt-[-10px] text-[#858585]">
+    Expected BCT Tokens
+  </p>
+</div>
+
     </div>
   );
 };
