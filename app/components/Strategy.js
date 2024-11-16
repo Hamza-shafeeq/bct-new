@@ -20,7 +20,7 @@ export default function Strategy() {
         <div className="grid grid-flow-col gap-4">
           <div className="flex justify-start text-left">
             <div>
-              <div className="text-[14px]">USDC-BUSD LP</div>
+              <div className="text-[14px] text-[#FFFFFF]">USDC-BUSD LP</div>
             </div>
           </div>
           <div className="flex justify-end align-middle gap-10">

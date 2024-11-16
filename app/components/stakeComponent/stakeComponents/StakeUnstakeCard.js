@@ -68,7 +68,7 @@ const StakeUnstakeCard = ({
     >
       <div>
         <button
-          className=" text-[13px] font-bold px-6 py-1 rounded-md"
+          className=" text-[13px] font-bold px-6 py-1 rounded-md "
           style={getButtonStyles(0)}
           index={0}
           onClick={() => handleStake(0)}
@@ -237,7 +237,7 @@ const StakeUnstakeCard = ({
             className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
           >
-            <button className="text-sm w-full">Stake</button>
+            <button className="text-sm w-full text-[#FFFFFF]">Stake</button>
           </div>
         </div>
       ) : (
@@ -257,7 +257,7 @@ const StakeUnstakeCard = ({
             className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
           >
-            <button className="text-sm w-full">Unstake</button>
+            <button className="text-sm w-full text-[#FFFFFF]">Unstake</button>
           </div>
         </div>
       )}

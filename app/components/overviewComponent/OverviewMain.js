@@ -80,7 +80,7 @@ export default function () {
 
       <div className="grid grid-cols-1 lg:grid-cols-[calc(70%-0.5rem)_calc(30%-0.5rem)]  gap-4 mt-5">
         <div className="flex flex-col  text-left md:px-6 py-6 gap-2 hide-scrollbar">
-          <p className="font-semibold text-[19px] md:text-[30px] flex justify-between">
+          <p className="font-semibold text-[19px] md:text-[30px] flex justify-between text-[#FFFFFF]">
             Rewards earned{" "}
             <span className="text-[#53F3C3] font-semibold">18.01390 BTC</span>
           </p>
@@ -92,7 +92,7 @@ export default function () {
                 Past 24 Hours based on the BTC price of $29,457.03{" "}
               </span>
             </p>
-            <div className="flex justify-between">
+            <div className="flex justify-between text-[#FFFFFF]">
               <DayButton text="30" index="1" />
               <DayButton text="60" index="2" />
               <DayButton text="90" index="3" />
@@ -105,7 +105,7 @@ export default function () {
 
         {/* Bottom right section */}
         <div
-          className="bg-gradient-to-b from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] p-4 flex flex-col gap-5 lg:h-[600px] custom-scrollbar"
+          className="bg-gradient-to-b from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] p-4 flex flex-col gap-5 lg:h-[600px] custom-scrollbar text-[#FFFFFF]"
           style={{ border: "2px solid #222429", overflow: "auto" }}
         >
           <ReturnsSquare
