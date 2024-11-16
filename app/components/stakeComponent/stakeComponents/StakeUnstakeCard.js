@@ -231,7 +231,10 @@ const StakeUnstakeCard = ({
             className="flex items-center justify-center space-x-2 py-2 px-4 rounded-md font-poppins text-[12px] font-bold mt-2"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
           >
-            <button className="text-sm w-full" onClick={claimPool}>
+            <button
+              className="text-sm w-full text-[#FFFFFF]"
+              onClick={claimPool}
+            >
               Claim Rewards
             </button>
           </div>
@@ -267,7 +270,14 @@ const StakeUnstakeCard = ({
       <p className="text-[#858585] text-[11px] font-normal">
         {stakeTab === 1 ? "Staked balance:" : "Available balance:"}{" "}
         <span className="text-[#E1E1E1]">
-          {stakeTab === 1 ? userStakeData ? Number(userStakeData?.account?.amount)/1000000 : 0 : userBalance ? userBalance : 0} USDT
+          {stakeTab === 1
+            ? userStakeData
+              ? Number(userStakeData?.account?.amount) / 1000000
+              : 0
+            : userBalance
+            ? userBalance
+            : 0}{" "}
+          USDT
         </span>
       </p>
 

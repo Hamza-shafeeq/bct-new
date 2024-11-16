@@ -42,7 +42,7 @@ export default function AboutUs() {
         style={{ height: "87px" }}
       >
         <p
-          className={`cursor-pointer inline-block border-b-2 ${
+          className={` cursor-pointer inline-block border-b-2 ${
             selectedTab === "stake" ? "border-red-500" : "border-transparent"
           }`}
           onClick={() => setSelectedTab("stake")}
