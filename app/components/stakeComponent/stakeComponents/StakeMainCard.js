@@ -12,7 +12,7 @@ const StakeMainCard = () => {
           <p className="text-[#E1E1E1] text-[12px] font-normal">
             Last update: 45 minutes ago
           </p>
-          <div className="text-[20px] md:text-[24px]">
+          <div className="text-[20px] md:text-[24px] text-[#FFFFFF]">
             Stake BlackChain Token {"{BCT}"}
           </div>
           <p className="text-[#F92C2C] text-[12px] font-normal">

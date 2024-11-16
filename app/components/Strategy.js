@@ -20,7 +20,7 @@ export default function Strategy() {
         <div className="grid grid-flow-col gap-4">
           <div className="flex justify-start text-left">
             <div>
-              <div className="text-[14px]">USDC-BUSD LP</div>
+              <div className="text-[14px] text-[#FFFFFF]">USDC-BUSD LP</div>
             </div>
           </div>
           <div className="flex justify-end align-middle gap-10">
@@ -28,7 +28,7 @@ export default function Strategy() {
               className="flex items-center space-x-2 bg-[#E41E34] p-1 px-4 rounded-md font-poppins text-[12px] font-bold"
               style={{ height: "fit-content", border: "1px solid #E41E34" }}
             >
-              <button className="text-sm">Stake</button>
+              <button className="text-sm text-[#FFFFFF]">Stake</button>
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@ export default function Strategy() {
               <p className="text-[#E1E1E1] text-[12px] font-normal">USDC APR</p>
             </div>
 
-            <div className="flex flex-col text-[34px] mt-6 font-bold text-left items-baseline">
+            <div className="flex flex-col text-[34px] mt-6 font-bold text-left items-baseline text-[#FFFFFF]">
               /
             </div>
 

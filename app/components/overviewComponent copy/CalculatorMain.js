@@ -57,7 +57,7 @@ export default function () {
           className="flex flex-col  text-left px-4 md:px-6 py-6 gap-2 hide-scrollbar bg-gradient-to-b from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px]"
           style={{ border: "2px solid #222429", overflow: "auto" }}
         >
-          <p className=" font-semibold text-[19px] md:text-[30px] flex justify-between">
+          <p className=" font-semibold text-[19px] md:text-[30px] flex justify-between text-[#FFFFFF]">
             Rewards earned{" "}
             <span className="text-[#53F3C3] font-semibold">{userStakeData ? formatDecimal(userStakeData?.account?.claimed / TOKEN_LAMPORTS) : 0} BCT</span>
           </p>

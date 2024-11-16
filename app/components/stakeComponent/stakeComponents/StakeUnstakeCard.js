@@ -188,7 +188,7 @@ const StakeUnstakeCard = ({
     >
       <div>
         <button
-          className=" text-[13px] font-bold px-6 py-1 rounded-md"
+          className=" text-[13px] font-bold px-6 py-1 rounded-md "
           style={getButtonStyles(0)}
           index={0}
           onClick={() => handleStake(0)}
@@ -231,7 +231,10 @@ const StakeUnstakeCard = ({
             className="flex items-center justify-center space-x-2 py-2 px-4 rounded-md font-poppins text-[12px] font-bold mt-2"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
           >
-            <button className="text-sm w-full" onClick={claimPool}>
+            <button
+              className="text-sm w-full text-[#FFFFFF]"
+              onClick={claimPool}
+            >
               Claim Rewards
             </button>
           </div>
@@ -268,6 +271,14 @@ const StakeUnstakeCard = ({
         {stakeTab === 1 ? "Staked balance:" : "Available balance:"}{" "}
         <span className="text-[#E1E1E1]">
           {stakeTab === 1 ? userStakeData ? Number(userStakeData?.account?.amount)/1000000 : 0 : userBalance ? userBalance : 0} BCT
+          {stakeTab === 1
+            ? userStakeData
+              ? Number(userStakeData?.account?.amount) / 1000000
+              : 0
+            : userBalance
+            ? userBalance
+            : 0}{" "}
+          USDT
         </span>
       </p>
 
@@ -357,7 +368,7 @@ const StakeUnstakeCard = ({
             className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
           >
-            <button className="text-sm w-full" onClick={stakePool}>Stake</button>
+            <button className="text-sm w-full text-[#FFFFFF]">Stake</button>
           </div>
         </div>
       ) : (
@@ -377,7 +388,7 @@ const StakeUnstakeCard = ({
             className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
           >
-            <button className="text-sm w-full" onClick={unstakePool}>Unstake</button>
+            <button className="text-sm w-full text-[#FFFFFF]">Unstake</button>
           </div>
         </div>
       )}

@@ -6,8 +6,8 @@ export default function DayButton({ text, index, dayActive, onClick }) {
   console.log("isActive", isActive);
   return (
     <button
-      className="px-3 py-2 rounded-2xl text-[13px]"
-      style={{ backgroundColor:  buttonColor  }}
+      className="px-3 py-2 rounded-2xl text-[13px] text-[#FFFFFF]"
+      style={{ backgroundColor: buttonColor }}
       onClick={() => onClick(index)}
     >
       {text}

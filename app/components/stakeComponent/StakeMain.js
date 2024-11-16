@@ -101,7 +101,7 @@ export default function StakeComponent() {
             overflow: "auto",
           }}
         >
-          <p className="font-semibold">Recommended Strategies</p>
+          <p className="font-semibold text-[#FFFFFF]">Recommended Strategies</p>
           <Strategy />
           {/* <Strategy />
           <Strategy />
