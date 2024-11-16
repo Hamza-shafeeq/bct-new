@@ -50,6 +50,8 @@ const StakeCalcCard = ({
 
   const selectedData = dayData[dayActive];
 
+  console.log(stakeAmount)
+
   return (
     <div
       className="bg-gradient-to-b flex flex-col justify-around from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] px-8 md:px-[20px] py-8"

@@ -9,6 +9,12 @@ import drop from "../../public/assets/drop.png";
 import Image from "next/image";
 import WalletModal from "./WalletModal";
 import Mainbutton from "../utilities/Mainbutton";
+import dynamic from "next/dynamic";
+
+const WalletButton = dynamic(
+  async () => (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
+  { ssr: false }
+)
 
 export default function Header() {
   const [menu, setMenu] = useState(false);
@@ -65,7 +71,8 @@ export default function Header() {
             <Link href="/">FAQS</Link>
             <Link href="/">CONTACT</Link>
           </nav>
-          <Mainbutton title="SELECT WALLET" func={handleOpenModal} />
+          {/* <Mainbutton title="SELECT WALLET" func={handleOpenModal} /> */}
+          <WalletButton/>
         </div>
       </div>
 
@@ -121,9 +128,11 @@ export default function Header() {
           />
         </div>
         <div className="flex items-right space-x-2 bg-[#E41E34] p-2 rounded-md font-poppins text-[12px] mt-10">
-          <button className="text-sm" onClick={handleMobWallet}>
+          {/* <button className="text-sm" onClick={handleMobWallet}>
             SELECT WALLET
-          </button>
+          </button> */}
+          <WalletButton/>
+
         </div>
         <nav className="flex flex-col mt-10 text-right gap-8 text-lg font-poppins text-[11px]">
           <Link href="/" onClick={() => setMenu(false)}>

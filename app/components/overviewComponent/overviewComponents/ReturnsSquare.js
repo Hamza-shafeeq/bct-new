@@ -1,5 +1,5 @@
 import Image from "next/image";
-export default function ReturnsSquare({ hTwo, graph, arrowIcon, bitcoin }) {
+export default function ReturnsSquare({ hTwo, graph, arrowIcon, bitcoin, amount }) {
   return (
     <div
       className="bg-gradient-to-b from-[rgba(34,36,41,0.5)] to-[#050505]  rounded-[22px] p-5 "
@@ -21,7 +21,7 @@ export default function ReturnsSquare({ hTwo, graph, arrowIcon, bitcoin }) {
       <div className="flex justify-between mt-4">
         <div className="leading-5">
           <h2 className="text-[19px] flex text-left font-semibold">
-            21.3412 BTC
+            {amount} BCT
           </h2>
 
           <p className="text-[13px] text-[#53F3C3] font-light flex items-center gap-1">
