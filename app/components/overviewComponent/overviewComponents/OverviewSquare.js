@@ -19,7 +19,7 @@ export default function OverviewSquare ({hTwo, graph, arrowIcon, bitcoin, amount
 
         <div>
           <h2 className="text-[22px] font-semibold">{hTwo}</h2>
-          <p className="text-[12px] font-light mt-0">BTC</p>
+          <p className="text-[12px] font-light mt-0">BCT</p>
         </div>
       </div>
 
@@ -27,7 +27,7 @@ export default function OverviewSquare ({hTwo, graph, arrowIcon, bitcoin, amount
 
       <div className="flex justify-between">
         <h2 className="text-[20px] font-semibold text-[#FFFFFF]">
-          21.3412 BTC
+          {amount} BCT
         </h2>
         <p className="text-[12px] font-light flex items-center gap-1">
           + 6.75%{" "}

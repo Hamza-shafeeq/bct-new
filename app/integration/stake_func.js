@@ -317,7 +317,7 @@ export function formatDecimal(value) {
     return parseFloat(stringValue);
   }
   const integerPart = stringValue.slice(0, dotIndex);
-  const decimalPart = stringValue.slice(dotIndex + 1, dotIndex + 4);
+  const decimalPart = stringValue.slice(dotIndex + 1, dotIndex + 3);
   const formattedValue = decimalPart.length > 0 ? `${integerPart}.${decimalPart}` : integerPart;
   return parseFloat(formattedValue);
 }

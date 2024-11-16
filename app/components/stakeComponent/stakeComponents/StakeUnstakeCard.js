@@ -3,7 +3,7 @@ import maxRound from "../../../../public/assets/maxRound.png";
 import Cryptocurrency from "../../../../public/assets/Cryptocurrency.png";
 import Image from "next/image";
 import { useState } from "react";
-import { claimReward, getErrorMessageFromFormattedString, getWalletStakes, stakeTokens, TOKEN_ADDRESS, unstakeTokens } from "@/app/integration/stake_func";
+import { claimReward, formatDecimal, getErrorMessageFromFormattedString, getWalletStakes, stakeTokens, TOKEN_ADDRESS, TOKEN_LAMPORTS, unstakeTokens } from "@/app/integration/stake_func";
 import { connection } from "@/app/integration/connection";
 import { sendAndConfirmRawTransaction } from "@solana/web3.js";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
@@ -108,7 +108,7 @@ const StakeUnstakeCard = ({
       }
 
       if (wallet) {
-        const tx = await unstakeTokens(wallet, unstakeAmount*1000000);
+        const tx = await unstakeTokens(wallet, unstakeAmount);
 
         if (!tx) {
           return
@@ -156,12 +156,6 @@ const StakeUnstakeCard = ({
     }
   }
 
-  const getTransaction = async () => {
-    const tx = await connection.getParsedTransaction("4aw182XHpZerCkL4gPh3cFqmbzjnyQ5JED3j6Lp5a26mgVMZ4bj5TWoGWAK5cZrZu2wxshn3nFt2UwTdKosxsfWT");
-    console.log(tx)
-  }
-
-
   useEffect(() => {
     (async () => {
       if (!wallet) return
@@ -180,7 +174,7 @@ const StakeUnstakeCard = ({
     })();
   }, [wallet])
 
-  console.log(Number(userStakeData?.account?.lastStakedAt))
+  console.log(stakeTab)
   return (
     <div
       className="bg-gradient-to-b flex flex-col justify-around from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] px-8 md:px-[70px] py-8 max-w-full"
@@ -244,11 +238,11 @@ const StakeUnstakeCard = ({
       {stakeTab === 1 ? (
         <input
           type="number"
-          value={stakeAmount}
+          value={unstakeAmount}
           onChange={(e) => {
             // const regex = /^[0-9]*\.?[0-9]*$/;
             // if (regex.test(e.target.value)) {
-            setStakeAmount(parseFloat(e.target.value));
+            setUnstakeAmount(parseFloat(e.target.value));
             // }
           }}
           className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
@@ -270,15 +264,14 @@ const StakeUnstakeCard = ({
       <p className="text-[#858585] text-[11px] font-normal">
         {stakeTab === 1 ? "Staked balance:" : "Available balance:"}{" "}
         <span className="text-[#E1E1E1]">
-          {stakeTab === 1 ? userStakeData ? Number(userStakeData?.account?.amount)/1000000 : 0 : userBalance ? userBalance : 0} BCT
           {stakeTab === 1
             ? userStakeData
-              ? Number(userStakeData?.account?.amount) / 1000000
+              ? formatDecimal(Number(userStakeData?.account?.amount) / TOKEN_LAMPORTS)
               : 0
-            : userBalance
-            ? userBalance
+            : formatDecimal(userBalance)
+            ? formatDecimal(userBalance)
             : 0}{" "}
-          USDT
+          BCT
         </span>
       </p>
 

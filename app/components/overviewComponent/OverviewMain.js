@@ -21,7 +21,7 @@ import RewardRedeemModal from "../RewardRedeemModal";
 import OverviewSquare from "./overviewComponents/OverviewSquare";
 import ReturnsSquare from "./overviewComponents/ReturnsSquare";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
-import { getWalletStakes, TOKEN_LAMPORTS } from "@/app/integration/stake_func";
+import { formatDecimal, getWalletStakes, TOKEN_LAMPORTS } from "@/app/integration/stake_func";
 
 export default function () {
   const wallet = useAnchorWallet()
@@ -44,19 +44,6 @@ export default function () {
   };
 
   const hTwo = "Total Staked";
-
-  function formatDecimal(value) {
-    const stringValue = value.toString();
-    const dotIndex = stringValue.indexOf('.');
-
-    if (dotIndex === -1) {
-      return parseFloat(stringValue);
-    }
-    const integerPart = stringValue.slice(0, dotIndex);
-    const decimalPart = stringValue.slice(dotIndex + 1, dotIndex + 4);
-    const formattedValue = decimalPart.length > 0 ? `${integerPart}.${decimalPart}` : integerPart;
-    return parseFloat(formattedValue);
-  }
 
   function calculateRewards(initialAmount, startTimeUnix,) {
     const rewardRate = 0.0019933;
