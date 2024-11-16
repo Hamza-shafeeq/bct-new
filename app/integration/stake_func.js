@@ -308,6 +308,76 @@ export const findStakeEntryId = (
   )[0];
 };
 
+
+export function formatDecimal(value) {
+  const stringValue = value.toString();
+  const dotIndex = stringValue.indexOf('.');
+
+  if (dotIndex === -1) {
+    return parseFloat(stringValue);
+  }
+  const integerPart = stringValue.slice(0, dotIndex);
+  const decimalPart = stringValue.slice(dotIndex + 1, dotIndex + 4);
+  const formattedValue = decimalPart.length > 0 ? `${integerPart}.${decimalPart}` : integerPart;
+  return parseFloat(formattedValue);
+}
+
+export function calculateRewards(initialAmount, startTimeUnix,) {
+  const rewardRate = 0.0019933;
+  const rewards = initialAmount * rewardRate * calculateNumberOf12HourPeriodsUTC(startTimeUnix);
+  return rewards;
+}
+
+export function calculate24hrsRewards(initialAmount) {
+  const rewardRate = 0.0019933;
+  const rewards = initialAmount * rewardRate * 2;
+  return rewards;
+}
+
+export function formatTimestamp(timestamp) {
+  // Create a new Date object from the timestamp
+  const date = new Date(timestamp * 1000);
+
+  // Options for formatting the date and time
+  const options = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false, // Use 24-hour format
+  };
+
+  // Format the date and time
+  return date.toLocaleString('en-US', options);
+}
+
+export function calculateDaysRewards(amount, days) {
+  const rate = 0.19933 / 100;
+  const periods = 2 * days;
+  const finalAmount = amount * Math.pow(1 + rate, periods);
+  const totalReward = finalAmount - amount;
+  return totalReward
+}
+
+const calculateNumberOf12HourPeriodsUTC = (unixTimestamp) => {
+  const date = new Date(unixTimestamp * 1000);
+  const currentDate = new Date(); // Current local time
+  const currentUTC = Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate(), currentDate.getUTCHours(), currentDate.getUTCMinutes(), currentDate.getUTCSeconds());
+  const hours = date.getUTCHours(); 
+  let firstPeriodStart;
+  if (hours >= 0 && hours < 12) {
+    firstPeriodStart = new Date(date.setUTCHours(0, 0, 0, 0)); // Set time to 12 AM UTC today
+  } else {
+    firstPeriodStart = new Date(date.setUTCHours(12, 0, 0, 0)); // Set time to 12 PM UTC today
+  }
+  const timeDifference = currentUTC - firstPeriodStart.getTime(); // Difference in milliseconds
+  const numberOfPeriods = Math.floor(timeDifference / (12 * 60 * 60 * 1000)); // 12 hours in milliseconds
+
+  return numberOfPeriods;
+};
+
 export const getErrorMessageFromFormattedString = (errorString) => {
   const match = errorString.match(/custom program error: 0x([0-9a-fA-F]+)/);
 

@@ -1,20 +1,24 @@
 "use client"; // Optional, only needed if you use client-side features
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Strategy from "../Strategy";
 import RewardRedeemModal from "../RewardRedeemModal";
 import StakeMainCard from "./stakeComponents/StakeMainCard";
 import StakeUnstakeBtn from "./stakeComponents/StakeUnstakeBtn";
 import CurrentBalance from "./stakeComponents/CurrentBalance";
 import StakeUnstakeCard from "./stakeComponents/StakeUnstakeCard";
+import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { calculateRewards, formatDecimal, getWalletStakes, TOKEN_LAMPORTS } from "@/app/integration/stake_func";
 
 export default function StakeComponent() {
   const [dayActive, setDayActive] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [stakeTab, setStakeTab] = useState(0);
-
+  const wallet = useAnchorWallet()
+  const [userStakeData, setUserStakeData] = useState()
+  
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
-
+  
   const modalData = {
     available: "6.01831087",
     spotWallet: "Spot Wallet",
@@ -24,16 +28,24 @@ export default function StakeComponent() {
     earnedDex: "85.0885",
     exitFeeRate: 15,
   };
-
+  
   const handleRedeem = () => {
     console.log("Redeem button clicked");
     handleCloseModal();
   };
-
+  
   const handleClick = (index) => {
     setDayActive(index);
   };
+  useEffect(() => {
+    (async () => {
+      if (!wallet) return
+      const data = await getWalletStakes(wallet)
+      setUserStakeData(data[0])
+    })();
+  }, [wallet])
 
+  
   return (
     <main
       className=" px-6 bg-[050505] w-full"
@@ -64,7 +76,16 @@ export default function StakeComponent() {
 
         {/* // bottom content */}
         <div className="flex mt-6 text-left flex-col md:flex-row gap-14 items-end">
-          <CurrentBalance />
+          <CurrentBalance amount={userStakeData
+            ? formatDecimal((
+              calculateRewards(
+                Number(userStakeData?.account?.amount),
+                Number(userStakeData?.account?.lastStakedAt)
+              ) +
+              Number(userStakeData?.account?.claimed)
+              + Number(userStakeData?.account?.rewards)) /
+              TOKEN_LAMPORTS)
+            : 0} />
           <StakeUnstakeBtn />
         </div>
       </div>

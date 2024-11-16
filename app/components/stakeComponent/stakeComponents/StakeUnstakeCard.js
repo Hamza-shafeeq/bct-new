@@ -49,24 +49,24 @@ const StakeUnstakeCard = ({
 
   const dayData = {
     0: {
-      APY: "0.01831087 USDT",
-      currentAmount: "0.01831087 USDT",
-      dailyRewards: "0.89629221 USDT",
+      APY: "0.01831087 BCT",
+      currentAmount: "0.01831087 BCT",
+      dailyRewards: "0.89629221 BCT",
     },
     1: {
-      APY: "0.01941087 USDT",
-      currentAmount: "0.02831087 USDT",
-      dailyRewards: "0.59629221 USDT",
+      APY: "0.01941087 BCT",
+      currentAmount: "0.02831087 BCT",
+      dailyRewards: "0.59629221 BCT",
     },
     2: {
-      APY: "0.02231087 USDT",
-      currentAmount: "0.03831087 USDT",
-      dailyRewards: "0.79629221 USDT",
+      APY: "0.02231087 BCT",
+      currentAmount: "0.03831087 BCT",
+      dailyRewards: "0.79629221 BCT",
     },
     3: {
-      APY: "0.02431087 USDT",
-      currentAmount: "0.04831087 USDT",
-      dailyRewards: "0.89629221 USDT",
+      APY: "0.02431087 BCT",
+      currentAmount: "0.04831087 BCT",
+      dailyRewards: "0.89629221 BCT",
     },
   };
 
@@ -219,7 +219,7 @@ const StakeUnstakeCard = ({
 
           <div className="flex justify-between px-3 pb-3">
             <p className="text-[#E1E1E1] text-[11px] font-normal flex gap-1">
-              <Image src={Cryptocurrency} width={15} height={15} alt="" /> USDT
+              <Image src={Cryptocurrency} width={15} height={15} alt="" /> BCT
             </p>
             <p className="text-[#E1E1E1] text-[11px] font-normal "> 6.83%</p>
             <p className="text-[#E1E1E1] text-[11px] font-normal ">
@@ -267,7 +267,7 @@ const StakeUnstakeCard = ({
       <p className="text-[#858585] text-[11px] font-normal">
         {stakeTab === 1 ? "Staked balance:" : "Available balance:"}{" "}
         <span className="text-[#E1E1E1]">
-          {stakeTab === 1 ? userStakeData ? Number(userStakeData?.account?.amount)/1000000 : 0 : userBalance ? userBalance : 0} USDT
+          {stakeTab === 1 ? userStakeData ? Number(userStakeData?.account?.amount)/1000000 : 0 : userBalance ? userBalance : 0} BCT
         </span>
       </p>
 

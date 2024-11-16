@@ -6,10 +6,9 @@ import { Tag } from "primereact/tag";
 import { Button } from "primereact/button";
 import { PrimeIcons } from "primereact/api";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
-import { getWalletStakes, POOL_ADDR, TOKEN_ADDRESS, TOKEN_LAMPORTS } from "@/app/integration/stake_func";
+import { POOL_ADDR, TOKEN_ADDRESS, TOKEN_LAMPORTS } from "@/app/integration/stake_func";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { connection } from "@/app/integration/connection";
-import { PublicKey } from "@solana/web3.js";
 
 const PROGRAM_ID = "7RoyrPeKZSqwQiKxD9nmPmLnynxjVqf2yR7SqXCp1U2V";
 
@@ -63,7 +62,7 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
   //     },
   //     {
   //       id: "03",
-  //       asset: "USDT",
+  //       asset: "BCT",
   //       type: "Redeem Reward",
   //       value: "+0.6%",
   //       amount: "496.00923",
@@ -90,7 +89,7 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
   //     },
   //     {
   //       id: "06",
-  //       asset: "USDT",
+  //       asset: "BCT",
   //       type: "Redeem Reward",
   //       value: "+0.6%",
   //       amount: "496.00923",
@@ -117,7 +116,7 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
   //     },
   //     {
   //       id: "09",
-  //       asset: "USDT",
+  //       asset: "BCT",
   //       type: "Redeem Reward",
   //       value: "+0.6%",
   //       amount: "496.00923",
@@ -144,7 +143,7 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
   //     },
   //     {
   //       id: "12",
-  //       asset: "USDT",
+  //       asset: "BCT",
   //       type: "Redeem Reward",
   //       value: "+0.6%",
   //       amount: "496.00923",
@@ -162,7 +161,7 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
   //     },
   //     {
   //       id: "14",
-  //       asset: "USDT",
+  //       asset: "BCT",
   //       type: "Redeem Reward",
   //       value: "+0.6%",
   //       amount: "496.00923",
@@ -226,7 +225,7 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
       <span className="text-white">{rowData.asset}</span>
       <span className="text-gray-400 text-xs">
         BCT
-        {/* {rowData.asset === "USDT" ? "USDT" : "BTC"} */}
+        {/* {rowData.asset === "BCT" ? "BCT" : "BCT"} */}
       </span>
     </div>
   );

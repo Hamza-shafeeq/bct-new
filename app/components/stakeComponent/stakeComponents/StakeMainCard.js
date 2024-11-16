@@ -13,10 +13,10 @@ const StakeMainCard = () => {
             Last update: 45 minutes ago
           </p>
           <div className="text-[20px] md:text-[24px]">
-            Stake AVALANCE {"{AVAX}"}
+            Stake BlackChain Token {"{BCT}"}
           </div>
           <p className="text-[#F92C2C] text-[12px] font-normal">
-            Last update: 45 minutes ago
+            Last update: 45 minutes ago 
           </p>
         </div>
       </div>
