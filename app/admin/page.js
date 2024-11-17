@@ -1,16 +1,16 @@
 'use client';
 import React, { useEffect, useState } from 'react'
-import { getErrorMessageFromFormattedString, initStakePool, getAllpools } from '../integration/stake_func';
+import { getErrorMessageFromFormattedString, initStakePool, getAllpools, tranferTokenBack, depositeTokens, withdrawTokens } from '../integration/stake_func';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { connection } from '../integration/connection';
-import { sendAndConfirmRawTransaction } from '@solana/web3.js';
+import { PublicKey, sendAndConfirmRawTransaction } from '@solana/web3.js';
 import { toast } from 'react-toastify';
 
 const page = () => {
     const wallet = useAnchorWallet();
     const [depositeAmount, setDepositeAmount] = useState(0);
     const [pool, setPool] = useState()
-
+    const [transferWallet, setTransferWallet] = useState("")
 
     const poolInit = async () => {
         try {
@@ -21,6 +21,78 @@ const page = () => {
 
             if (wallet) {
                 const tx = await initStakePool(wallet, depositeAmount);
+                tx.feePayer = wallet.publicKey
+                tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
+                const signedTx = await wallet.signTransaction(tx)
+                const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize())
+                toast.success("Pool Initialized")
+                console.log('signature', txId)
+                // setRefetch(!refetch)
+            }
+        } catch (e) {
+            console.log(e)
+            const error = getErrorMessageFromFormattedString(e.message)
+            toast.error(error)
+        }
+    }
+
+    const withdraw = async () => {
+        try {
+            if (!wallet) {
+                toast.error("Please connect wallet");
+                return
+            }
+
+            if (wallet) {
+                const tx = await withdrawTokens(wallet, depositeAmount);
+                tx.feePayer = wallet.publicKey
+                tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
+                const signedTx = await wallet.signTransaction(tx)
+                const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize())
+                toast.success("Pool Initialized")
+                console.log('signature', txId)
+                // setRefetch(!refetch)
+            }
+        } catch (e) {
+            console.log(e)
+            const error = getErrorMessageFromFormattedString(e.message)
+            toast.error(error)
+        }
+    }
+
+    const deposite = async () => {
+        try {
+            if (!wallet) {
+                toast.error("Please connect wallet");
+                return
+            }
+
+            if (wallet) {
+                const tx = await depositeTokens(wallet, depositeAmount);
+                tx.feePayer = wallet.publicKey
+                tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
+                const signedTx = await wallet.signTransaction(tx)
+                const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize())
+                toast.success("Pool Initialized")
+                console.log('signature', txId)
+                // setRefetch(!refetch)
+            }
+        } catch (e) {
+            console.log(e)
+            const error = getErrorMessageFromFormattedString(e.message)
+            toast.error(error)
+        }
+    }
+
+    const transferBack = async () => {
+        try {
+            if (!wallet) {
+                toast.error("Please connect wallet");
+                return
+            }
+
+            if (wallet) {
+                const tx = await tranferTokenBack(wallet, new PublicKey(transferWallet));
                 tx.feePayer = wallet.publicKey
                 tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
                 const signedTx = await wallet.signTransaction(tx)
@@ -71,6 +143,45 @@ const page = () => {
                 />
                 <button className="text-sm w-full" onClick={poolInit}>
                     Create Pool
+                </button>
+
+            </div>
+
+            <div className='flex flex-col'>
+                <input
+                    type="number"
+                    value={depositeAmount}
+                    onChange={(e) => setDepositeAmount(parseFloat(e.target.value))}
+                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-8 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+                />
+                <button className="text-sm w-full" onClick={withdraw}>
+                    withdraw Pool
+                </button>
+
+            </div>
+
+            <div className='flex flex-col'>
+                <input
+                    type="number"
+                    value={depositeAmount}
+                    onChange={(e) => setDepositeAmount(parseFloat(e.target.value))}
+                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-8 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+                />
+                <button className="text-sm w-full" onClick={deposite}>
+                    deposite Pool
+                </button>
+
+            </div>
+
+            <div className='flex flex-col'>
+                <input
+                    type="text"
+                    value={transferWallet}
+                    onChange={(e) => setTransferWallet(e.target.value)}
+                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-8 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+                />
+                <button className="text-sm w-full" onClick={transferBack}>
+                    Transfer Back
                 </button>
 
             </div>

@@ -199,7 +199,6 @@ const StakeUnstakeCard = ({
     (async () => {
       if (!wallet) return;
       const data = await getWalletStakes(wallet);
-      console.log(data, Number(data[0]?.account?.lastStakedAt));
       setUserStakeData(data[0]);
     })();
   }, [wallet, refetch]);

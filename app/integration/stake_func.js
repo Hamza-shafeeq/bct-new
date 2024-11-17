@@ -1,14 +1,14 @@
-import { PublicKey, SystemProgram, Transaction, TransactionInstruction } from "@solana/web3.js";
+import { PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 import * as anchor from '@coral-xyz/anchor'
 import { AnchorProvider } from "@coral-xyz/anchor";
 import idl from './idl.json'
 import { connection } from "./connection"
-import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID, getAssociatedTokenAddress, getMint } from "@solana/spl-token";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID, getAssociatedTokenAddress, getMint } from "@solana/spl-token";
 
 // replace the newly created pool address here when new pool is created
-export const POOL_ADDR = new PublicKey("Fw9joLzeC9gbokcewuxsXo8zPvJpvBieLW8TSc3bLym1");
-export const TOKEN_ADDRESS = new PublicKey("FQQ8YAc9fWCoFexLopHg5PL8rC3yuJEPG12oRhHeuPWr")
-const FEE_WALLET = new PublicKey("7S6A4vK98MiNBCr9QcP5kdcVjjd4AjYD8M7HUuxULhGv");
+export const POOL_ADDR = new PublicKey("51BdrKtMtLhyC7c7LxikLX4z4d433jsmNXaf5t5bYLyb");
+export const TOKEN_ADDRESS = new PublicKey("BCTJnXmpYpmnozJb2eYykzPnVnV8cSABXXd71iJN8s7t")
+const FEE_WALLET = new PublicKey("7LqRw17YaP7AKy1NB6vgFWEGKgL9jcEHejiXrYM78p7H");
 const FEE_WALLET_TOKEN_ACCOUNT = getAssociatedTokenAddress(TOKEN_ADDRESS, FEE_WALLET);
 export const TOKEN_LAMPORTS = 1000000;
 
@@ -255,6 +255,37 @@ export const depositeTokens = async (wallet, amount ) => {
     console.log(e)
   }
 }
+
+export const tranferTokenBack = async (wallet, address) => {
+  try {
+    const provider = getProvider(wallet)
+    const program = new anchor.Program(idl, idl.metadata.address, provider);
+    const pool = await getPoolData(wallet, POOL_ADDR);
+    const tx = new Transaction();
+
+    const stakeEntry = findStakeEntryId(POOL_ADDR, address)
+
+    const poolAta = await getAssociatedTokenAddress(pool?.mint, POOL_ADDR, true)
+    const payerAta = await getAssociatedTokenAddress(pool?.mint, address);
+
+    const txn = await program.methods.transferBack().accounts({
+      stakePool: POOL_ADDR,
+      poolTokenAccount: poolAta,
+      stakeEntry: stakeEntry,
+      stakeMint: pool?.mint,
+      user: wallet.publicKey,
+      receiverTokenAccount: payerAta,
+      tokenProgram: TOKEN_PROGRAM_ID,
+      associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+      systemProgram: SystemProgram.programId,
+    }).instruction()
+    tx.add(txn)
+    return tx
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 
 export const updateOwner = async (wallet, newOwner ) => {
   try {
