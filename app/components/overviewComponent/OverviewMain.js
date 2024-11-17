@@ -43,7 +43,7 @@ export default function () {
     exitFeeRate: 15,
   };
 
-  const hTwo = "Total Staked";
+  const hTwo = "Gesamteinsatz";
 
   function calculateRewards(initialAmount, startTimeUnix,) {
     const rewardRate = 0.0019933;
@@ -130,7 +130,7 @@ export default function () {
           graph={graphTwo}
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
-          hTwo="Available"
+          hTwo="Verfügbar"
           amount={
             userStakeData
               ? formatDecimal(
@@ -148,7 +148,7 @@ export default function () {
           graph={graph3}
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
-          hTwo="Total Rewards"
+          hTwo="Gesamtprämien"
           amount={
             userStakeData
               ? formatDecimal(
@@ -167,7 +167,7 @@ export default function () {
           graph={graph4}
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
-          hTwo="24h Rewards"
+          hTwo="24-Stunden-Prämien"
           amount={
             userStakeData
               ? formatDecimal(

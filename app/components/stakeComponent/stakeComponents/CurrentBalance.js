@@ -5,12 +5,12 @@ import bitcoin from "../../../../public/assets/logo.png";
 const CurrentBalance = ({amount}) => {
   return (
     <div className="flex gap-2">
-      <p className="text-[#E1E1E1] text-[12px] font-normal ">
-        Aktuelle Rewards
-      </p>
       <p className="text-[#F92C2C] flex items-baseline gap-2">
         {" "}
-        <span className="text-[#F92C2C] h-[20px] text-[35px] flex items-center gap-2">
+      <p className="text-[#E1E1E1] h-[20px] text-[15px] font-normal ">
+        Aktuelle Rewards : 
+      </p>
+        <span className="text-[#E1E1E1] h-[20px] text-[15px] flex items-center gap-2">
           {amount}{" "}
           <Image
             className="h-[37px]"

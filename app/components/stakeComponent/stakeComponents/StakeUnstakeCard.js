@@ -226,7 +226,7 @@ const StakeUnstakeCard = ({
           onClick={() => handleStake(1)}
           min="0"
         >
-          Unstake
+          Unstake/Claim Rewards
         </button>
       </div>
 
@@ -236,16 +236,16 @@ const StakeUnstakeCard = ({
             <p className="text-[#E1E1E1] text-[11px] font-normal flex gap-1">
               Token
             </p>
-            <p className="text-[#E1E1E1] text-[11px] font-normal ">
+            {/* <p className="text-[#E1E1E1] text-[11px] font-normal ">
               JährlicheRendite
-            </p>
+            </p> */}
             <p className="text-[#E1E1E1] text-[11px] font-normal ">
               Claimable Rewards
             </p>
           </div>
 
-          <div className="flex justify-between px-3 pb-3">
-            <p className="text-[#E1E1E1] text-[11px] font-normal flex gap-1">
+          <div className="flex justify-between items-center px-3 pb-3">
+            <p className="text-[#E1E1E1] text-[11px] font-normal items-center flex gap-1">
               <img
                 src="../../../../assets/logo.png" // Assuming the logo files are named based on asset
                 alt="logo"
@@ -253,8 +253,8 @@ const StakeUnstakeCard = ({
               />{" "}
               BCT
             </p>
-            <p className="text-[#E1E1E1] text-[11px] font-normal "> 6.83%</p>
-            <p className="text-[#E1E1E1] text-[11px] font-normal ">
+            {/* <p className="text-[#E1E1E1] text-[11px] font-normal "> 6.83%</p> */}
+            <p className="text-[#E1E1E1] text-[11px] items-center font-normal flex gap-1">
               {" "}
               {userStakeData
                 ? formatDecimal(

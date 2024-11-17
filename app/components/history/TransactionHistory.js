@@ -235,9 +235,16 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
     </div>
   );
 
-  const typeTemplate = (rowData) => (
-    <span className="text-white">{rowData.type}</span>
-  );
+  const typeTemplate = (rowData) => {
+    const translations = {
+      StakeTokens: "Einsatztoken",
+      UnstakeTokens: "Unstake",
+      ClaimTokens: "Fordern Sie Token an",
+    };
+    const translatedType = translations[rowData.type] || rowData.type;
+
+   return <span className="text-white">{translatedType}</span>
+  };
 
   const valueTemplate = (rowData) => (
     <span
@@ -271,7 +278,7 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
 
   return (
     <main className="bg-[#0a0a0a] px-6 pb-6 text-white">
-      <h2 className="text-left mb-4 text-[24px]">Your transactions</h2>
+      <h2 className="text-left mb-4 text-[24px]">Deine Transaktionen</h2>
       {loading ? <p>...loading</p> : <DataTable
         value={transactions}
         className="w-full custom-data-table"
