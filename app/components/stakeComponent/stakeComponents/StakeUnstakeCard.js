@@ -26,7 +26,6 @@ const StakeUnstakeCard = ({
   handleOpenModal,
 }) => {
   const [stakeAmount, setStakeAmount] = useState(0);
-  const [error, setError] = useState(null);
   const [unstakeAmount, setUnstakeAmount] = useState(0);
   const [userBalance, setUserBalance] = useState(0);
   const [userStakeData, setUserStakeData] = useState();
@@ -54,8 +53,6 @@ const StakeUnstakeCard = ({
       ); // Max unstake is the staked balance
     }
   };
-
-  console.log("stakeAmount==", stakeAmount);
 
   const getButtonStyles = (index) => ({
     backgroundColor: stakeTab === index ? "#FFFFFF" : "#2E3037",
@@ -89,6 +86,12 @@ const StakeUnstakeCard = ({
 
   const stakePool = async () => {
     try {
+      console.log("stakeAmount", stakeAmount);
+      if (stakeAmount < 10) {
+        toast.error("Minimum 10 tokens required for stake");
+        return;
+      }
+
       if (!wallet) {
         toast.error("Please connect wallet");
         return;
@@ -200,26 +203,7 @@ const StakeUnstakeCard = ({
       setUserStakeData(data[0]);
     })();
   }, [wallet, refetch]);
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value;
 
-    if (inputValue === "" || /^\d*\.?\d*$/.test(inputValue)) {
-      setStakeAmount(inputValue);
-      if (parseFloat(inputValue) < 10 && inputValue !== "") {
-        setError("Minimum stake amount is 10 tokens");
-      } else {
-        setError(null);
-      }
-    }
-  };
-
-  const handleBlur = () => {
-    // Enforce minimum value when user leaves the input field
-    if (stakeAmount !== "" && parseFloat(stakeAmount) < 10) {
-      setStakeAmount(10); // Automatically set to minimum value
-      setError(null);
-    }
-  };
   return (
     <div
       className="bg-gradient-to-b flex flex-col justify-around from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] px-8 md:px-[70px] py-8 max-w-full"
@@ -301,18 +285,18 @@ const StakeUnstakeCard = ({
           className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
         />
       ) : (
-        <>
-          <input
-            type="number"
-            value={stakeAmount}
-            onChange={handleInputChange}
-            onBlur={handleBlur}
-            placeholder="Enter stake amount"
-            className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-2 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
-            min="10"
-          />
-          {error && <p className="text-red-500 text-sm ">{error}</p>}
-        </>
+        <input
+          type="number"
+          value={stakeAmount}
+          onChange={(e) => {
+            // const regex = /^[0-9]*\.?[0-9]*$/;
+            // if (regex.test(e.target.value)) {
+            setStakeAmount(parseFloat(e.target.value));
+            // }
+          }}
+          min="10"
+          className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+        />
       )}
 
       <p className="text-[#858585] text-[11px] font-normal">
