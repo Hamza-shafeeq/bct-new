@@ -58,8 +58,15 @@ export default function () {
           style={{ border: "2px solid #222429", overflow: "auto" }}
         >
           <p className=" font-semibold text-[19px] md:text-[30px] flex justify-between text-[#FFFFFF]">
-            Erworbene Belohnungen{" "}
-            <span className="text-[#53F3C3] font-semibold">{userStakeData ? formatDecimal(userStakeData?.account?.claimed / TOKEN_LAMPORTS) : 0} BCT</span>
+            Deine Belohnungen{" "}
+            <span className="text-[#53F3C3] font-semibold">
+              {userStakeData
+                ? formatDecimal(
+                    userStakeData?.account?.claimed / TOKEN_LAMPORTS
+                  )
+                : 0}{" "}
+              BCT
+            </span>
           </p>
 
           <div className="flex justify-between md:flex-row gap-4 md:gap-0 flex-col">

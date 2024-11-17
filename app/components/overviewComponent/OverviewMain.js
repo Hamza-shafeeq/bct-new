@@ -118,56 +118,78 @@ export default function () {
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
           hTwo={hTwo}
-          amount={userStakeData
-            ? formatDecimal(Number(userStakeData?.account?.amount) / TOKEN_LAMPORTS)
-            : 0}
+          amount={
+            userStakeData
+              ? formatDecimal(
+                  Number(userStakeData?.account?.amount) / TOKEN_LAMPORTS
+                )
+              : 0
+          }
         />
         <OverviewSquare
           graph={graphTwo}
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
           hTwo="Available"
-          amount={userStakeData
-            ? formatDecimal((calculateRewards(
-              Number(userStakeData?.account?.amount),
-              Number(userStakeData?.account?.lastStakedAt)
-            ) + Number(userStakeData?.account?.rewards)) / TOKEN_LAMPORTS)
-            : 0}
+          amount={
+            userStakeData
+              ? formatDecimal(
+                  (calculateRewards(
+                    Number(userStakeData?.account?.amount),
+                    Number(userStakeData?.account?.lastStakedAt)
+                  ) +
+                    Number(userStakeData?.account?.rewards)) /
+                    TOKEN_LAMPORTS
+                )
+              : 0
+          }
         />
         <OverviewSquare
           graph={graph3}
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
           hTwo="Total Rewards"
-          amount={userStakeData
-            ? formatDecimal((
-              calculateRewards(
-                Number(userStakeData?.account?.amount),
-                Number(userStakeData?.account?.lastStakedAt)
-              ) +
-              Number(userStakeData?.account?.claimed)
-              + Number(userStakeData?.account?.rewards)) /
-              TOKEN_LAMPORTS)
-            : 0}
+          amount={
+            userStakeData
+              ? formatDecimal(
+                  (calculateRewards(
+                    Number(userStakeData?.account?.amount),
+                    Number(userStakeData?.account?.lastStakedAt)
+                  ) +
+                    Number(userStakeData?.account?.claimed) +
+                    Number(userStakeData?.account?.rewards)) /
+                    TOKEN_LAMPORTS
+                )
+              : 0
+          }
         />
         <OverviewSquare
           graph={graph4}
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
           hTwo="24h Rewards"
-          amount={userStakeData
-            ? formatDecimal(calculate24hrsRewards(
-              Number(userStakeData?.account?.amount)
-            ) / TOKEN_LAMPORTS)
-            : 0}
+          amount={
+            userStakeData
+              ? formatDecimal(
+                  calculate24hrsRewards(
+                    Number(userStakeData?.account?.amount)
+                  ) / TOKEN_LAMPORTS
+                )
+              : 0
+          }
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[calc(70%-0.5rem)_calc(30%-0.5rem)]  gap-4 mt-5">
         <div className="flex flex-col  text-left md:px-6 py-6 gap-2 hide-scrollbar">
           <p className="font-semibold text-[19px] md:text-[30px] flex justify-between text-[#FFFFFF]">
-            Erworbene Belohnungen{" "}
-            <span className="text-[#53F3C3] font-semibold">{userStakeData ? Number(userStakeData?.account?.claimed)/TOKEN_LAMPORTS : 0} BCT</span>
+            Deine Belohnungen{" "}
+            <span className="text-[#53F3C3] font-semibold">
+              {userStakeData
+                ? Number(userStakeData?.account?.claimed) / TOKEN_LAMPORTS
+                : 0}{" "}
+              BCT
+            </span>
           </p>
 
           <div className="flex justify-between md:flex-row gap-4 md:gap-0 flex-col">
@@ -198,44 +220,66 @@ export default function () {
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
-            amount={userStakeData
-              ? formatDecimal((calculate24hrsRewards(
-                Number(userStakeData?.account?.amount)
-              ) * 30) / TOKEN_LAMPORTS)
-              : 0}
+            amount={
+              userStakeData
+                ? formatDecimal(
+                    (calculate24hrsRewards(
+                      Number(userStakeData?.account?.amount)
+                    ) *
+                      30) /
+                      TOKEN_LAMPORTS
+                  )
+                : 0
+            }
           />
           <ReturnsSquare
             hTwo="Erwartete tägliche Rendite"
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
-            amount={userStakeData
-              ? formatDecimal(calculate24hrsRewards(
-                Number(userStakeData?.account?.amount)
-              ) / TOKEN_LAMPORTS)
-              : 0}
+            amount={
+              userStakeData
+                ? formatDecimal(
+                    calculate24hrsRewards(
+                      Number(userStakeData?.account?.amount)
+                    ) / TOKEN_LAMPORTS
+                  )
+                : 0
+            }
           />
           <ReturnsSquare
             hTwo="Erwartete wöchentliche Rendite"
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
-            amount={userStakeData
-              ? formatDecimal((calculate24hrsRewards(
-                Number(userStakeData?.account?.amount)
-              ) * 7) / TOKEN_LAMPORTS)
-              : 0}
+            amount={
+              userStakeData
+                ? formatDecimal(
+                    (calculate24hrsRewards(
+                      Number(userStakeData?.account?.amount)
+                    ) *
+                      7) /
+                      TOKEN_LAMPORTS
+                  )
+                : 0
+            }
           />
           <ReturnsSquare
             hTwo="Expected annual returns"
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
-            amount={userStakeData
-              ? formatDecimal((calculate24hrsRewards(
-                Number(userStakeData?.account?.amount)
-              ) * 365) / TOKEN_LAMPORTS)
-              : 0}
+            amount={
+              userStakeData
+                ? formatDecimal(
+                    (calculate24hrsRewards(
+                      Number(userStakeData?.account?.amount)
+                    ) *
+                      365) /
+                      TOKEN_LAMPORTS
+                  )
+                : 0
+            }
           />
         </div>
       </div>
