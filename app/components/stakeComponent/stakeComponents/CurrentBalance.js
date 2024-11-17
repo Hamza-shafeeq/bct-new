@@ -7,9 +7,9 @@ const CurrentBalance = ({amount}) => {
       <p className="text-[#E1E1E1] text-[12px] font-normal ">
       Aktuelle Rewards
       </p>
-      <p className="text-[#53F3C3] flex  items-baseline gap-2">
+      <p className="text-[#F92C2C] flex  items-baseline gap-2">
         {" "}
-        <span className="text-[#53F3C3] h-[20px] text-[35px]">
+        <span className="text-[#F92C2C] h-[20px] text-[35px]">
           {amount} BCT
         </span>{" "}
         {/* <Image src={up} width={10} height={10} alt="" /> 2.52% */}
