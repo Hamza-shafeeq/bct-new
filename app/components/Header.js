@@ -147,9 +147,9 @@ export default function Header() {
           <Link href="/dashboard.html" onClick={() => setMenu(false)}>
             ROADMAP
           </Link>
-          <Link href="/dashboard.html" onClick={() => setMenu(false)}>
+          {/* <Link href="/dashboard.html" onClick={() => setMenu(false)}>
             FAQS
-          </Link>
+          </Link> */}
           <Link href="/dashboard.html" onClick={() => setMenu(false)}>
             CONTACT
           </Link>
