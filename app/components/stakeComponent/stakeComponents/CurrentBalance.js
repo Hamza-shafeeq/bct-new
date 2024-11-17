@@ -1,16 +1,24 @@
 import React from "react";
 import up from "../../../../public/assets/up.png";
 import Image from "next/image";
+import bitcoin from "../../../../public/assets/logo.png";
 const CurrentBalance = ({amount}) => {
   return (
-    <div className="">
+    <div className="flex gap-2">
       <p className="text-[#E1E1E1] text-[12px] font-normal ">
-      Aktuelle Rewards
+        Aktuelle Rewards
       </p>
-      <p className="text-[#F92C2C] flex  items-baseline gap-2">
+      <p className="text-[#F92C2C] flex items-baseline gap-2">
         {" "}
-        <span className="text-[#F92C2C] h-[20px] text-[35px]">
-          {amount} BCT
+        <span className="text-[#F92C2C] h-[20px] text-[35px] flex items-center gap-2">
+          {amount}{" "}
+          <Image
+            className="h-[37px]"
+            src={bitcoin}
+            width={37}
+            height={35}
+            alt=""
+          />
         </span>{" "}
         {/* <Image src={up} width={10} height={10} alt="" /> 2.52% */}
       </p>

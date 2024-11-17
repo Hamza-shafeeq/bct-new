@@ -3,7 +3,17 @@ import maxRound from "../../../../public/assets/maxbtn.png";
 import Cryptocurrency from "../../../../public/assets/Cryptocurrency.png";
 import Image from "next/image";
 import { useState } from "react";
-import { calculateRewards, claimReward, formatDecimal, getErrorMessageFromFormattedString, getWalletStakes, stakeTokens, TOKEN_ADDRESS, TOKEN_LAMPORTS, unstakeTokens } from "@/app/integration/stake_func";
+import {
+  calculateRewards,
+  claimReward,
+  formatDecimal,
+  getErrorMessageFromFormattedString,
+  getWalletStakes,
+  stakeTokens,
+  TOKEN_ADDRESS,
+  TOKEN_LAMPORTS,
+  unstakeTokens,
+} from "@/app/integration/stake_func";
 import { connection } from "@/app/integration/connection";
 import { sendAndConfirmRawTransaction } from "@solana/web3.js";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
@@ -16,11 +26,12 @@ const StakeUnstakeCard = ({
   handleOpenModal,
 }) => {
   const [stakeAmount, setStakeAmount] = useState(0);
-  const [unstakeAmount, setUnstakeAmount] = useState(0)
-  const [userBalance, setUserBalance] = useState(0)
-  const [userStakeData, setUserStakeData] = useState()
-  const [refetch, setRefetch] = useState(false)
-  const wallet = useAnchorWallet()
+  const [error, setError] = useState(null);
+  const [unstakeAmount, setUnstakeAmount] = useState(0);
+  const [userBalance, setUserBalance] = useState(0);
+  const [userStakeData, setUserStakeData] = useState();
+  const [refetch, setRefetch] = useState(false);
+  const wallet = useAnchorWallet();
   //  const [stakeTab, setStakeTab] = useState(0); // 0 for staking, 1 for unstaking
   const [blcDetail, setBlcDetail] = useState({
     total: 5000, // Simulating total balance
@@ -38,7 +49,9 @@ const StakeUnstakeCard = ({
     if (stakeTab === 0) {
       setStakeAmount(userBalance); // Max stake is the available balance
     } else {
-      setUnstakeAmount(userStakeData ? Number(userStakeData?.account?.amount)/1000000 : 0); // Max unstake is the staked balance
+      setUnstakeAmount(
+        userStakeData ? Number(userStakeData?.account?.amount) / 1000000 : 0
+      ); // Max unstake is the staked balance
     }
   };
 
@@ -76,104 +89,135 @@ const StakeUnstakeCard = ({
     try {
       if (!wallet) {
         toast.error("Please connect wallet");
-        return
+        return;
       }
 
       if (wallet) {
         const tx = await stakeTokens(wallet, stakeAmount);
 
         if (!tx) {
-          return
+          return;
         }
-        tx.feePayer = wallet.publicKey
-        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
-        const signedTx = await wallet.signTransaction(tx)
-        const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize())
-        toast.success("Tokens Staked")
-        console.log('signature', txId)
-        setRefetch(!refetch)
+        tx.feePayer = wallet.publicKey;
+        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+        const signedTx = await wallet.signTransaction(tx);
+        const txId = await sendAndConfirmRawTransaction(
+          connection,
+          signedTx.serialize()
+        );
+        toast.success("Tokens Staked");
+        console.log("signature", txId);
+        setRefetch(!refetch);
       }
     } catch (e) {
-      console.log(e)
-      const error = getErrorMessageFromFormattedString(e.message)
-      toast.error(error)
+      console.log(e);
+      const error = getErrorMessageFromFormattedString(e.message);
+      toast.error(error);
     }
-  }
+  };
 
   const unstakePool = async () => {
     try {
       if (!wallet) {
         toast.error("Please connect wallet");
-        return
+        return;
       }
 
       if (wallet) {
         const tx = await unstakeTokens(wallet, unstakeAmount);
 
         if (!tx) {
-          return
+          return;
         }
-        tx.feePayer = wallet.publicKey
-        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
-        const signedTx = await wallet.signTransaction(tx)
-        const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize())
-        toast.success("Tokens unstaked")
-        console.log('signature', txId)
-        setRefetch(!refetch)
+        tx.feePayer = wallet.publicKey;
+        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+        const signedTx = await wallet.signTransaction(tx);
+        const txId = await sendAndConfirmRawTransaction(
+          connection,
+          signedTx.serialize()
+        );
+        toast.success("Tokens unstaked");
+        console.log("signature", txId);
+        setRefetch(!refetch);
       }
     } catch (e) {
-      console.log(e)
-      const error = getErrorMessageFromFormattedString(e.message)
-      toast.error(error)
+      console.log(e);
+      const error = getErrorMessageFromFormattedString(e.message);
+      toast.error(error);
     }
-  }
+  };
 
   const claimPool = async () => {
     try {
       if (!wallet) {
         toast.error("Please connect wallet");
-        return
+        return;
       }
 
       if (wallet) {
         const tx = await claimReward(wallet);
 
         if (!tx) {
-          return
+          return;
         }
-        tx.feePayer = wallet.publicKey
-        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
-        const signedTx = await wallet.signTransaction(tx)
-        const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize())
-        toast.success("Tokens Claimed")
-        console.log('signature', txId)
-        setRefetch(!refetch)
+        tx.feePayer = wallet.publicKey;
+        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+        const signedTx = await wallet.signTransaction(tx);
+        const txId = await sendAndConfirmRawTransaction(
+          connection,
+          signedTx.serialize()
+        );
+        toast.success("Tokens Claimed");
+        console.log("signature", txId);
+        setRefetch(!refetch);
       }
     } catch (e) {
-      console.log(e)
-      const error = getErrorMessageFromFormattedString(e.message)
-      toast.error(error)
+      console.log(e);
+      const error = getErrorMessageFromFormattedString(e.message);
+      toast.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     (async () => {
-      if (!wallet) return
-      const userAta = await getAssociatedTokenAddress(TOKEN_ADDRESS, wallet?.publicKey)
+      if (!wallet) return;
+      const userAta = await getAssociatedTokenAddress(
+        TOKEN_ADDRESS,
+        wallet?.publicKey
+      );
       const bal = await connection.getTokenAccountBalance(userAta);
-      setUserBalance(bal?.value?.uiAmount)
+      setUserBalance(bal?.value?.uiAmount);
     })();
-  }, [wallet, refetch])
+  }, [wallet, refetch]);
 
   useEffect(() => {
     (async () => {
-      if (!wallet) return
+      if (!wallet) return;
       const data = await getWalletStakes(wallet);
-      console.log(data, Number(data[0]?.account?.lastStakedAt))
-      setUserStakeData(data[0])
+      console.log(data, Number(data[0]?.account?.lastStakedAt));
+      setUserStakeData(data[0]);
     })();
-  }, [wallet, refetch])
+  }, [wallet, refetch]);
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
 
+    if (inputValue === "" || /^\d*\.?\d*$/.test(inputValue)) {
+      setStakeAmount(inputValue); 
+      if (parseFloat(inputValue) < 10 && inputValue !== "") {
+        setError("Minimum stake amount is 10 tokens");
+      } else {
+        setError(null);
+      }
+    }
+  };
+
+  const handleBlur = () => {
+    // Enforce minimum value when user leaves the input field
+    if (stakeAmount !== "" && parseFloat(stakeAmount) < 10) {
+      setStakeAmount(10); // Automatically set to minimum value
+      setError(null);
+    }
+  };
   return (
     <div
       className="bg-gradient-to-b flex flex-col justify-around from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] px-8 md:px-[70px] py-8 max-w-full"
@@ -206,7 +250,9 @@ const StakeUnstakeCard = ({
             <p className="text-[#E1E1E1] text-[11px] font-normal flex gap-1">
               Token
             </p>
-            <p className="text-[#E1E1E1] text-[11px] font-normal ">JährlicheRendite</p>
+            <p className="text-[#E1E1E1] text-[11px] font-normal ">
+              JährlicheRendite
+            </p>
             <p className="text-[#E1E1E1] text-[11px] font-normal ">
               Claimable Rewards
             </p>
@@ -214,33 +260,27 @@ const StakeUnstakeCard = ({
 
           <div className="flex justify-between px-3 pb-3">
             <p className="text-[#E1E1E1] text-[11px] font-normal flex gap-1">
-            <img
-          src="../../../../assets/logo.png" // Assuming the logo files are named based on asset
-          alt="logo"
-          className="w-8 h-8" // Tailwind CSS classes for size, adjust as needed
-        /> BCT
+              <img
+                src="../../../../assets/logo.png" // Assuming the logo files are named based on asset
+                alt="logo"
+                className="w-8 h-8" // Tailwind CSS classes for size, adjust as needed
+              />{" "}
+              BCT
             </p>
             <p className="text-[#E1E1E1] text-[11px] font-normal "> 6.83%</p>
             <p className="text-[#E1E1E1] text-[11px] font-normal ">
               {" "}
               {userStakeData
-                ? formatDecimal((calculateRewards(
-                  Number(userStakeData?.account?.amount),
-                  Number(userStakeData?.account?.lastStakedAt)
-                ) + Number(userStakeData?.account?.rewards)) / TOKEN_LAMPORTS)
+                ? formatDecimal(
+                    (calculateRewards(
+                      Number(userStakeData?.account?.amount),
+                      Number(userStakeData?.account?.lastStakedAt)
+                    ) +
+                      Number(userStakeData?.account?.rewards)) /
+                      TOKEN_LAMPORTS
+                  )
                 : 0}
             </p>
-          </div>
-          <div
-            className="flex items-center justify-center space-x-2 py-2 px-4 rounded-md font-poppins text-[12px] font-bold mt-2"
-            style={{ height: "fit-content", border: "1px solid #E41E34" }}
-          >
-            <button
-              className="text-sm w-full text-[#FFFFFF]"
-              onClick={claimPool}
-            >
-              Claim Rewards
-            </button>
           </div>
         </>
       )}
@@ -259,18 +299,18 @@ const StakeUnstakeCard = ({
           className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
         />
       ) : (
-        <input
-          type="number"
-          value={stakeAmount}
-          onChange={(e) => {
-            // const regex = /^[0-9]*\.?[0-9]*$/;
-            // if (regex.test(e.target.value)) {
-            setStakeAmount(parseFloat(e.target.value));
-            // }
-          }}
-          min="0"
-          className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
-        />
+        <>
+          <input
+            type="number"
+            value={stakeAmount}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            placeholder="Enter stake amount"
+            className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+            min="10"
+          />
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+        </>
       )}
 
       <p className="text-[#858585] text-[11px] font-normal">
@@ -278,7 +318,9 @@ const StakeUnstakeCard = ({
         <span className="text-[#E1E1E1]">
           {stakeTab === 1
             ? userStakeData
-              ? formatDecimal(Number(userStakeData?.account?.amount) / TOKEN_LAMPORTS)
+              ? formatDecimal(
+                  Number(userStakeData?.account?.amount) / TOKEN_LAMPORTS
+                )
               : 0
             : formatDecimal(userBalance)
             ? formatDecimal(userBalance)
@@ -288,14 +330,20 @@ const StakeUnstakeCard = ({
       </p>
 
       <div className="flex justify-center mt-3">
-        <Image
+        <button
+          className=" rounded-full px-3 py-4 text-[#E41E34] text-[13px]"
+          onClick={handleMaxClick}
+          style={{ border: "1px solid #E41E34" }}
+        >
+          Max
+        </button>
+        {/* <Image
           src={maxRound}
           width={50}
           height={50}
           alt="Set Max Stake"
-          onClick={handleMaxClick}
           className="cursor-pointer"
-        />
+        /> */}
       </div>
 
       {/* {stakeTab === 1 ? (
@@ -373,7 +421,12 @@ const StakeUnstakeCard = ({
             className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
           >
-            <button className="text-sm w-full text-[#FFFFFF]" onClick={stakePool}>Stake</button>
+            <button
+              className="text-sm w-full text-[#FFFFFF]"
+              onClick={stakePool}
+            >
+              Stake
+            </button>
           </div>
         </div>
       ) : (
@@ -388,12 +441,27 @@ const StakeUnstakeCard = ({
             Claimable rewards
             <span className="text-[#FFFFFF]">{selectedData.currentAmount}</span>
           </p> */}
-
+          <div
+            className="flex items-center justify-center space-x-2 py-2 px-4 rounded-md font-poppins text-[12px] font-bold mt-2"
+            style={{ height: "fit-content", border: "1px solid #E41E34" }}
+          >
+            <button
+              className="text-sm w-full text-[#FFFFFF]"
+              onClick={claimPool}
+            >
+              Claim Rewards
+            </button>
+          </div>
           <div
             className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
             style={{ height: "fit-content", border: "1px solid #E41E34" }}
           >
-            <button className="text-sm w-full text-[#FFFFFF]" onClick={unstakePool}>Unstake</button>
+            <button
+              className="text-sm w-full text-[#FFFFFF]"
+              onClick={unstakePool}
+            >
+              Unstake
+            </button>
           </div>
         </div>
       )}

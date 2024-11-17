@@ -1,9 +1,10 @@
-import React from 'react'
+import React from "react";
 import up from "../../../../public/assets/up.png";
 import down from "../../../../public/assets/downRed.png";
 import diamond from "../../../../public/assets/diamond.png";
 import Image from "next/image";
-const StakeMainCard = ({stakedTokens}) => {
+import bitcoin from "../../../../public/assets/logo.png";
+const StakeMainCard = ({ stakedTokens }) => {
   return (
     <div className="grid grid-flow-row md:grid-flow-col gap-4">
       {/* Left content */}
@@ -12,8 +13,19 @@ const StakeMainCard = ({stakedTokens}) => {
           {/* <p className="text-[#E1E1E1] text-[12px] font-normal">
           Letztes Update: Vor 45 Minuten
           </p> */}
-          <div className="text-[20px] md:text-[24px] text-[#ffffff]">
-            Staked BlackChain Tokens : <span className="text-[#F92C2C]"> {`${stakedTokens > 0 ? stakedTokens : 0}`} BCT</span>
+          <div className="text-[20px] md:text-[24px] text-[#ffffff] flex gap-2 items-center">
+            Staked BlackChain Tokens :{" "}
+            <span className="text-[#F92C2C] flex gap-2 align-middle items-center">
+              {" "}
+              {`${stakedTokens > 0 ? stakedTokens : 0}`}{" "}
+              <Image
+                className="h-[37px]"
+                src={bitcoin}
+                width={37}
+                height={35}
+                alt=""
+              />
+            </span>
           </div>
           {/* <p className="text-[#F92C2C] text-[12px] font-normal">
           Letztes Update: Vor 45 Minuten
@@ -59,6 +71,6 @@ const StakeMainCard = ({stakedTokens}) => {
       </div>
     </div>
   );
-}
+};
 
-export default StakeMainCard
+export default StakeMainCard;
