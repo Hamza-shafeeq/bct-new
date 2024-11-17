@@ -53,9 +53,9 @@ export default function Header() {
         </div>
         <div className="flex gap-10 items-center">
           <nav className="flex space-x-16 font-poppins text-[14px]">
-            <Link href="/">BCT</Link>
+            <Link href="/dashboard.html">BCT</Link>
             <Link
-              href="/"
+              href="/dashboard.html"
               className=" flex items-center text-center text-[#E41E34] gap-1"
             >
               EVERYTHING ABOUT US
@@ -67,12 +67,12 @@ export default function Header() {
                 alt="Dropdown"
               />
             </Link>
-            <Link href="/">ROADMAP</Link>
-            <Link href="/">FAQS</Link>
-            <Link href="/">CONTACT</Link>
+            <Link href="/dashboard.html">ROADMAP</Link>
+            <Link href="/dashboard.html">FAQS</Link>
+            <Link href="/dashboard.html">CONTACT</Link>
           </nav>
           {/* <Mainbutton title="SELECT WALLET" func={handleOpenModal} /> */}
-          <WalletButton/>
+          <WalletButton />
         </div>
       </div>
 
@@ -131,27 +131,26 @@ export default function Header() {
           {/* <button className="text-sm" onClick={handleMobWallet}>
             SELECT WALLET
           </button> */}
-          <WalletButton/>
-
+          <WalletButton />
         </div>
         <nav className="flex flex-col mt-10 text-right gap-8 text-lg font-poppins text-[11px]">
-          <Link href="/" onClick={() => setMenu(false)}>
+          <Link href="/dashboard.html" onClick={() => setMenu(false)}>
             BCT
           </Link>
           <Link
-            href="/"
+            href="/dashboard.html"
             className=" text-[#E41E34] flex items-center gap-1"
             onClick={() => setMenu(false)}
           >
             EVERYTHING ABOUT US
           </Link>
-          <Link href="/" onClick={() => setMenu(false)}>
+          <Link href="/dashboard.html" onClick={() => setMenu(false)}>
             ROADMAP
           </Link>
-          <Link href="/" onClick={() => setMenu(false)}>
+          <Link href="/dashboard.html" onClick={() => setMenu(false)}>
             FAQS
           </Link>
-          <Link href="/" onClick={() => setMenu(false)}>
+          <Link href="/dashboard.html" onClick={() => setMenu(false)}>
             CONTACT
           </Link>
         </nav>
