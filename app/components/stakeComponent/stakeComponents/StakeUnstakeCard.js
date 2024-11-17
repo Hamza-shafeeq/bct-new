@@ -55,6 +55,8 @@ const StakeUnstakeCard = ({
     }
   };
 
+  console.log("stakeAmount==", stakeAmount);
+
   const getButtonStyles = (index) => ({
     backgroundColor: stakeTab === index ? "#FFFFFF" : "#2E3037",
     color: stakeTab === index ? "#E41E34" : "#FFFFFF",
@@ -202,7 +204,7 @@ const StakeUnstakeCard = ({
     const inputValue = e.target.value;
 
     if (inputValue === "" || /^\d*\.?\d*$/.test(inputValue)) {
-      setStakeAmount(inputValue); 
+      setStakeAmount(inputValue);
       if (parseFloat(inputValue) < 10 && inputValue !== "") {
         setError("Minimum stake amount is 10 tokens");
       } else {
@@ -306,10 +308,10 @@ const StakeUnstakeCard = ({
             onChange={handleInputChange}
             onBlur={handleBlur}
             placeholder="Enter stake amount"
-            className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+            className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-2 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
             min="10"
           />
-          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+          {error && <p className="text-red-500 text-sm ">{error}</p>}
         </>
       )}
 
