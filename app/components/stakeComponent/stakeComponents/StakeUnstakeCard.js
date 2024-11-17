@@ -88,12 +88,12 @@ const StakeUnstakeCard = ({
     try {
       console.log("stakeAmount", stakeAmount);
       if (stakeAmount < 10) {
-        toast.error("Minimum 10 tokens required for stake");
+        toast.error("Für den Einsatz sind mindestens 10 Token erforderlich");
         return;
       }
 
       if (!wallet) {
-        toast.error("Please connect wallet");
+        toast.error("Bitte Wallet anschließen");
         return;
       }
 
@@ -110,21 +110,22 @@ const StakeUnstakeCard = ({
           connection,
           signedTx.serialize()
         );
-        toast.success("Tokens Staked");
+        toast.success("Abgesteckte Token");
         console.log("signature", txId);
         setRefetch(!refetch);
       }
     } catch (e) {
       console.log(e);
       const error = getErrorMessageFromFormattedString(e.message);
-      toast.error(error);
+      // toast.error(error);
+      toast.error("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut");
     }
   };
 
   const unstakePool = async () => {
     try {
       if (!wallet) {
-        toast.error("Please connect wallet");
+        toast.error("Bitte Wallet anschließen");
         return;
       }
 
@@ -141,21 +142,22 @@ const StakeUnstakeCard = ({
           connection,
           signedTx.serialize()
         );
-        toast.success("Tokens unstaked");
+        toast.success("Token nicht eingesetzt");
         console.log("signature", txId);
         setRefetch(!refetch);
       }
     } catch (e) {
       console.log(e);
       const error = getErrorMessageFromFormattedString(e.message);
-      toast.error(error);
+      // toast.error(error);
+      toast.error("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut");
     }
   };
 
   const claimPool = async () => {
     try {
       if (!wallet) {
-        toast.error("Please connect wallet");
+        toast.error("Bitte Wallet anschließen");
         return;
       }
 
@@ -172,14 +174,15 @@ const StakeUnstakeCard = ({
           connection,
           signedTx.serialize()
         );
-        toast.success("Tokens Claimed");
+        toast.success("Beanspruchte Token");
         console.log("signature", txId);
         setRefetch(!refetch);
       }
     } catch (e) {
       console.log(e);
       const error = getErrorMessageFromFormattedString(e.message);
-      toast.error(error);
+      // toast.error(error);
+      toast.error("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut");
     }
   };
 
