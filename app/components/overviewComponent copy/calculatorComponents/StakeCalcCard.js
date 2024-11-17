@@ -84,7 +84,8 @@ const StakeCalcCard = ({
       style={{ border: "2px solid #222429", height: "-webkit-fill-available" }}
     >
       <p className="flex justify-center text-center text-[16px] text-[#FFFFFF] font-semibold">
-        Amount to stake
+      Zu setzender Betrag
+
       </p>
 
       <input
@@ -96,7 +97,7 @@ const StakeCalcCard = ({
       />
 
       <p className="flex justify-center text-center text-[16px] text-[#FFFFFF] font-semibold">
-        Staking period
+      Absteckzeitraum
       </p>
 
       {stakeTab === 0 && (

@@ -37,7 +37,7 @@ export default function Strategy() {
           <div className="flex gap-5">
             <div className="flex flex-col mt-6 text-left items-baseline">
               <h3 className="text-[#FFFFFF] font-semibold text-left h-[20px] text-[20px] mb-3">
-                13.96%
+              145.511%
               </h3>
               <p className="text-[#E1E1E1] text-[12px] font-normal">BCT APR</p>
             </div>
