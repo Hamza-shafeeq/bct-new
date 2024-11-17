@@ -6,7 +6,7 @@ export default function TabNavigation() {
       <Link href="/staking">Staking</Link>
       <Link href="/transactions">Transactions</Link>
       <Link href="/calculator">Calculator</Link>
-      <Link href="/faq">FAQ</Link>
+      {/* <Link href="/faq">FAQ</Link> */}
     </nav>
   );
 }

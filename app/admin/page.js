@@ -21,7 +21,7 @@ const page = () => {
     const poolInit = async () => {
         try {
             if (!wallet) {
-                toast.error("Please connect wallet");
+                toast.error("Bitte Wallet anschließen");
                 return
             }
 
@@ -31,21 +31,22 @@ const page = () => {
                 tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
                 const signedTx = await wallet.signTransaction(tx)
                 const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize())
-                toast.success("Pool Initialized")
+                toast.success("Pool initialisiert")
                 console.log('signature', txId)
                 // setRefetch(!refetch)
             }
         } catch (e) {
             console.log(e)
             const error = getErrorMessageFromFormattedString(e.message)
-            toast.error(error)
+            // toast.error(error)
+            toast.error("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut")
         }
     }
 
     const withdraw = async () => {
         try {
             if (!wallet) {
-                toast.error("Please connect wallet");
+                toast.error("Bitte Wallet anschließen");
                 return
             }
 
@@ -55,21 +56,22 @@ const page = () => {
                 tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
                 const signedTx = await wallet.signTransaction(tx)
                 const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize())
-                toast.success("Pool Initialized")
+                toast.success("Pool initialisiert")
                 console.log('signature', txId)
                 // setRefetch(!refetch)
             }
         } catch (e) {
             console.log(e)
             const error = getErrorMessageFromFormattedString(e.message)
-            toast.error(error)
+            // toast.error(error)
+            toast.error("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut")
         }
     }
 
     const deposite = async () => {
         try {
             if (!wallet) {
-                toast.error("Please connect wallet");
+                toast.error("Bitte Wallet anschließen");
                 return
             }
 
@@ -79,21 +81,22 @@ const page = () => {
                 tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
                 const signedTx = await wallet.signTransaction(tx)
                 const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize())
-                toast.success("Pool Initialized")
+                toast.success("Pool initialisiert")
                 console.log('signature', txId)
                 // setRefetch(!refetch)
             }
         } catch (e) {
             console.log(e)
             const error = getErrorMessageFromFormattedString(e.message)
-            toast.error(error)
+            // toast.error(error)
+            toast.error("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut")
         }
     }
 
     const transferBack = async () => {
         try {
             if (!wallet) {
-                toast.error("Please connect wallet");
+                toast.error("Bitte Wallet anschließen");
                 return
             }
 
@@ -103,14 +106,15 @@ const page = () => {
                 tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
                 const signedTx = await wallet.signTransaction(tx)
                 const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize())
-                toast.success("Pool Initialized")
+                toast.success("Pool initialisiert")
                 console.log('signature', txId)
                 // setRefetch(!refetch)
             }
         } catch (e) {
             console.log(e)
             const error = getErrorMessageFromFormattedString(e.message)
-            toast.error(error)
+            // toast.error(error)
+            toast.error("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut")
         }
     }
 

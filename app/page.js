@@ -20,8 +20,8 @@ export default function AboutUs() {
         return <TransactionHistory />;
       case "calculator":
         return <CalculatorMain />;
-      case "faqs":
-        return <Faqmain />;
+      // case "faqs":
+      //   return <Faqmain />;
       default:
         return <div>Stake Component</div>;
     }
@@ -77,14 +77,14 @@ export default function AboutUs() {
         >
           Rechner
         </p>
-        <p
+        {/* <p
           className={`cursor-pointer inline-block border-b-2 ${
             selectedTab === "faqs" ? "border-red-500" : "border-transparent"
           }`}
           onClick={() => setSelectedTab("faqs")}
         >
           FAQ
-        </p>
+        </p> */}
       </div>
 
       {/* Displaying the content of the selected tab */}
