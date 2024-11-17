@@ -29,7 +29,7 @@ export default function AboutUs() {
 
   return (
     <main
-      className="flex md:px-12 bg-[#050505]"
+      className="flex md:px-12 bg-[#050505] "
       style={{
         minHeight: "calc(100vh - 72px)",
         textAlign: "center",

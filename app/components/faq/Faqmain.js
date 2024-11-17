@@ -42,11 +42,11 @@ const Faqmain = () => {
   return (
     <main className="flex flex-col items-center px-4 md:px-10 py-8 bg-[#050505] text-white w-full min-h-screen">
       <p className="text-[#E41E34]">Kundenservice</p>
-      <h1 className="text-[30px]  md:text-[44px] font-semibold mt-2 mb-4">
-      Häufig gestellte Fragen
+      <h1 className="text-[30px]  md:text-[44px] font-semibold mt-2 mb-4 font-poppins">
+        Häufig gestellte Fragen
       </h1>
       <p className="text-[#858585] text-[18px] mb-8 max-w-xl text-center">
-      Brauchen Sie Klarheit? Hier sind unsere häufigsten Fragen.
+        Brauchen Sie Klarheit? Hier sind unsere häufigsten Fragen.
       </p>
 
       <input
