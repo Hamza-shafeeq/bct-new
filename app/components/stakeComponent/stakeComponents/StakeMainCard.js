@@ -35,7 +35,7 @@ const StakeMainCard = ({ stakedTokens }) => {
 
       {/*Top Right content */}
       <div className="flex flex-col md:flex-row justify-end align-middle gap-4 md:gap-16">
-        <div className="flex justify-end flex-col text-start">
+        {/* <div className="flex justify-end flex-col text-start">
           <p className="text-[#E1E1E1] text-[13px] font-normal italic ">
             Gesamtgewinn
           </p>
@@ -46,7 +46,7 @@ const StakeMainCard = ({ stakedTokens }) => {
         </div>
 
         <div className="flex items-end text-start gap-1">
-          {/* <Image className="mb-4" width={13} height={13} alt="" /> */}
+          <Image className="mb-4" width={13} height={13} alt="" />
 
           <div>
             <p className="text-[#E1E1E1] text-[13px] font-normal italic ">
@@ -58,7 +58,7 @@ const StakeMainCard = ({ stakedTokens }) => {
               <Image src={up} width={10} height={10} alt="" /> 2.52% (+$324.82)
             </p>
           </div>
-        </div>
+        </div> */}
 
         {/* <div className="flex justify-end flex-col text-start">
           <p className="text-[#E1E1E1] text-[13px] font-normal italic ">
