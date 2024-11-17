@@ -1,5 +1,3 @@
-import { Connection, clusterApiUrl } from "@solana/web3.js";
-// export const connection = new Connection("https://explorer-api.devnet.solana.com", 'confirmed');
-
-export const connection = new Connection("https://divine-nameless-snow.solana-mainnet.quiknode.pro/cbf3ffcb19633575cc0d278031b1c28c7e538633", 'confirmed');
+import { Connection } from "@solana/web3.js";
+export const connection = new Connection("https://light-wider-bird.solana-mainnet.quiknode.pro/0fa02f9109ca0c0e8a990f73ca03664b2d3e4138", 'confirmed');
 
