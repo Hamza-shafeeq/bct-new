@@ -4,7 +4,7 @@ import Image from 'next/image'
 export default function OverviewSquare ({hTwo, graph, arrowIcon, bitcoin, amount})  {
   return (
     <div
-      className="bg-gradient-to-b from-[rgba(34,36,41,0.5)] to-[#050505]  rounded-[22px] p-6 text-[#FFFFFF]"
+      className="bg-gradient-to-b from-[rgba(34,36,41,0.5)] to-[#050505] items-center  rounded-[22px] p-6 text-[#FFFFFF]"
       style={{ border: "2px solid #222429" }}
     >
       <div className="flex justify-start align-middle text-left gap-2">
@@ -25,19 +25,19 @@ export default function OverviewSquare ({hTwo, graph, arrowIcon, bitcoin, amount
 
       <Image className="w-full" src={graph} width={100} height={100} alt="" />
 
-      <div className="flex justify-between">
+      <div className="flex items-center">
         <h2 className="text-[20px] font-semibold text-[#FFFFFF]">
           {amount} BCT
         </h2>
         <p className="text-[12px] font-light flex items-center gap-1">
-          + 6.75%{" "}
-          <Image
+          {/* + 6.75%{" "} */}
+          {/* <Image
             className="mb-[2px]"
             src={arrowIcon}
             width={14}
             height={14}
             alt=""
-          />
+          /> */}
         </p>
       </div>
     </div>

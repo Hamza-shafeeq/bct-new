@@ -199,15 +199,15 @@ export default function () {
                 Past 24 Hours based on the BCT price of $29,457.03{" "}
               </span>
             </p> */}
-            <div className="flex justify-between text-[#FFFFFF]">
+            {/* <div className="flex justify-between text-[#FFFFFF]">
               <DayButton text="30" index="1" />
               <DayButton text="60" index="2" />
               <DayButton text="90" index="3" />
               <DayButton text="120" index="4" />
-            </div>
+            </div> */}
           </div>
 
-          <Image className="w-full" src={graphMain} alt="" />
+          {/* <Image className="w-full" src={graphMain} alt="" /> */}
         </div>
 
         {/* Bottom right section */}
@@ -231,6 +231,7 @@ export default function () {
                   )
                 : 0
             }
+            percentage={11.9598}
           />
           <ReturnsSquare
             hTwo="Erwartete tägliche Rendite"
@@ -246,6 +247,7 @@ export default function () {
                   )
                 : 0
             }
+            percentage={0.39866}
           />
           <ReturnsSquare
             hTwo="Erwartete wöchentliche Rendite"
@@ -263,9 +265,10 @@ export default function () {
                   )
                 : 0
             }
+            percentage={2.79062}
           />
           <ReturnsSquare
-            hTwo="Expected annual returns"
+            hTwo="Erwartete jährliche Rendite"
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
@@ -280,6 +283,7 @@ export default function () {
                   )
                 : 0
             }
+            percentage={145.511}
           />
         </div>
       </div>
