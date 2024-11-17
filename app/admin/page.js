@@ -254,7 +254,7 @@ const page = () => {
                     type="number"
                     value={poolAmount}
                     onChange={(e) => setPoolAmount(parseFloat(e.target.value))}
-                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-8 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-3 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
                 />
                 <button className="text-sm w-full bg-[#e41e34] px-4 py-2 rounded" onClick={poolInit}>
                     Create Pool
@@ -267,7 +267,7 @@ const page = () => {
                     type="number"
                     value={withdrawAmount}
                     onChange={(e) => setWithdrawAmount(parseFloat(e.target.value))}
-                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-8 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-3 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
                 />
                 <button className="text-sm w-full bg-[#e41e34] px-4 py-2 rounded" onClick={withdraw}>
                     withdraw Pool
@@ -279,7 +279,7 @@ const page = () => {
                     type="number"
                     value={depositeAmount}
                     onChange={(e) => setDepositeAmount(parseFloat(e.target.value))}
-                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-8 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-3 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
                 />
                 <button className="text-sm w-full bg-[#e41e34] px-4 py-2 rounded" onClick={deposite}>
                     deposite Pool
@@ -292,7 +292,7 @@ const page = () => {
                     type="text"
                     value={transferWallet}
                     onChange={(e) => setTransferWallet(e.target.value)}
-                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-8 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-3 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
                 />
                 <button className="text-sm w-full bg-[#e41e34] px-4 py-2 rounded" onClick={transferBack}>
                     Transfer Back
@@ -305,7 +305,7 @@ const page = () => {
                     type="text"
                     value={newOwner}
                     onChange={(e) => setNewOwner(e.target.value)}
-                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-8 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-3 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
                 />
                 <button className="text-sm w-full bg-[#e41e34] px-4 py-2 rounded" onClick={transferOwner}>
                     Transfer Owner
@@ -318,7 +318,7 @@ const page = () => {
                     type="text"
                     value={percentage}
                     onChange={(e) => setPercentage(parseFloat(e.target.value))}
-                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-8 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+                    className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-3 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
                 />
                 <button className="text-sm w-full bg-[#e41e34] px-4 py-2 rounded" onClick={airdropTokens}>
                     Airdrop Tokens
