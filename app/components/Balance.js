@@ -5,7 +5,7 @@ export default function Balance() {
   return (
     <div className="flex mt-6 text-left gap-8 items-end">
       <div>
-        <p className="text-[#E1E1E1] text-[12px] font-normal">Aktuelle Rewards</p>
+        <p className="text-[#E1E1E1] text-[12px] font-normal">Aktuell verfügbare Rewards</p>
         <p className="text-[#53F3C3] flex items-baseline gap-2">
           <span className="text-white text-[35px]">31.4568789</span> <Image src={up} width={10} height={10} alt="" /> 2.52%
         </p>

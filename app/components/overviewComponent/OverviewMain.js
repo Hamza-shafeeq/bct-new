@@ -148,7 +148,7 @@ export default function () {
           graph={graph3}
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
-          hTwo="Gesamtprämien"
+          hTwo="Gesamtrendite"
           amount={
             userStakeData
               ? formatDecimal(
@@ -167,7 +167,7 @@ export default function () {
           graph={graph4}
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
-          hTwo="24-Stunden-Prämien"
+          hTwo="24 Stunden Rendite"
           amount={
             userStakeData
               ? formatDecimal(

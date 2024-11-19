@@ -84,7 +84,7 @@ const StakeCalcCard = ({
       style={{ border: "2px solid #222429", height: "-webkit-fill-available" }}
     >
       <p className="flex justify-center text-center text-[16px] text-[#FFFFFF] font-semibold">
-      Zu setzender Betrag
+      Berechne deine mögliche Rendite
 
       </p>
 
@@ -97,31 +97,31 @@ const StakeCalcCard = ({
       />
 
       <p className="flex justify-center text-center text-[16px] text-[#FFFFFF] font-semibold">
-      Absteckzeitraum
+      Stakingzeitraum
       </p>
 
       {stakeTab === 0 && (
         <div className="flex justify-between mt-4 flex-wrap">
           <DayButton
-            text="30 days"
+            text="30 Tage"
             index={0}
             dayActive={dayActive}
             onClick={() => { handleClick(0) }}
           />
           <DayButton
-            text="60 days"
+            text="60 Tage"
             index={1}
             dayActive={dayActive}
             onClick={() => { handleClick(1) }}
           />
           <DayButton
-            text="90 days"
+            text="90 Tage"
             index={2}
             dayActive={dayActive}
             onClick={() => { handleClick(2) }}
           />
           <DayButton
-            text="120 days"
+            text="120 Tage"
             index={3}
             dayActive={dayActive}
             onClick={() => { handleClick(3) }}
@@ -134,13 +134,13 @@ const StakeCalcCard = ({
     Zusammenfassung
   </p>
   <p className="text-center text-[14px] text-[#858585]">
-    JährlicheRendite <span className="text-[#FFFFFF]">{selectedData.APY}</span>
+  Jährliche Rendite <span className="text-[#FFFFFF]">{selectedData.APY}</span>
   </p>
   <p className="text-[#53F3C3] mt-3 font-semibold md:text-[50px] text-center">
     {totalRewards ? formatDecimal(totalRewards) : 0}
   </p>
   <p className="text-center text-[14px] mt-[-10px] text-[#858585]">
-    Expected BCT Tokens
+  Erwartete BCT
   </p>
 </div>
 
