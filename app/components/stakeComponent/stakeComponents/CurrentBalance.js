@@ -8,7 +8,7 @@ const CurrentBalance = ({ amount }) => {
       <p className="text-[#F92C2C] flex items-baseline gap-2">
         {" "}
         <span className="text-[#E1E1E1] h-[20px] text-[15px] font-normal ">
-          Aktuelle Rewards :
+        Deine aktuelle 24h Rendite :
         </span>
         <span className="text-[#E1E1E1] h-[20px] text-[15px] flex items-center gap-2">
           {amount}{" "}

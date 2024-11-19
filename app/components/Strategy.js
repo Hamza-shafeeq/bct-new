@@ -56,7 +56,7 @@ export default function Strategy() {
 
           <div className="flex justify-end flex-col text-start lg:ml-[80px]">
             <p className="text-[#E1E1E1] text-[12px] font-normal italic ">
-              Gesamtgewinn
+            Gesamte Rewards
             </p>
             <p className="text-[#53F3C3] flex items-center gap-1">
               {" "}

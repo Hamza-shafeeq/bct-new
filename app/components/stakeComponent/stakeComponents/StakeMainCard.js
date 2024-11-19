@@ -14,7 +14,7 @@ const StakeMainCard = ({ stakedTokens }) => {
           Letztes Update: Vor 45 Minuten
           </p> */}
           <div className="text-[20px] md:text-[24px] text-[#ffffff] flex gap-2 items-center">
-            Staked BlackChain Tokens :{" "}
+          Deine gestaketen BlackChain Token :{" "}
             <span className="text-[20px] md:text-[24px] text-[#ffffff] flex gap-2 align-middle items-center">
               {" "}
               {`${stakedTokens > 0 ? stakedTokens : 0}`}{" "}
