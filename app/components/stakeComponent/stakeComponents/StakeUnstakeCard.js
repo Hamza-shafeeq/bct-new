@@ -118,7 +118,9 @@ const StakeUnstakeCard = ({
       console.log(e);
       const error = getErrorMessageFromFormattedString(e.message);
       // toast.error(error);
-      toast.error("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut");
+      toast.error(
+        "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
+      );
     }
   };
 
@@ -150,7 +152,9 @@ const StakeUnstakeCard = ({
       console.log(e);
       const error = getErrorMessageFromFormattedString(e.message);
       // toast.error(error);
-      toast.error("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut");
+      toast.error(
+        "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
+      );
     }
   };
 
@@ -182,7 +186,9 @@ const StakeUnstakeCard = ({
       console.log(e);
       const error = getErrorMessageFromFormattedString(e.message);
       // toast.error(error);
-      toast.error("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut");
+      toast.error(
+        "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
+      );
     }
   };
 
@@ -228,13 +234,22 @@ const StakeUnstakeCard = ({
           onClick={() => handleStake(1)}
           min="0"
         >
-          Unstake/Claim Rewards
+          Unstake
+        </button>
+        <button
+          className="text-[13px] font-bold px-6 py-1 ml-[-3px] rounded-r-md"
+          style={getButtonStyles(2)}
+          index={1}
+          onClick={() => handleStake(2)}
+          min="0"
+        >
+          Claim Rewards
         </button>
       </div>
 
-      {stakeTab === 1 && (
-        <>
-          <div className="flex justify-between p-3 my-5 bg-[#2E3037] rounded-2xl">
+      {stakeTab === 2 && (
+        <div className="md:mb-[190px]">
+          <div className="flex justify-between p-3  my-5 bg-[#2E3037] rounded-2xl">
             <p className="text-[#E1E1E1] text-[11px] font-normal flex gap-1">
               Token
             </p>
@@ -270,7 +285,7 @@ const StakeUnstakeCard = ({
                 : 0}
             </p>
           </div>
-        </>
+        </div>
       )}
 
       {stakeTab === 1 ? (
@@ -278,61 +293,59 @@ const StakeUnstakeCard = ({
           type="number"
           value={unstakeAmount}
           onChange={(e) => {
-            // const regex = /^[0-9]*\.?[0-9]*$/;
-            // if (regex.test(e.target.value)) {
             setUnstakeAmount(parseFloat(e.target.value));
-            // }
           }}
           min="0"
           className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
         />
-      ) : (
+      ) : stakeTab === 0 ? (
         <input
           type="number"
           value={stakeAmount}
           onChange={(e) => {
-            // const regex = /^[0-9]*\.?[0-9]*$/;
-            // if (regex.test(e.target.value)) {
             setStakeAmount(parseFloat(e.target.value));
-            // }
           }}
           min="10"
           className="text-[#FFFFFF] h-[40px] text-[20px] md:text-[37px] mt-6 mb-12 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
         />
-      )}
+      ) : null}
 
-      <p className="text-[#858585] text-[11px] font-normal">
-        {stakeTab === 1 ? "Staked balance:" : "Available balance:"}{" "}
-        <span className="text-[#E1E1E1]">
-          {stakeTab === 1
-            ? userStakeData
-              ? formatDecimal(
-                  Number(userStakeData?.account?.amount) / TOKEN_LAMPORTS
-                )
-              : 0
-            : formatDecimal(userBalance)
-            ? formatDecimal(userBalance)
-            : 0}{" "}
-          BCT
-        </span>
-      </p>
+      {stakeTab !== 2 ? (
+        <p className="text-[#858585] text-[11px] font-normal">
+          {stakeTab === 1 ? "Staked balance:" : "Available balance:"}{" "}
+          <span className="text-[#E1E1E1]">
+            {stakeTab === 1
+              ? userStakeData
+                ? formatDecimal(
+                    Number(userStakeData?.account?.amount) / TOKEN_LAMPORTS
+                  )
+                : 0
+              : formatDecimal(userBalance)
+              ? formatDecimal(userBalance)
+              : 0}{" "}
+            BCT
+          </span>
+        </p>
+      ) : null}
 
-      <div className="flex justify-center mt-3">
-        <button
-          className=" rounded-full px-3 py-4 text-[#E41E34] text-[13px]"
-          onClick={handleMaxClick}
-          style={{ border: "1px solid #E41E34" }}
-        >
-          Max
-        </button>
-        {/* <Image
+      {stakeTab !== 2 ? (
+        <div className="flex justify-center mt-3">
+          <button
+            className="px-4 py-2 text-[#E41E34] text-[13px]"
+            onClick={handleMaxClick}
+            style={{ borderBottom: "1px solid #E41E34" }}
+          >
+            Max
+          </button>
+          {/* <Image
           src={maxRound}
           width={50}
           height={50}
           alt="Set Max Stake"
           className="cursor-pointer"
         /> */}
-      </div>
+        </div>
+      ) : null}
 
       {/* {stakeTab === 1 ? (
             <>
@@ -389,70 +402,55 @@ const StakeUnstakeCard = ({
           )} */}
 
       {/* <div className="grid grid-cols-2 gap-4 mt-5"> */}
-      {stakeTab === 0 ? (
-        <div className="flex gap-2 flex-col mt-6">
-          {/* <p className="flex justify-between text-left text-[14px] text-[#FFFFFF] font-semibold">
-            Zusammenfassung
-          </p>
-          <p className="flex justify-between text-left text-[14px] text-[#858585]">
-            JährlicheRendite <span className="text-[#FFFFFF]">{selectedData.JährlicheRendite}</span>
-          </p>
-          <p className="flex justify-between text-left text-[14px] text-[#858585]">
-            Aktueller Betrag{" "}
-            <span className="text-[#FFFFFF]">{selectedData.currentAmount}</span>
-          </p>
-          <p className="flex justify-between text-left text-[14px] text-[#858585]">
-            Geschätzte tägliche Belohnungen{" "}
-            <span className="text-[#53F3C3]">{selectedData.dailyRewards}</span>
-          </p> */}
-          <div
-            className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
-            style={{ height: "fit-content", border: "1px solid #E41E34" }}
-          >
-            <button
-              className="text-sm w-full text-[#FFFFFF]"
-              onClick={stakePool}
+      <div className="flex gap-2 flex-col mt-6">
+        {stakeTab === 0 && (
+          <div>
+            <div
+              className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
+              style={{ height: "fit-content", border: "1px solid #E41E34" }}
             >
-              Stake
-            </button>
+              <button
+                className="text-sm w-full text-[#FFFFFF]"
+                onClick={stakePool}
+              >
+                Stake
+              </button>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="flex gap-2 flex-col mt-6">
-          {/* <p className="flex justify-between text-left text-[14px] text-[#FFFFFF] font-semibold">
-            Zusammenfassung
-          </p>
-          <p className="flex justify-between text-left text-[14px] text-[#858585]">
-            JährlicheRendite <span className="text-[#FFFFFF]">{selectedData.JährlicheRendite}</span>
-          </p>
-          <p className="flex justify-between text-left text-[14px] text-[#858585]">
-            Claimable rewards
-            <span className="text-[#FFFFFF]">{selectedData.currentAmount}</span>
-          </p> */}
-          <div
-            className="flex items-center justify-center space-x-2 py-2 px-4 rounded-md font-poppins text-[12px] font-bold mt-2"
-            style={{ height: "fit-content", border: "1px solid #E41E34" }}
-          >
-            <button
-              className="text-sm w-full text-[#FFFFFF]"
-              onClick={claimPool}
+        )}
+
+        {stakeTab === 1 && (
+          <div>
+            <div
+              className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
+              style={{ height: "fit-content", border: "1px solid #E41E34" }}
             >
-              Claim Rewards
-            </button>
+              <button
+                className="text-sm w-full text-[#FFFFFF]"
+                onClick={unstakePool}
+              >
+                Unstake
+              </button>
+            </div>
           </div>
-          <div
-            className="flex items-center justify-center space-x-2 bg-[#E41E34] py-2 px-4 rounded-lg font-poppins text-[12px] font-bold mt-4"
-            style={{ height: "fit-content", border: "1px solid #E41E34" }}
-          >
-            <button
-              className="text-sm w-full text-[#FFFFFF]"
-              onClick={unstakePool}
+        )}
+
+        {stakeTab === 2 && (
+          <div>
+            <div
+              className="flex items-center justify-center space-x-2 py-2 px-4 rounded-md font-poppins text-[12px] font-bold mt-2"
+              style={{ height: "fit-content", border: "1px solid #E41E34" }}
             >
-              Unstake
-            </button>
+              <button
+                className="text-sm w-full text-[#FFFFFF]"
+                onClick={claimPool}
+              >
+                Claim Rewards
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
