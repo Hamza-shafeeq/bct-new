@@ -533,10 +533,12 @@ const page = () => {
 
       <div className="flex flex-col mb-4">
         <input
-          type="text"
+          type="number"
           value={percentage}
           onChange={(e) => setPercentage(parseFloat(e.target.value))}
           className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-3 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+          min="0"
+
         />
         <button
           className="text-sm w-full bg-[#e41e34] px-4 py-2 rounded"
@@ -548,10 +550,11 @@ const page = () => {
 
       <div className="flex flex-col mb-4">
         <input
-          type="text"
+          type="number"
           value={feeFercentage}
           onChange={(e) => setFeePercentage(parseFloat(e.target.value))}
           className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-3 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
+          min="0"
         />
         <button
           className="text-sm w-full bg-[#e41e34] px-4 py-2 rounded"
