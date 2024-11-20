@@ -417,7 +417,7 @@ const page = () => {
 
         count++;
 
-        if (count === 20 || item === wallets[wallets.length - 1]) {
+        if (count === 20 || item === allData[allData.length - 1]) {
           currentTx.feePayer = publicKey;
           currentTx.recentBlockhash = (
             await connection.getLatestBlockhash("confirmed")
