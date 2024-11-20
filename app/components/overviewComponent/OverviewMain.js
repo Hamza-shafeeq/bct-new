@@ -183,7 +183,7 @@ export default function () {
       <div className="grid grid-cols-1 lg:grid-cols-[calc(70%-0.5rem)_calc(30%-0.5rem)]  gap-4 mt-5">
         <div className="flex flex-col  text-left md:px-6 py-6 gap-2 hide-scrollbar">
           <p className="font-semibold text-[19px] md:text-[30px] flex justify-between text-[#FFFFFF]">
-            Deine Belohnungen{" "}
+          deine bisher ausgezahlten Rewards{" "}
             <span className="text-[#53F3C3] font-semibold">
               {userStakeData
                 ? Number(userStakeData?.account?.claimed) / TOKEN_LAMPORTS
