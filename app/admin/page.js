@@ -339,17 +339,17 @@ const page = () => {
       const allData = [];
       // console.log(allData , 20)
       for (let i = 0; i < wallets.length; i++) {
+        if(!PublicKey.isOnCurve(wallets[i].owner)) continue
         let matched = false;
         for (let j = 0; j < accs.length; j++) {
           if (wallets[i].owner === accs[j]?.account?.lastStaker.toString()) {
             matched = true;
             const userData = {
               wallet: wallets[i].owner,
-              staked_amount: Number(accs[j]?.account?.amount) / 1000000,
-              wallet_amount: wallets[i].amount / 1000000,
+              staked_amount: Number(accs[j]?.account?.amount),
+              wallet_amount: wallets[i].amount,
               total_amount:
-                (wallets[i].amount + Number(accs[j]?.account?.amount)) /
-                1000000,
+                (wallets[i].amount + Number(accs[j]?.account?.amount)),
             };
             allData.push(userData);
           }
@@ -360,8 +360,8 @@ const page = () => {
           const userData = {
             wallet: wallets[i].owner,
             staked_amount: 0, // No staked amount in accs
-            wallet_amount: wallets[i].amount / 1000000,
-            total_amount: wallets[i].amount / 1000000,
+            wallet_amount: wallets[i].amount,
+            total_amount: wallets[i].amount,
           };
           allData.push(userData);
         }
@@ -377,9 +377,9 @@ const page = () => {
         if (!alreadyIncluded) {
           const userData = {
             wallet: lastStaker,
-            staked_amount: Number(accs[j]?.account?.amount) / 1000000,
+            staked_amount: Number(accs[j]?.account?.amount),
             wallet_amount: 0, // No wallet amount in wallets
-            total_amount: Number(accs[j]?.account?.amount) / 1000000,
+            total_amount: Number(accs[j]?.account?.amount),
           };
           allData.push(userData);
         }
@@ -390,17 +390,17 @@ const page = () => {
       let count = 0;
 
       for (let item of allData) {
+        console.log("item.wallet",item.wallet, PublicKey.isOnCurve(item.wallet));
         const userAta = await getAssociatedTokenAddress(
           TOKEN_ADDRESS,
           publicKey
         );
-        const receAta = new PublicKey(item.wallet);
+        const receAta = await getAssociatedTokenAddress(TOKEN_ADDRESS, new PublicKey(item.wallet));
 
         const percentageAmount = Math.floor(
           item.total_amount * (feeFercentage / 100)
         );
 
-        console.log(item.wallet);
         console.log(item.total_amount);
         console.log(percentageAmount);
 
