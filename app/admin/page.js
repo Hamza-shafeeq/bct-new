@@ -39,7 +39,7 @@ const page = () => {
   const [withdrawAmount, setWithdrawAmount] = useState(0);
   const [depositeAmount, setDepositeAmount] = useState(0);
   const [percentage, setPercentage] = useState(0);
-  const [feeFercentage, setFeePercentage] = useState(0);
+  const [feePercentage, setFeePercentage] = useState(0);
   const [newOwner, setNewOwner] = useState();
 
   const programAccounts = async () => {
@@ -385,11 +385,18 @@ const page = () => {
         }
       }
 
+      const newData = allData.filter(item => {
+        if (item.wallet === "3eR4KfQQCH6BBgfBnMCV59cEV1XbK6sozaZUs5FSrd1G") {
+          return false; // Exclude this item from the new array
+        }
+        return true; // Keep other items
+      });
+
       const allTxns = [];
       let currentTx = new Transaction();
       let count = 0;
 
-      for (let item of allData) {
+      for (let item of newData) {
         console.log("item.wallet",item.wallet, PublicKey.isOnCurve(item.wallet));
         const userAta = await getAssociatedTokenAddress(
           TOKEN_ADDRESS,
@@ -398,7 +405,7 @@ const page = () => {
         const receAta = await getAssociatedTokenAddress(TOKEN_ADDRESS, new PublicKey(item.wallet));
 
         const percentageAmount = Math.floor(
-          item.total_amount * (feeFercentage / 100)
+          item.total_amount * (feePercentage / 100)
         );
 
         console.log(item.total_amount);
@@ -417,7 +424,7 @@ const page = () => {
 
         count++;
 
-        if (count === 20 || item === allData[allData.length - 1]) {
+        if (count === 20 || item === newData[newData.length - 1]) {
           currentTx.feePayer = publicKey;
           currentTx.recentBlockhash = (
             await connection.getLatestBlockhash("confirmed")
@@ -551,7 +558,7 @@ const page = () => {
       <div className="flex flex-col mb-4">
         <input
           type="number"
-          value={feeFercentage}
+          value={feePercentage}
           onChange={(e) => setFeePercentage(parseFloat(e.target.value))}
           className="text-[#FFFFFF] h-[40px] text-[50px] mt-4 mb-3 bg-transparent border-b-2 border-[#858585] text-center focus:outline-none"
           min="0"
