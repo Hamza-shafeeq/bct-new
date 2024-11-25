@@ -10,11 +10,14 @@ import Image from "next/image";
 import WalletModal from "./WalletModal";
 import Mainbutton from "../utilities/Mainbutton";
 import dynamic from "next/dynamic";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslation } from 'next-i18next';
 
 const WalletButton = dynamic(
-  async () => (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
+  async () =>
+    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
   { ssr: false }
-)
+);
 
 export default function Header() {
   const [menu, setMenu] = useState(false);
@@ -22,6 +25,7 @@ export default function Header() {
   const handleMenu = () => {
     setMenu(!menu);
   };
+  const { t } = useTranslation('common');
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -58,7 +62,8 @@ export default function Header() {
               href="/dashboard.html"
               className=" flex items-center text-center text-[#E41E34] gap-1"
             >
-              EVERYTHING ABOUT US
+              {t('EVERYTHING ABOUT US')}
+              
               <Image
                 className="flex align-middle"
                 src={drop}
@@ -70,6 +75,7 @@ export default function Header() {
             <Link href="/dashboard.html">ROADMAP</Link>
             <Link href="/dashboard.html">FAQS</Link>
             <Link href="/dashboard.html">CONTACT</Link>
+            <LanguageSwitcher />
           </nav>
           {/* <Mainbutton title="SELECT WALLET" func={handleOpenModal} /> */}
           <WalletButton />
@@ -153,6 +159,7 @@ export default function Header() {
           <Link href="/dashboard.html" onClick={() => setMenu(false)}>
             CONTACT
           </Link>
+          <LanguageSwitcher />
         </nav>
       </div>
     </header>

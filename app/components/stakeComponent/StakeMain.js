@@ -8,14 +8,14 @@ import CurrentBalance from "./stakeComponents/CurrentBalance";
 import StakeUnstakeCard from "./stakeComponents/StakeUnstakeCard";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { calculateRewards, formatDecimal, getWalletStakes, TOKEN_LAMPORTS } from "@/app/integration/stake_func";
-
+import { useTranslation } from 'react-i18next';
 export default function StakeComponent() {
   const [dayActive, setDayActive] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [stakeTab, setStakeTab] = useState(0);
   const wallet = useAnchorWallet()
   const [userStakeData, setUserStakeData] = useState()
-  
+  const { t, i18n } = useTranslation();
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
   
@@ -103,7 +103,7 @@ export default function StakeComponent() {
             overflow: "auto",
           }}
         >
-          <p className="font-semibold text-[#FFFFFF]">Recommended Strategies</p>
+          <p className="font-semibold text-[#FFFFFF]">{t('Recommended_Strategies')}</p>
           <Strategy />
           {/* <Strategy />
           <Strategy />

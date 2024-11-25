@@ -5,6 +5,8 @@ import "./globals.css";
 import { Wallet } from "./Wallet";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LanguageProvider from './utilities/LanguageProvider'; // Import LanguageProvider
+import './utilities/i18n';
 
 export default function RootLayout({ children }) {
   return (
@@ -22,13 +24,15 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="flex flex-col min-h-screen font-poppins">
-        <Wallet>
-          <ToastContainer theme="dark" />
-          <Header />
-          <main className="flex-grow">{children}</main>
-          {/* Uncomment Footer if needed */}
-          {/* <Footer /> */}
-        </Wallet>
+        <LanguageProvider> {/* Wrap everything inside LanguageProvider */}
+          <Wallet>
+            <ToastContainer theme="dark" />
+            <Header />
+            <main className="flex-grow">{children}</main>
+            {/* Uncomment Footer if needed */}
+            {/* <Footer /> */}
+          </Wallet>
+        </LanguageProvider>
       </body>
     </html>
   );
