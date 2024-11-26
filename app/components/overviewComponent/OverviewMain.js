@@ -22,8 +22,11 @@ import OverviewSquare from "./overviewComponents/OverviewSquare";
 import ReturnsSquare from "./overviewComponents/ReturnsSquare";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { formatDecimal, getWalletStakes, TOKEN_LAMPORTS } from "@/app/integration/stake_func";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function () {
+  const { translations } = useLanguage();
+  const t = (key) => translations[key] || key;
   const wallet = useAnchorWallet()
   const [dayActive, setDayActive] = useState(0);
   const [stakeTab, setStakeTab] = useState(0);
@@ -117,7 +120,7 @@ export default function () {
           graph={graph}
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
-          hTwo={hTwo}
+          hTwo={t("totalStake")}
           amount={
             userStakeData
               ? formatDecimal(
@@ -130,7 +133,7 @@ export default function () {
           graph={graphTwo}
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
-          hTwo="Verfügbar"
+          hTwo={t("available")}
           amount={
             userStakeData
               ? formatDecimal(
@@ -148,7 +151,7 @@ export default function () {
           graph={graph3}
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
-          hTwo="Gesamtrendite"
+          hTwo={t("totalReturns")}
           amount={
             userStakeData
               ? formatDecimal(
@@ -167,7 +170,7 @@ export default function () {
           graph={graph4}
           bitcoin={bitcoin}
           arrowIcon={orangeArrow}
-          hTwo="24 Stunden Rendite"
+          hTwo={t("24hrReturn")}
           amount={
             userStakeData
               ? formatDecimal(
@@ -183,7 +186,7 @@ export default function () {
       <div className="grid grid-cols-1 lg:grid-cols-[calc(70%-0.5rem)_calc(30%-0.5rem)]  gap-4 mt-5">
         <div className="flex flex-col  text-left md:px-6 py-6 gap-2 hide-scrollbar">
           <p className="font-semibold text-[19px] md:text-[30px] flex justify-between text-[#FFFFFF]">
-          deine bisher ausgezahlten Rewards{" "}
+          {t("rewardsPayOut")}{" "}
             <span className="text-[#53F3C3] font-semibold">
               {userStakeData
                 ? Number(userStakeData?.account?.claimed) / TOKEN_LAMPORTS
@@ -216,7 +219,7 @@ export default function () {
           style={{ border: "2px solid #222429", overflow: "auto" }}
         >
           <ReturnsSquare
-            hTwo="Aktuelle monatliche Rendite"
+            hTwo={t("currentMonthlyReturns")}
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
@@ -234,7 +237,7 @@ export default function () {
             percentage={11.9598}
           />
           <ReturnsSquare
-            hTwo="Erwartete tägliche Rendite"
+            hTwo={t("expectedDailyReturns")}
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
@@ -250,7 +253,7 @@ export default function () {
             percentage={0.39866}
           />
           <ReturnsSquare
-            hTwo="Erwartete wöchentliche Rendite"
+            hTwo={t("expectedWeeklyReturns")}
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}
@@ -268,7 +271,7 @@ export default function () {
             percentage={2.79062}
           />
           <ReturnsSquare
-            hTwo="Erwartete jährliche Rendite"
+            hTwo={t("expectedAnnualReturns")}
             graph={graph}
             bitcoin={bitcoin}
             arrowIcon={up}

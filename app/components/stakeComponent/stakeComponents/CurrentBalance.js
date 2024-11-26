@@ -2,13 +2,18 @@ import React from "react";
 import up from "../../../../public/assets/up.png";
 import Image from "next/image";
 import bitcoin from "../../../../public/assets/logo.png";
+import { useLanguage } from "../../../context/LanguageContext";
+
 const CurrentBalance = ({ amount }) => {
+  const { translations } = useLanguage(); 
+  const t = (key) => translations[key] || key;
+
   return (
     <div className="flex gap-2">
       <p className="text-[#F92C2C] flex items-baseline gap-2">
         {" "}
         <span className="text-[#E1E1E1] h-[20px] text-[15px] font-normal ">
-        deine bisherigen gesamten Rewards :
+        {t("yourTotalRewards")} :
         </span>
         <span className="text-[#E1E1E1] h-[20px] text-[15px] flex items-center gap-2">
           {amount}{" "}

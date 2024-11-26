@@ -11,13 +11,12 @@ import { calculateRewards, formatDecimal, getWalletStakes, TOKEN_LAMPORTS } from
 
 export default function StakeComponent() {
   const [dayActive, setDayActive] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [stakeTab, setStakeTab] = useState(0);
   const wallet = useAnchorWallet()
   const [userStakeData, setUserStakeData] = useState()
   
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+
   
   const modalData = {
     available: "6.01831087",
@@ -55,18 +54,7 @@ export default function StakeComponent() {
         alignItems: "center",
       }}
     >
-      <RewardRedeemModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        available={modalData.available}
-        spotWallet={modalData.spotWallet}
-        Zusammenfassung={modalData.Zusammenfassung}
-        referrer={modalData.referrer}
-        ratio={modalData.ratio}
-        earnedDex={modalData.earnedDex}
-        exitFeeRate={modalData.exitFeeRate}
-        onRedeem={handleRedeem}
-      />
+
       <div
         className="bg-gradient-to-b from-[rgba(34,36,41,0.5)] to-[#050505]  rounded-[22px] px-8 py-10"
         style={{ border: "2px solid #222429" }}
@@ -114,7 +102,7 @@ export default function StakeComponent() {
           stakeTab={stakeTab}
           dayActive={dayActive}
           setStakeTab={setStakeTab}
-          handleOpenModal={handleOpenModal}
+          // handleOpenModal={handleOpenModal}
         />
         {/* </div> */}
       </div>

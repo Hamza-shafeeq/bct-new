@@ -10,6 +10,8 @@ import Image from "next/image";
 import WalletModal from "./WalletModal";
 import Mainbutton from "../utilities/Mainbutton";
 import dynamic from "next/dynamic";
+import { useLanguage } from "../context/LanguageContext";
+import LanguageSelector from "./LanguageSelector";
 
 const WalletButton = dynamic(
   async () => (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
@@ -17,6 +19,8 @@ const WalletButton = dynamic(
 )
 
 export default function Header() {
+  const { translations } = useLanguage();
+  const t = (key) => translations[key] || key;
   const [menu, setMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleMenu = () => {
@@ -53,12 +57,14 @@ export default function Header() {
         </div>
         <div className="flex gap-10 items-center">
           <nav className="flex space-x-16 font-poppins text-[14px]">
-            <Link href="/dashboard.html">BCT</Link>
+            <Link className="flex items-center text-center" href="/dashboard.html">BCT</Link>
             <Link
               href="/dashboard.html"
               className=" flex items-center text-center text-[#E41E34] gap-1"
             >
-              EVERYTHING ABOUT US
+              {/* {translations.overview} */}
+              {t("overview")}
+              {/* EVERYTHING ABOUT US */}
               <Image
                 className="flex align-middle"
                 src={drop}
@@ -67,9 +73,10 @@ export default function Header() {
                 alt="Dropdown"
               />
             </Link>
-            <Link href="/dashboard.html">ROADMAP</Link>
-            <Link href="/dashboard.html">FAQS</Link>
-            <Link href="/dashboard.html">CONTACT</Link>
+            <Link className="flex items-center text-center" href="/dashboard.html"> {t("ROADMAP")}</Link>
+            <Link className="flex items-center text-center" href="/dashboard.html"> {t("faq")} </Link>
+            <Link className="flex items-center text-center" href="/dashboard.html"> {t("CONTACT")} </Link>
+            <LanguageSelector />
           </nav>
           {/* <Mainbutton title="SELECT WALLET" func={handleOpenModal} /> */}
           <WalletButton />
@@ -134,7 +141,7 @@ export default function Header() {
           <WalletButton />
         </div>
         <nav className="flex flex-col mt-10 text-right gap-8 text-lg font-poppins text-[11px]">
-          <Link href="/dashboard.html" onClick={() => setMenu(false)}>
+          <Link className="flex items-center text-center" href="/dashboard.html" onClick={() => setMenu(false)}>
             BCT
           </Link>
           <Link
@@ -142,16 +149,16 @@ export default function Header() {
             className=" text-[#E41E34] flex items-center gap-1"
             onClick={() => setMenu(false)}
           >
-            EVERYTHING ABOUT US
+            {t("EVERYTHING ABOUT US")}
           </Link>
-          <Link href="/dashboard.html" onClick={() => setMenu(false)}>
-            ROADMAP
+          <Link className="flex items-center text-center" href="/dashboard.html" onClick={() => setMenu(false)}>
+          {t("ROADMAP")}
           </Link>
           {/* <Link href="/dashboard.html" onClick={() => setMenu(false)}>
             FAQS
           </Link> */}
-          <Link href="/dashboard.html" onClick={() => setMenu(false)}>
-            CONTACT
+          <Link className="flex items-center text-center" href="/dashboard.html" onClick={() => setMenu(false)}>
+          {t("CONTACT")}
           </Link>
         </nav>
       </div>

@@ -7,10 +7,12 @@ import drop from "../../public/assets/drop.png";
 import Image from "next/image";
 import up from "../../public/assets/up.png";
 import diamond from "../../public/assets/diamond.png";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Strategy() {
   const [email, setEmail] = useState("");
-
+  const { translations } = useLanguage(); 
+  const t = (key) => translations[key] || key;
   return (
     <>
       <div
@@ -56,7 +58,7 @@ export default function Strategy() {
 
           <div className="flex justify-end flex-col text-start lg:ml-[80px]">
             <p className="text-[#E1E1E1] text-[12px] font-normal italic ">
-            Gesamte Rewards
+           {t("allTimeProfit")}
             </p>
             <p className="text-[#53F3C3] flex items-center gap-1">
               {" "}
