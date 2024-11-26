@@ -10,13 +10,18 @@ import Image from "next/image";
 import WalletModal from "./WalletModal";
 import Mainbutton from "../utilities/Mainbutton";
 import dynamic from "next/dynamic";
+import { useTranslation } from "react-i18next";
 
 const WalletButton = dynamic(
   async () => (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
   { ssr: false }
 )
 
-export default function Header() {
+
+export default function Header () {
+  // const isClient = typeof window !== 'undefined';
+  const { t } = useTranslation();
+  if (!t) return null;
   const [menu, setMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleMenu = () => {
@@ -36,6 +41,7 @@ export default function Header() {
     setMenu(false);
     setIsModalOpen(true);
   };
+
 
   return (
     <header className="bg-[#222429] relative text-white py-4 px-12 shadow-md">
@@ -57,8 +63,8 @@ export default function Header() {
             <Link
               href="/dashboard.html"
               className=" flex items-center text-center text-[#E41E34] gap-1"
-            >
-              EVERYTHING ABOUT US
+            > 
+            {t("EVERYTHING_ABOUT_US")}
               <Image
                 className="flex align-middle"
                 src={drop}

@@ -1,14 +1,16 @@
-// app/layout.js
+'use client';
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import "./globals.css";
 import { Wallet } from "./Wallet";
 import { ToastContainer } from "react-toastify";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 import "react-toastify/dist/ReactToastify.css";
+import { appWithTranslation } from "next-i18next";
 
-export default function RootLayout({ children }) {
+function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en"> {/* or dynamically set based on context */}
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -25,6 +27,7 @@ export default function RootLayout({ children }) {
         <Wallet>
           <ToastContainer theme="dark" />
           <Header />
+          <LanguageSwitcher />
           <main className="flex-grow">{children}</main>
           {/* Uncomment Footer if needed */}
           {/* <Footer /> */}
@@ -33,3 +36,6 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+// Export with `appWithTranslation`
+export default appWithTranslation(RootLayout);

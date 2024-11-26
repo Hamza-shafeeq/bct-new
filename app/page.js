@@ -1,4 +1,5 @@
-"use client"; // Optional, only needed if you use client-side features
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'react-i18next';
 import { useState } from "react";
 import StakeComponent from "../app/components/stakeComponent/StakeMain";
 import OverviewComponent from "../app/components/overviewComponent/OverviewMain";
@@ -6,10 +7,18 @@ import TransactionHistory from "../app/components/history/TransactionHistory";
 import CalculatorMain from "../app/components/overviewComponent copy/CalculatorMain";
 import Faqmain from "../app/components/faq/Faqmain";
 
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale || 'en', ['common'])), // Load 'common' translations
+    },
+  };
+}
+
 export default function AboutUs() {
+  const { t } = useTranslation();  // Hook to access translations
   const [selectedTab, setSelectedTab] = useState("stake");
 
-  // Component content based on selected tab
   const getComponentContent = () => {
     switch (selectedTab) {
       case "stake":
@@ -23,13 +32,13 @@ export default function AboutUs() {
       // case "faqs":
       //   return <Faqmain />;
       default:
-        return <div>Stake Component</div>;
+        return <div>{t('stake')}</div>;  // Example translation usage
     }
   };
 
   return (
     <main
-      className="flex md:px-12 bg-[#050505] "
+      className="flex md:px-12 bg-[#050505]"
       style={{
         minHeight: "calc(100vh - 72px)",
         textAlign: "center",
@@ -47,7 +56,7 @@ export default function AboutUs() {
           }`}
           onClick={() => setSelectedTab("stake")}
         >
-          Stake
+          {t('Stake')}  {/* Example translation key */}
         </p>
         <p
           className={`cursor-pointer inline-block border-b-2 ${
@@ -55,7 +64,7 @@ export default function AboutUs() {
           }`}
           onClick={() => setSelectedTab("overview")}
         >
-          Übersicht
+          {t('Overview')}
         </p>
         <p
           className={`cursor-pointer inline-block border-b-2 ${
@@ -65,7 +74,7 @@ export default function AboutUs() {
           }`}
           onClick={() => setSelectedTab("transactionHistory")}
         >
-          Transaktionshistorie
+          {t('Transaction History')}
         </p>
         <p
           className={`cursor-pointer inline-block border-b-2 ${
@@ -75,19 +84,20 @@ export default function AboutUs() {
           }`}
           onClick={() => setSelectedTab("calculator")}
         >
-          Rechner
+          {t('Calculator')}
         </p>
+        {/* Uncomment and translate FAQ */}
         {/* <p
           className={`cursor-pointer inline-block border-b-2 ${
             selectedTab === "faqs" ? "border-red-500" : "border-transparent"
           }`}
           onClick={() => setSelectedTab("faqs")}
         >
-          FAQ
+          {t('FAQ')}
         </p> */}
       </div>
 
-      {/* Displaying the content of the selected tab */}
+      {/* Display the selected component */}
       <div className="mt-8 w-full">{getComponentContent()}</div>
     </main>
   );
