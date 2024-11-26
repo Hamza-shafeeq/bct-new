@@ -10,13 +10,15 @@ import { POOL_ADDR, TOKEN_ADDRESS, TOKEN_LAMPORTS } from "@/app/integration/stak
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { connection } from "@/app/integration/connection";
 import Image from "next/image";
+import { useLanguage } from "../../context/LanguageContext";
 const PROGRAM_ID = "5KA8qSGEJ9c8nNnEqcS5G5Wwsc8S7dzVgb49mUU5ZBUi";
 
 export default function TransactionHistory() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false)
   const wallet = useAnchorWallet()
-
+  const { translations } = useLanguage(); 
+  const t = (key) => translations[key] || key;
   const instructions = ['ClaimTokens', 'StakeTokens', 'UnstakeTokens'];
 
 // Function to check for instructions in logMessages and return the message
@@ -279,7 +281,8 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
   return (
     <main className="bg-[#0a0a0a] px-6 pb-6 text-white">
       <h2 className="text-left mb-4 text-[24px]">Deine Transaktionen</h2>
-      {loading ? <p>...loading</p> : <DataTable
+      {/* {loading ? <p>...loading</p> : */}
+       <DataTable
         value={transactions}
         className="w-full custom-data-table"
         tableStyle={{
@@ -303,25 +306,27 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
           )}
         />
         <Column field="asset" header="Assets" body={assetTemplate} />
-        <Column field="type" header="Typ" body={typeTemplate} />
+        <Column field="type"    header={t("type")} body={typeTemplate} />
         <Column field="value" header="Wert" body={valueTemplate} />
         <Column
           field="amount"
-          header="Betrag"
+          header={t("amount")}
           body={(rowData) => (
             <span className="text-white">{rowData.amount/TOKEN_LAMPORTS}</span>
           )}
         />
         <Column
           field="time"
-          header="Zeit"
+          header={t("time")}
+          // header="Zeit"
           body={(rowData) => (
             <span className="text-gray-400">{convertUnixTimestampToDate(rowData.time)}</span>
           )}
         />
-        <Column field="status" header="Status" body={statusTemplate} />
+        <Column field="status" header={t("status")} body={statusTemplate} />
         {/* <Column header="Actions" body={actionTemplate} /> */}
-      </DataTable>}
+      </DataTable>
+      {/* } */}
     </main>
   );
 }

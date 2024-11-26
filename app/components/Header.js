@@ -57,7 +57,7 @@ export default function Header() {
         </div>
         <div className="flex gap-10 items-center">
           <nav className="flex space-x-16 font-poppins text-[14px]">
-            <Link href="/dashboard.html">BCT</Link>
+            <Link className="flex items-center text-center" href="/dashboard.html">BCT</Link>
             <Link
               href="/dashboard.html"
               className=" flex items-center text-center text-[#E41E34] gap-1"
@@ -73,9 +73,9 @@ export default function Header() {
                 alt="Dropdown"
               />
             </Link>
-            <Link href="/dashboard.html"> {t("ROADMAP")}</Link>
-            <Link href="/dashboard.html"> {t("FAQS")} </Link>
-            <Link href="/dashboard.html"> {t("CONTACT")} </Link>
+            <Link className="flex items-center text-center" href="/dashboard.html"> {t("ROADMAP")}</Link>
+            <Link className="flex items-center text-center" href="/dashboard.html"> {t("faq")} </Link>
+            <Link className="flex items-center text-center" href="/dashboard.html"> {t("CONTACT")} </Link>
             <LanguageSelector />
           </nav>
           {/* <Mainbutton title="SELECT WALLET" func={handleOpenModal} /> */}
@@ -141,7 +141,7 @@ export default function Header() {
           <WalletButton />
         </div>
         <nav className="flex flex-col mt-10 text-right gap-8 text-lg font-poppins text-[11px]">
-          <Link href="/dashboard.html" onClick={() => setMenu(false)}>
+          <Link className="flex items-center text-center" href="/dashboard.html" onClick={() => setMenu(false)}>
             BCT
           </Link>
           <Link
@@ -151,13 +151,13 @@ export default function Header() {
           >
             {t("EVERYTHING ABOUT US")}
           </Link>
-          <Link href="/dashboard.html" onClick={() => setMenu(false)}>
+          <Link className="flex items-center text-center" href="/dashboard.html" onClick={() => setMenu(false)}>
           {t("ROADMAP")}
           </Link>
           {/* <Link href="/dashboard.html" onClick={() => setMenu(false)}>
             FAQS
           </Link> */}
-          <Link href="/dashboard.html" onClick={() => setMenu(false)}>
+          <Link className="flex items-center text-center" href="/dashboard.html" onClick={() => setMenu(false)}>
           {t("CONTACT")}
           </Link>
         </nav>

@@ -9,7 +9,7 @@ export default function LanguageSelector() {
     <select
       value={language}
       onChange={(e) => changeLanguage(e.target.value)}
-      className="p-2 border rounded"
+      className="py-2 px-3 border rounded bg-[#e41e34] border-[0px] text-[#fff]"
     >
       <option value="en">English</option>
       <option value="de">German</option>

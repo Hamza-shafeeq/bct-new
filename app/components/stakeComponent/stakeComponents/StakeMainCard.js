@@ -5,6 +5,7 @@ import diamond from "../../../../public/assets/diamond.png";
 import Image from "next/image";
 import bitcoin from "../../../../public/assets/logo.png";
 import { useLanguage } from "../../../context/LanguageContext";
+
 const StakeMainCard = ({ stakedTokens }) => {
   const { translations } = useLanguage(); 
   const t = (key) => translations[key] || key;
@@ -15,7 +16,7 @@ const StakeMainCard = ({ stakedTokens }) => {
       <div className="flex justify-start flex-col md:flex-row text-left">
         <div className="">
           {/* <p className="text-[#E1E1E1] text-[12px] font-normal">
-          Letztes Update: Vor 45 Minuten
+              {t("lastUpdate")}
           </p> */}
           <div className="text-[20px] md:text-[24px] text-[#ffffff] flex gap-2 items-center">
           Deine gestaketen BlackChain Token :{" "}
@@ -32,7 +33,7 @@ const StakeMainCard = ({ stakedTokens }) => {
             </span>
           </div>
           {/* <p className="text-[#F92C2C] text-[12px] font-normal">
-          Letztes Update: Vor 45 Minuten
+            {t("lastUpdate")}
           </p> */}
         </div>
       </div>
@@ -54,7 +55,7 @@ const StakeMainCard = ({ stakedTokens }) => {
 
           <div>
             <p className="text-[#E1E1E1] text-[13px] font-normal italic ">
-              Bester Performer
+             {t("bestPerformer")}
             </p>
 
             <p className="text-[#53F3C3] flex items-center gap-1">
