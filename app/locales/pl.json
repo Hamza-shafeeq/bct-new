@@ -25,6 +25,12 @@
     "disclaimer": "Nagrody nie są gwarantowane. Potencjalne zyski to jedynie szacunki oparte na wynikach historycznych. Rzeczywista uzyskana kwota może się różnić i zależy od różnych czynników.",
     "faqTitle": "Najczęściej zadawane pytania",
     "support": "Obsługa klienta",
-    "faqDescription": "Coś niejasne? Oto nasze najczęściej zadawane pytania."
+    "faqDescription": "Coś niejasne? Oto nasze najczęściej zadawane pytania.",
+    "expectedAnnualReturns": "Expected annual return",
+    "totalReturns": "Total Returns",
+    "available": "Available",
+    "totalStake" : "Total stake",
+    "24hrReturn": "24 hour returns",
+    "rewardsPayOut": "Your rewards paid out so far"
   }
   

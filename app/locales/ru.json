@@ -25,6 +25,12 @@
     "disclaimer": "Награды не гарантированы. Потенциальные доходы являются лишь оценками, основанными на прошлых результатах. Фактический полученный доход может варьироваться и зависит от различных факторов.",
     "faqTitle": "Часто задаваемые вопросы",
     "support": "Обслуживание клиентов",
-    "faqDescription": "Что-то непонятно? Вот наши самые частые вопросы."
+    "faqDescription": "Что-то непонятно? Вот наши самые частые вопросы.",
+    "expectedAnnualReturns": "Expected annual return",
+    "totalReturns": "Total Returns",
+    "available": "Available",
+    "totalStake" : "Total stake",
+    "24hrReturn": "24 hour returns",
+    "rewardsPayOut": "Your rewards paid out so far"
   }
   

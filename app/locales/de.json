@@ -25,6 +25,13 @@
     "disclaimer": "Belohnungen sind nicht garantiert. Potenzielle Ertragszahlen sind lediglich Schätzungen, die auf historischen Leistungen basieren. Der tatsächlich erzielte Betrag kann variieren und hängt von verschiedenen Faktoren ab.",
     "faqTitle": "Häufig gestellte Fragen",
     "support": "Kundenservice",
-    "faqDescription": "Etwas Unklar? Hier sind unsere häufigsten Fragen."
+    "faqDescription": "Etwas Unklar? Hier sind unsere häufigsten Fragen.",
+    "expectedAnnualReturns": "Erwartete jährliche Rendite",
+    "totalReturns": "Gesamtrendite",
+    "available": "Verfügbar",
+    "totalStake" : "Gesamteinsatz",
+    "24hrReturn": "24 Stunden Rendite",
+    "rewardsPayOut": "deine bisher ausgezahlten Rewards"
+
   }
   

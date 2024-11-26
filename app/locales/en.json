@@ -25,6 +25,12 @@
     "disclaimer": "* Rewards are not guaranteed. Potential earnings numbers are estimates only and based upon historical performance. The actual amount earned may vary and will depend on several factors.",
     "faqTitle": "Frequently Asked Questions",
     "support": "Support",
-    "faqDescription": "Need something cleared up? Here are our most frequently asked questions."
+    "faqDescription": "Need something cleared up? Here are our most frequently asked questions.",
+    "expectedAnnualReturns": "Expected annual return",
+    "totalReturns": "Total Returns",
+    "available": "Available",
+    "totalStake" : "Total stake",
+    "24hrReturn": "24 hour returns",
+    "rewardsPayOut": "Your rewards Paid Out So Far"
   }
   

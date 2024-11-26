@@ -25,6 +25,13 @@
     "disclaimer": "Le ricompense non sono garantite. I potenziali guadagni sono solo stime basate su performance storiche. L’importo effettivamente ottenuto può variare e dipende da diversi fattori.",
     "faqTitle": "Domande frequenti",
     "support": "Servizio clienti",
-    "faqDescription": "Qualcosa non è chiaro? Ecco le nostre domande più frequenti."
+    "faqDescription": "Qualcosa non è chiaro? Ecco le nostre domande più frequenti.",
+    "expectedAnnualReturns": "Expected annual return",
+    "totalReturns": "Total Returns",
+    "available": "Available",
+    "totalStake" : "Total stake",
+    "24hrReturn": "24 hour returns",
+    "rewardsPayOut": "Your rewards paid out so far"
+
   }
   
