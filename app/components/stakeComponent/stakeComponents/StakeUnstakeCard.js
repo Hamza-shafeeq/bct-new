@@ -19,11 +19,12 @@ import { sendAndConfirmRawTransaction } from "@solana/web3.js";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { toast } from "react-toastify";
+import RewardRedeemModal from "../../RewardRedeemModal";
 const StakeUnstakeCard = ({
   stakeTab,
   setStakeTab,
   dayActive,
-  handleOpenModal,
+  // handleOpenModal,
 }) => {
   const [stakeAmount, setStakeAmount] = useState(0);
   const [unstakeAmount, setUnstakeAmount] = useState(0);
@@ -37,6 +38,9 @@ const StakeUnstakeCard = ({
     staked: 2980, // Simulating staked balance
     available: 5000 - 2980, // Available balance is total - staked
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
   // Handle stakeTab change (either stake or unstake)
   const handleStake = (index) => {
@@ -212,11 +216,43 @@ const StakeUnstakeCard = ({
     })();
   }, [wallet, refetch]);
 
+  const getClaimableRewards = (userStakeData, TOKEN_LAMPORTS) => {
+    if (!userStakeData) return 0; // Return 0 if there's no stake data
+  
+    const stakedAmount = Number(userStakeData?.account?.amount) || 0;
+    const lastStakedAt = Number(userStakeData?.account?.lastStakedAt) || 0;
+    const existingRewards = Number(userStakeData?.account?.rewards) || 0;
+  
+    // Calculate total rewards
+    const totalRewards =
+      (calculateRewards(stakedAmount, lastStakedAt) + existingRewards) /
+      TOKEN_LAMPORTS;
+  
+    // Format the result (assuming formatDecimal returns a formatted string/number)
+    return formatDecimal(totalRewards);
+  };
+  const claimableRewards = getClaimableRewards(userStakeData, TOKEN_LAMPORTS);
   return (
     <div
       className="bg-gradient-to-b flex flex-col justify-around from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] px-8 md:px-[70px] py-8 max-w-full"
       style={{ border: "2px solid #222429", height: "-webkit-fill-available" }}
     >
+        <RewardRedeemModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        stakeUnstake={stakeTab === 1 ? unstakeAmount : stakeTab === 0 ? stakeAmount : claimableRewards }
+        userStakeData = {userStakeData}
+        userBalance = {userBalance}
+        unstakeAmount = {unstakeAmount}
+        stakeTab={stakeTab}
+        // spotWallet={modalData.spotWallet}
+        // Zusammenfassung={modalData.Zusammenfassung}
+        // referrer={modalData.referrer}
+        // ratio={modalData.ratio}
+        // earnedDex={modalData.earnedDex}
+        // exitFeeRate={modalData.exitFeeRate}
+        onRedeem={stakeTab === 1 ? unstakePool : stakeTab === 2 ? claimPool : stakePool}
+      />
       <div>
         <button
           className=" text-[13px] font-bold px-6 py-1 rounded-md "
@@ -273,16 +309,7 @@ const StakeUnstakeCard = ({
             {/* <p className="text-[#E1E1E1] text-[11px] font-normal "> 6.83%</p> */}
             <p className="text-[#E1E1E1] text-[11px] items-center font-normal flex gap-1">
               {" "}
-              {userStakeData
-                ? formatDecimal(
-                    (calculateRewards(
-                      Number(userStakeData?.account?.amount),
-                      Number(userStakeData?.account?.lastStakedAt)
-                    ) +
-                      Number(userStakeData?.account?.rewards)) /
-                      TOKEN_LAMPORTS
-                  )
-                : 0}
+              {claimableRewards}
             </p>
           </div>
         </div>
@@ -411,7 +438,7 @@ const StakeUnstakeCard = ({
             >
               <button
                 className="text-sm w-full text-[#FFFFFF]"
-                onClick={stakePool}
+                onClick={handleOpenModal}
               >
                 Stake
               </button>
@@ -427,7 +454,7 @@ const StakeUnstakeCard = ({
             >
               <button
                 className="text-sm w-full text-[#FFFFFF]"
-                onClick={unstakePool}
+                onClick={handleOpenModal}
               >
                 Unstake
               </button>
@@ -443,7 +470,7 @@ const StakeUnstakeCard = ({
             >
               <button
                 className="text-sm w-full text-[#FFFFFF]"
-                onClick={claimPool}
+                onClick={handleOpenModal}
               >
                 Claim Rewards
               </button>

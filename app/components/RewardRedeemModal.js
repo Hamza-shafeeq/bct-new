@@ -1,10 +1,12 @@
 // components/RewardRedeemModal.js
+'use client'
 import React from "react";
-
 const RewardRedeemModal = ({
   isOpen,
   onClose,
-  available,
+  stakeUnstake,
+  stakeTab,
+  userBalance,
   spotWallet,
   Zusammenfassung,
   referrer,
@@ -50,28 +52,33 @@ const RewardRedeemModal = ({
         </div>
 
         <p className="text-right flex justify-between text-white text-[13px] font-normal mr-2">
-          <strong className="text-[#858585]">Referrer</strong>
-          {referrer}
+          <strong className="text-[#858585]">Available</strong>
+          {userBalance}
         </p>
 
-        <p className="text-right flex justify-between text-white text-[13px] font-normal mr-2 mt-2">
+        <p className="text-right flex justify-between text-white text-[13px] font-normal mr-2">
+          <strong className="text-[#858585]">{stakeTab == 1 ?  "Unstake Amount" : stakeTab == 2 ? "Claim Amount" : "Stake Amount" }</strong>
+          {stakeUnstake}
+        </p>
+
+        {/* <p className="text-right flex justify-between text-white text-[13px] font-normal mr-2 mt-2">
           <strong className="text-[#858585]">Ratio</strong>
           {ratio}
-        </p>
+        </p> */}
 
-        <p className="text-right flex justify-between text-white text-[13px] font-normal mr-2  mt-2">
+        {/* <p className="text-right flex justify-between text-white text-[13px] font-normal mr-2  mt-2">
           <strong className="text-[#858585]">DEX</strong>+ {earnedDex}
-        </p>
+        </p> */}
 
         {/* <div className="text-sm mb-4 flex justify-between">
           <h3 className="font-semibold"> DEX</h3>
           <p>- {exitFeeRate} </p>
         </div> */}
 
-        <p className="text-right flex justify-between text-white text-[13px] font-normal mr-2  mt-2">
+        {/* <p className="text-right flex justify-between text-white text-[13px] font-normal mr-2  mt-2">
           <strong className="text-[#858585]">Current Exit Fee Rate:</strong>
           {exitFeeRate}%
-        </p>
+        </p> */}
 
         {/* <div className="text-sm mb-4 flex justify-between">
           <p><strong>Current Exit Fee Rate:</strong> {exitFeeRate}%</p>
@@ -81,7 +88,7 @@ const RewardRedeemModal = ({
           onClick={onRedeem}
           className="bg-[#E41E34] text-white rounded-lg px-4 py-2 w-full font-semibold mt-6"
         >
-          Redeem
+          Okay
         </button>
       </div>
     </div>

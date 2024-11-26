@@ -281,7 +281,7 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
   return (
     <main className="bg-[#0a0a0a] px-6 pb-6 text-white">
       <h2 className="text-left mb-4 text-[24px]">Deine Transaktionen</h2>
-      {/* {loading ? <p>...loading</p> : */}
+      {loading ? <p>...loading</p> :
        <DataTable
         value={transactions}
         className="w-full custom-data-table"
@@ -326,7 +326,7 @@ const convertUnixTimestampToDate = (unixTimestamp) => {
         <Column field="status" header={t("status")} body={statusTemplate} />
         {/* <Column header="Actions" body={actionTemplate} /> */}
       </DataTable>
-      {/* } */}
+       } 
     </main>
   );
 }
