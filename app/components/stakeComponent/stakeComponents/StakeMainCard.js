@@ -4,7 +4,11 @@ import down from "../../../../public/assets/downRed.png";
 import diamond from "../../../../public/assets/diamond.png";
 import Image from "next/image";
 import bitcoin from "../../../../public/assets/logo.png";
+import { useLanguage } from "../../../context/LanguageContext";
 const StakeMainCard = ({ stakedTokens }) => {
+  const { translations } = useLanguage(); 
+  const t = (key) => translations[key] || key;
+
   return (
     <div className="grid grid-flow-row md:grid-flow-col gap-4">
       {/* Left content */}

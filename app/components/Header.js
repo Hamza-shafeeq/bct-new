@@ -10,6 +10,8 @@ import Image from "next/image";
 import WalletModal from "./WalletModal";
 import Mainbutton from "../utilities/Mainbutton";
 import dynamic from "next/dynamic";
+import { useLanguage } from "../context/LanguageContext";
+import LanguageSelector from "./LanguageSelector";
 
 const WalletButton = dynamic(
   async () => (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
@@ -17,6 +19,8 @@ const WalletButton = dynamic(
 )
 
 export default function Header() {
+  const { translations } = useLanguage();
+  const t = (key) => translations[key] || key;
   const [menu, setMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleMenu = () => {
@@ -58,7 +62,9 @@ export default function Header() {
               href="/dashboard.html"
               className=" flex items-center text-center text-[#E41E34] gap-1"
             >
-              EVERYTHING ABOUT US
+              {/* {translations.overview} */}
+              {t("overview")}
+              {/* EVERYTHING ABOUT US */}
               <Image
                 className="flex align-middle"
                 src={drop}
@@ -67,9 +73,10 @@ export default function Header() {
                 alt="Dropdown"
               />
             </Link>
-            <Link href="/dashboard.html">ROADMAP</Link>
-            <Link href="/dashboard.html">FAQS</Link>
-            <Link href="/dashboard.html">CONTACT</Link>
+            <Link href="/dashboard.html"> {t("ROADMAP")}</Link>
+            <Link href="/dashboard.html"> {t("FAQS")} </Link>
+            <Link href="/dashboard.html"> {t("CONTACT")} </Link>
+            <LanguageSelector />
           </nav>
           {/* <Mainbutton title="SELECT WALLET" func={handleOpenModal} /> */}
           <WalletButton />
@@ -142,16 +149,16 @@ export default function Header() {
             className=" text-[#E41E34] flex items-center gap-1"
             onClick={() => setMenu(false)}
           >
-            EVERYTHING ABOUT US
+            {t("EVERYTHING ABOUT US")}
           </Link>
           <Link href="/dashboard.html" onClick={() => setMenu(false)}>
-            ROADMAP
+          {t("ROADMAP")}
           </Link>
           {/* <Link href="/dashboard.html" onClick={() => setMenu(false)}>
             FAQS
           </Link> */}
           <Link href="/dashboard.html" onClick={() => setMenu(false)}>
-            CONTACT
+          {t("CONTACT")}
           </Link>
         </nav>
       </div>

@@ -5,10 +5,12 @@ import OverviewComponent from "../components/overviewComponent/OverviewMain";
 import TransactionHistory from "../components/history/TransactionHistory";
 import CalculatorMain from "../components/overviewComponent copy/CalculatorMain";
 import Faqmain from "../components/faq/Faqmain";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function AboutUs() {
   const [selectedTab, setSelectedTab] = useState("stake");
-
+  const { translations } = useLanguage();
+  const t = (key) => translations[key] || key;
   // Component content based on selected tab
   const getComponentContent = () => {
     switch (selectedTab) {
@@ -47,7 +49,8 @@ export default function AboutUs() {
           }`}
           onClick={() => setSelectedTab("stake")}
         >
-          Stake
+          {/* Stake */}
+          {t("Stake")}
         </p>
         <p
           className={`cursor-pointer inline-block border-b-2 ${
@@ -55,7 +58,7 @@ export default function AboutUs() {
           }`}
           onClick={() => setSelectedTab("overview")}
         >
-          Übersicht
+          {t("overview")}
         </p>
         <p
           className={`cursor-pointer inline-block border-b-2 ${
@@ -65,7 +68,7 @@ export default function AboutUs() {
           }`}
           onClick={() => setSelectedTab("transactionHistory")}
         >
-          Transaktionshistorie
+          {t("transactionHistory")}
         </p>
         <p
           className={`cursor-pointer inline-block border-b-2 ${
@@ -75,7 +78,7 @@ export default function AboutUs() {
           }`}
           onClick={() => setSelectedTab("calculator")}
         >
-          Rechner
+          {t("calculator")}
         </p>
         {/* <p
           className={`cursor-pointer inline-block border-b-2 ${
