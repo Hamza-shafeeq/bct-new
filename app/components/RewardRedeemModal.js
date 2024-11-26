@@ -1,6 +1,8 @@
 // components/RewardRedeemModal.js
 'use client'
 import React from "react";
+import { useLanguage } from "../context/LanguageContext";
+
 const RewardRedeemModal = ({
   isOpen,
   onClose,
@@ -16,7 +18,8 @@ const RewardRedeemModal = ({
   onRedeem,
 }) => {
   if (!isOpen) return null;
-
+  const { translations } = useLanguage(); 
+  const t = (key) => translations[key] || key;
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50"
@@ -35,7 +38,9 @@ const RewardRedeemModal = ({
         >
           X
         </button>
-        <h2 className="text-xl font-semibold mb-5">Rewards auszahlen</h2>
+        <h2 className="text-xl font-semibold mb-5">
+        {stakeTab === 1 ? t("unstake") : stakeTab === 2 ? t("redeemRewards") : t("stake")}
+          </h2>
 
         {/* <div className="text-sm mb-4">
           <p className="text-right  text-white text-[13px] font-normal mr-2"><strong className="text-[#858585]">Available:</strong> {available}</p>
@@ -47,7 +52,9 @@ const RewardRedeemModal = ({
         </div> */}
 
         <div className="text-sm mb-4">
-          <h3 className="font-semibold text-left">Zusammenfassung</h3>
+          <h3 className="font-semibold text-left">
+          {stakeTab == 1 ?  "Unstake Amount" : stakeTab == 2 ? "You will NOT be able to unstake tokens within 24 hours of Claiming Rewards!" : "You will NOT be able to unstake tokens within 24 hours of Staking Tokens!" }
+            </h3>
           {/* <p>{Zusammenfassung}</p> */}
         </div>
 
@@ -88,7 +95,7 @@ const RewardRedeemModal = ({
           onClick={onRedeem}
           className="bg-[#E41E34] text-white rounded-lg px-4 py-2 w-full font-semibold mt-6"
         >
-          Okay
+          {stakeTab == 1 ?  "Unstake" : stakeTab == 2 ? "Claim Rewards" : "Stake" }
         </button>
       </div>
     </div>

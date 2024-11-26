@@ -26,11 +26,22 @@
     "faqTitle": "Часто задаваемые вопросы",
     "support": "Обслуживание клиентов",
     "faqDescription": "Что-то непонятно? Вот наши самые частые вопросы.",
-    "expectedAnnualReturns": "Expected annual return",
-    "totalReturns": "Total Returns",
-    "available": "Available",
-    "totalStake" : "Total stake",
-    "24hrReturn": "24 hour returns",
-    "rewardsPayOut": "Your rewards paid out so far"
+    "expectedAnnualReturns": "Ожидаемая годовая прибыль",
+    "totalReturns": "Общая прибыль",
+    "available": "Доступно",
+    "totalStake" : "Общий вклад",
+    "24hrReturn": "Прибыль за 24 часа",
+    "rewardsPayOut": "Ваши награды",
+    "yourTransactions" : "Ваши транзакции",
+    "yourStakedTokens" : "Ваши стейкинг-токены BlackChain",
+    "yourTotalRewards" : "Ваши текущие общие награды",
+    "days": "Дни",
+    "stakingPeriod" : "Период стейкинга",
+    "annualReturn" : "Годовая прибыль",
+    "expectedBCT" : "Ожидаемые BCT",
+    "calculate" : "Рассчитать вашу возможную прибыль",
+    "stake" : "Вложение",
+    "unstake" : "снять ставку"
+
   }
   

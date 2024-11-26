@@ -1,6 +1,6 @@
 {
     "overview": "Overview",
-    "transactionHistory": "Transaction History",
+    "transactionHistory": "Transactions History",
     "calculator": "Calculator",
     "faq": "FAQ’s",
     "lastUpdate": "Last update: 45 minutes ago",
@@ -31,6 +31,16 @@
     "available": "Available",
     "totalStake" : "Total stake",
     "24hrReturn": "24 hour returns",
-    "rewardsPayOut": "Your rewards Paid Out So Far"
+    "rewardsPayOut": "Your rewards",
+    "yourTransactions" : "Your Transactions",
+    "yourStakedTokens" : "Your staked BlackChain Token",
+    "yourTotalRewards" : "your total rewards to date",
+    "days": "days",
+    "stakingPeriod" : "Staking Period",
+    "annualReturn" : "Annual Return",
+    "expectedBCT" : "Expected BCT",
+    "calculate" : "Calculate your possible return",
+    "stake" : "Stake",
+    "unstake" : "Unstake"
   }
   

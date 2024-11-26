@@ -6,8 +6,12 @@ import DayButton from "./calculatorComponents/DayButton";
 import StakeCalcCard from "./calculatorComponents/StakeCalcCard";
 import { formatDecimal, getWalletStakes, TOKEN_LAMPORTS } from "@/app/integration/stake_func";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { useLanguage } from "../../context/LanguageContext";
+
 
 export default function () {
+  const { translations } = useLanguage(); 
+  const t = (key) => translations[key] || key;
   const wallet = useAnchorWallet()
   const [dayActive, setDayActive] = useState(1);
   const [stakeTab, setStakeTab] = useState(0);
@@ -58,7 +62,7 @@ export default function () {
           style={{ border: "2px solid #222429", overflow: "auto" }}
         >
           <p className=" font-semibold text-[19px] md:text-[30px] flex justify-between text-[#FFFFFF]">
-             Deine Belohnungen{" "}
+             {t("rewardsPayOut")}{" "}
             <span className="text-[#53F3C3] font-semibold">{userStakeData ? formatDecimal(userStakeData?.account?.claimed / TOKEN_LAMPORTS) : 0} BCT</span>
           </p>
 

@@ -26,11 +26,22 @@
     "faqTitle": "Najczęściej zadawane pytania",
     "support": "Obsługa klienta",
     "faqDescription": "Coś niejasne? Oto nasze najczęściej zadawane pytania.",
-    "expectedAnnualReturns": "Expected annual return",
-    "totalReturns": "Total Returns",
-    "available": "Available",
-    "totalStake" : "Total stake",
-    "24hrReturn": "24 hour returns",
-    "rewardsPayOut": "Your rewards paid out so far"
+    "expectedAnnualReturns": "Przewidywany roczny zysk",
+    "totalReturns": "Całkowity zysk",
+    "available": "Dostępne",
+    "totalStake" : "Całkowity wkład",
+    "24hrReturn": "Zysk za 24 godziny",
+    "rewardsPayOut": "Twoje nagrody",
+    "yourTransactions" : "Twoje transakcje",
+    "yourStakedTokens" : "Twoje tokeny BlackChain w stakingu",
+    "yourTotalRewards" : "Twoje dotychczasowe całkowite nagrody",
+    "days": "Dni",
+    "stakingPeriod" : "Okres stakingu",
+    "annualReturn" : "Roczny zysk",
+    "expectedBCT" : "Przewidywane BCT",
+    "calculate" : "Oblicz swój możliwy zysk",
+    "stake" : "Inwestycja",
+    "unstake" : "Odstawić"
+
   }
   

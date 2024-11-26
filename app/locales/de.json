@@ -31,7 +31,18 @@
     "available": "Verfügbar",
     "totalStake" : "Gesamteinsatz",
     "24hrReturn": "24 Stunden Rendite",
-    "rewardsPayOut": "deine bisher ausgezahlten Rewards"
+    "rewardsPayOut": "deine bisher ausgezahlten Rewards",
+    "yourTransactions" : "Deine Transaktionen",
+    "yourStakedTokens" : "Deine gestaketen BlackChain Token",
+    "yourTotalRewards" : "deine bisherigen gesamten Rewards",
+    "days": "Tage",
+    "stakingPeriod" : "Stakingzeitraum",
+    "annualReturn" : "Jährliche Rendite",
+    "expectedBCT" : "Erwartete BCT",
+    "calculate" : "Berechne deine mögliche Rendite",
+    "stake" : "Einsatz",
+    "unstake" : "Unstake"
+
 
   }
   
