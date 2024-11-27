@@ -12,7 +12,6 @@ const useCooldown = (wallet) => {
 
       const userRef = doc(db, 'claims', wallet.publicKey.toString());
       const userDoc = await getDoc(userRef);
-
       if (userDoc.exists()) {
         const claimData = userDoc.data();
         const claimDate = claimData.claimDate;
@@ -20,7 +19,11 @@ const useCooldown = (wallet) => {
         const claimTime = new Date(claimDate).getTime();
 
         // Check if 24 hours have passed (86400000 ms)
+        const res = currentTime - claimTime;
+        // console.log("currentTime - claimTime", res)
+        // for one minute for testing use 600000
         if (currentTime - claimTime < 86400000) {
+          
           setIsCooldownActive(true);
         } else {
           setIsCooldownActive(false);
