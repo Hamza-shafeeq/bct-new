@@ -41,6 +41,8 @@
     "expectedBCT" : "Expected BCT",
     "calculate" : "Calculate your possible return",
     "stake" : "Stake",
-    "unstake" : "Unstake"
+    "unstake" : "Unstake",
+    "stakingMessage" : "You cannot unstake within 24 hours of staking.",
+    "rewardsMessage" : "You cannot unstake within 24 hours of claiming rewards."
   }
   

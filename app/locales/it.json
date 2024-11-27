@@ -41,7 +41,9 @@
     "expectedBCT" : "BCT previsti",
     "calculate" : "Calcola il tuo rendimento possibile",
     "stake" : "Investimento",
-    "unstake" : "Non partecipare"
+    "unstake" : "Non partecipare",
+    "stakingMessage" : "Non è possibile annullare lo staking entro 24 ore dallo staking.",
+    "rewardsMessage" : "Non puoi annullare la partecipazione entro 24 ore dalla richiesta dei premi."
 
 
   }

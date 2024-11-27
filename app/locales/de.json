@@ -41,7 +41,9 @@
     "expectedBCT" : "Erwartete BCT",
     "calculate" : "Berechne deine mögliche Rendite",
     "stake" : "Einsatz",
-    "unstake" : "Unstake"
+    "unstake" : "Unstake",
+    "stakingMessage" : "YSie können innerhalb von 24 Stunden nach dem Staken, nicht Unstaken.",
+    "rewardsMessage" : "Sie können innerhalb von 24 Stunden nach dem Beanspruchen von Rewards, nicht Unstaken."
 
 
   }

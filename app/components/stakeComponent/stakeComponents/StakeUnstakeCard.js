@@ -121,10 +121,10 @@ const StakeUnstakeCard = ({
     } catch (e) {
       console.log(e);
       const error = getErrorMessageFromFormattedString(e.message);
-      // toast.error(error);
-      toast.error(
-        "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
-      );
+      toast.error(error);
+      // toast.error(
+      //   "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
+      // );
     }
   };
 
@@ -155,10 +155,10 @@ const StakeUnstakeCard = ({
     } catch (e) {
       console.log(e);
       const error = getErrorMessageFromFormattedString(e.message);
-      // toast.error(error);
-      toast.error(
-        "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
-      );
+      toast.error(error);
+      // toast.error(
+      //   "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
+      // );
     }
   };
 
@@ -189,10 +189,10 @@ const StakeUnstakeCard = ({
     } catch (e) {
       console.log(e);
       const error = getErrorMessageFromFormattedString(e.message);
-      // toast.error(error);
-      toast.error(
-        "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
-      );
+      toast.error(error);
+      // toast.error(
+      //   "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
+      // );
     }
   };
 

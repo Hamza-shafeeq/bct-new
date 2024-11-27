@@ -41,7 +41,9 @@
     "expectedBCT" : "Przewidywane BCT",
     "calculate" : "Oblicz swój możliwy zysk",
     "stake" : "Inwestycja",
-    "unstake" : "Odstawić"
+    "unstake" : "Odstawić",
+    "stakingMessage" : "Nie możesz wycofać stawki w ciągu 24 godzin od postawienia.",
+    "rewardsMessage" : "Nie możesz wycofać stawki w ciągu 24 godzin od odebrania nagrody."
 
   }
   
