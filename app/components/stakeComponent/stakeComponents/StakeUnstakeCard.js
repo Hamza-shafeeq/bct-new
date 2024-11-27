@@ -3,6 +3,7 @@ import maxRound from "../../../../public/assets/maxbtn.png";
 import Cryptocurrency from "../../../../public/assets/Cryptocurrency.png";
 import Image from "next/image";
 import { useState } from "react";
+import { addClaim, canStakeOrUnstake } from '../../../db/queries';
 import {
   calculateRewards,
   claimReward,
@@ -89,6 +90,13 @@ const StakeUnstakeCard = ({
   const selectedData = dayData[dayActive];
 
   const stakePool = async () => {
+    handleCloseModal();
+    const isEligible = await canStakeOrUnstake(walletAddress);
+    console.log("isEligible"), isEligible
+    if (!isEligible) {
+      toast.error("You must wait 24 hours after claiming rewards.");
+      return;
+    }
     try {
       console.log("stakeAmount", stakeAmount);
       if (stakeAmount < 10) {
@@ -129,6 +137,13 @@ const StakeUnstakeCard = ({
   };
 
   const unstakePool = async () => {
+    handleCloseModal();
+    const isEligible = await canStakeOrUnstake(walletAddress);
+    console.log("isEligible"), isEligible
+    if (!isEligible) {
+      toast.error("You must wait 24 hours after claiming rewards.");
+      return;
+    }
     try {
       if (!wallet) {
         toast.error("Bitte Wallet anschließen");
@@ -163,6 +178,7 @@ const StakeUnstakeCard = ({
   };
 
   const claimPool = async () => {
+    handleCloseModal();
     try {
       if (!wallet) {
         toast.error("Bitte Wallet anschließen");
@@ -182,6 +198,7 @@ const StakeUnstakeCard = ({
           connection,
           signedTx.serialize()
         );
+        await addClaim(wallet.publicKey.toString());
         toast.success("Beanspruchte Token");
         console.log("signature", txId);
         setRefetch(!refetch);
