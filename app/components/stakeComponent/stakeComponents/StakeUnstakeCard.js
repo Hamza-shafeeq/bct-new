@@ -20,10 +20,12 @@ import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { toast } from "react-toastify";
 import RewardRedeemModal from "../../RewardRedeemModal";
+import useCooldown from '../../../hooks/useFirebase'; 
+
 const StakeUnstakeCard = ({
   stakeTab,
   setStakeTab,
-  dayActive,
+  dayActive, 
   // handleOpenModal,
 }) => {
   const [stakeAmount, setStakeAmount] = useState(0);
@@ -32,16 +34,19 @@ const StakeUnstakeCard = ({
   const [userStakeData, setUserStakeData] = useState();
   const [refetch, setRefetch] = useState(false);
   const wallet = useAnchorWallet();
-  //  const [stakeTab, setStakeTab] = useState(0); // 0 for staking, 1 for unstaking
+  
   const [blcDetail, setBlcDetail] = useState({
     total: 5000, // Simulating total balance
     staked: 2980, // Simulating staked balance
-    available: 5000 - 2980, // Available balance is total - staked
+    available: 5000 - 2980,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
-
+  // From Firebase
+  // const { cooldown, isCooldownActive, setClaimCooldown } = useFirebase(wallet ? wallet.publicKey.toString() : null);
+  const { isCooldownActive, lastClaimTime } = useCooldown(wallet);
+  const [stakingDisabled, setStakingDisabled] = useState(false);
   // Handle stakeTab change (either stake or unstake)
   const handleStake = (index) => {
     setStakeTab(index);
@@ -87,9 +92,14 @@ const StakeUnstakeCard = ({
   };
 
   const selectedData = dayData[dayActive];
-
+  const claimButtonDisabled = isCooldownActive;
   const stakePool = async () => {
+    handleCloseModal();
     try {
+      if (claimButtonDisabled) {
+       toast.error('You must wait 24 hours before staking.');
+        return;
+      }
       console.log("stakeAmount", stakeAmount);
       if (stakeAmount < 10) {
         toast.error("Für den Einsatz sind mindestens 10 Token erforderlich");
@@ -129,7 +139,12 @@ const StakeUnstakeCard = ({
   };
 
   const unstakePool = async () => {
+    handleCloseModal();
     try {
+      if (claimButtonDisabled) {
+        toast.error('You must wait 24 hours before unstaking.');
+        return;
+      }
       if (!wallet) {
         toast.error("Bitte Wallet anschließen");
         return;
@@ -163,6 +178,11 @@ const StakeUnstakeCard = ({
   };
 
   const claimPool = async () => {
+    handleCloseModal();
+    if (claimButtonDisabled) {
+      toast.error('You must wait 24 hours before claiming rewards.');
+      return;
+    }
     try {
       if (!wallet) {
         toast.error("Bitte Wallet anschließen");
@@ -182,6 +202,32 @@ const StakeUnstakeCard = ({
           connection,
           signedTx.serialize()
         );
+
+        // For firestore
+        const claimedAmount = calculateClaimedAmount(); 
+        const claimData = {
+          walletAddress: wallet.publicKey.toString(),
+          claimedAmount,
+          txId,
+          claimDate: new Date().toISOString(),
+        };
+  
+        // Check if there's already a claim record for the wallet
+        const userRef = doc(db, 'claims', wallet.publicKey.toString());
+        const userDoc = await getDoc(userRef);
+  
+        if (userDoc.exists()) {
+          // If claim exists, update the existing document
+          await setDoc(userRef, {
+            ...claimData,
+            updatedAt: new Date().toISOString(), 
+          }, { merge: true });
+        } else {
+          await setDoc(userRef, claimData);
+        }
+  
+        setRefetch(!refetch);
+
         toast.success("Beanspruchte Token");
         console.log("signature", txId);
         setRefetch(!refetch);
@@ -253,7 +299,12 @@ const StakeUnstakeCard = ({
         // exitFeeRate={modalData.exitFeeRate}
         onRedeem={stakeTab === 1 ? unstakePool : stakeTab === 2 ? claimPool : stakePool}
       />
-      <div>
+
+      <div  className="flex flex-col gap-3">
+      {/* {claimButtonDisabled && (
+        <p className="text-[#E1E1E1]">Last claimed: {new Date(cooldown).toLocaleString()}</p>
+      )} */}
+        <div>
         <button
           className=" text-[13px] font-bold px-6 py-1 rounded-md "
           style={getButtonStyles(0)}
@@ -281,6 +332,7 @@ const StakeUnstakeCard = ({
         >
           Claim Rewards
         </button>
+      </div>
       </div>
 
       {stakeTab === 2 && (
