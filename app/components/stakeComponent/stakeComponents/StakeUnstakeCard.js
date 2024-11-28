@@ -20,7 +20,6 @@ import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { toast } from "react-toastify";
 import RewardRedeemModal from "../../RewardRedeemModal";
-import useCooldown from '../../../hooks/useFirebase'; 
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 
@@ -36,6 +35,8 @@ const StakeUnstakeCard = ({
   const [userStakeData, setUserStakeData] = useState();
   const [refetch, setRefetch] = useState(false);
   const wallet = useAnchorWallet();
+  const [cooldownActive, setCooldownActive] = useState(false);
+const [timeRemaining, setTimeRemaining] = useState(0);
   
   const [blcDetail, setBlcDetail] = useState({
     total: 5000, // Simulating total balance
@@ -47,7 +48,6 @@ const StakeUnstakeCard = ({
   const handleCloseModal = () => setIsModalOpen(false);
   // From Firebase
   // const { cooldown, isCooldownActive, setClaimCooldown } = useFirebase(wallet ? wallet.publicKey.toString() : null);
-  const { isCooldownActive, lastClaimTime } = useCooldown(wallet);
   const [stakingDisabled, setStakingDisabled] = useState(false);
   // Handle stakeTab change (either stake or unstake)
   const handleStake = (index) => {
@@ -70,38 +70,40 @@ const StakeUnstakeCard = ({
     color: stakeTab === index ? "#E41E34" : "#FFFFFF",
   });
 
-  const dayData = {
-    0: {
-      JährlicheRendite: "0.01831087 BCT",
-      currentAmount: "0.01831087 BCT",
-      dailyRewards: "0.89629221 BCT",
-    },
-    1: {
-      JährlicheRendite: "0.01941087 BCT",
-      currentAmount: "0.02831087 BCT",
-      dailyRewards: "0.59629221 BCT",
-    },
-    2: {
-      JährlicheRendite: "0.02231087 BCT",
-      currentAmount: "0.03831087 BCT",
-      dailyRewards: "0.79629221 BCT",
-    },
-    3: {
-      JährlicheRendite: "0.02431087 BCT",
-      currentAmount: "0.04831087 BCT",
-      dailyRewards: "0.89629221 BCT",
-    },
+
+  useEffect(() => {
+    checkCooldown();
+  }, [wallet]);
+
+
+  const checkCooldown = async () => {
+    if (!wallet) return;
+  
+    const docRef = doc(db, "unstakeCooldowns", wallet.publicKey.toString());
+    const docSnap = await getDoc(docRef);
+  
+    if (docSnap.exists()) {
+      const { timestamp } = docSnap.data();
+      const now = Date.now();
+      const elapsedTime = now - timestamp;
+  
+      if (elapsedTime < 86400000) { // 24 hours in milliseconds
+        setCooldownActive(true);
+        setTimeRemaining(86400000 - elapsedTime);
+        disableButtons();
+      } else {
+        await deleteDoc(docRef); // Cooldown expired
+        setCooldownActive(false);
+        enableButtons();
+      }
+    } else {
+      setCooldownActive(false);
+    }
   };
 
-  const selectedData = dayData[dayActive];
-  const claimButtonDisabled = isCooldownActive;
   const stakePool = async () => {
     handleCloseModal();
     try {
-      if (isCooldownActive) {
-       toast.error('You must wait 24 hours after last claimed rewards.');
-        return;
-      }
       console.log("stakeAmount", stakeAmount);
       if (stakeAmount < 10) {
         toast.error("Für den Einsatz sind mindestens 10 Token erforderlich");
@@ -140,51 +142,53 @@ const StakeUnstakeCard = ({
     }
   };
 
+
+  const handleUnstakeInit = async () => {
+    if (!wallet) {
+      toast.error("Bitte Wallet anschließen");
+      return;
+    }
+  
+    const docRef = doc(db, "unstakeCooldowns", wallet.publicKey.toString());
+    await setDoc(docRef, {
+      timestamp: Date.now()
+    });
+  
+    toast.info("Unstake request initiated. Please wait 24 hours.");
+    setCooldownActive(true);
+    disableButtons();
+  };
+  
   const unstakePool = async () => {
     handleCloseModal();
+    if (cooldownActive) {
+      toast.warn(`Please wait ${Math.ceil(timeRemaining / 3600000)} hours to unstake.`);
+      return;
+    }
+  
     try {
-      if (isCooldownActive) {
-        toast.error('You must wait 24 hours after last claimed rewards.');
-        return;
-      }
-      if (!wallet) {
-        toast.error("Bitte Wallet anschließen");
-        return;
-      }
-
-      if (wallet) {
-        const tx = await unstakeTokens(wallet, unstakeAmount);
-
-        if (!tx) {
-          return;
-        }
-        tx.feePayer = wallet.publicKey;
-        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-        const signedTx = await wallet.signTransaction(tx);
-        const txId = await sendAndConfirmRawTransaction(
-          connection,
-          signedTx.serialize()
-        );
-        toast.success("Token nicht eingesetzt");
-        console.log("signature", txId);
-        setRefetch(!refetch);
-      }
+      // Existing unstake logic
+      const tx = await unstakeTokens(wallet, unstakeAmount);
+      if (!tx) return;
+  
+      tx.feePayer = wallet.publicKey;
+      tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+      const signedTx = await wallet.signTransaction(tx);
+      const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize());
+  
+      await deleteDoc(doc(db, "unstakeCooldowns", wallet.publicKey.toString())); // Clear cooldown
+      toast.success("Tokens successfully unstaked!");
+      setRefetch(!refetch);
+      enableButtons();
     } catch (e) {
-      console.log(e);
-      const error = getErrorMessageFromFormattedString(e.message);
-      toast.error(error);
-      // toast.error(
-      //   "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
-      // );
+      console.error(e);
+      toast.error("Transaction failed. Please try again.");
     }
   };
 
-  // const claimPool = async () => {
+
+  // const unstakePool = async () => {
   //   handleCloseModal();
-  //   if (isCooldownActive) {
-  //     toast.error('You must wait 24 hours before claiming rewards.');
-  //     return;
-  //   }
   //   try {
   //     if (!wallet) {
   //       toast.error("Bitte Wallet anschließen");
@@ -192,7 +196,7 @@ const StakeUnstakeCard = ({
   //     }
 
   //     if (wallet) {
-  //       const tx = await claimReward(wallet);
+  //       const tx = await unstakeTokens(wallet, unstakeAmount);
 
   //       if (!tx) {
   //         return;
@@ -204,34 +208,7 @@ const StakeUnstakeCard = ({
   //         connection,
   //         signedTx.serialize()
   //       );
-
-  //       // For firestore
-  //       const claimedAmount = calculateClaimedAmount();
-  //       // const txId = 10;
-  //       const claimData = {
-  //         walletAddress: wallet.publicKey.toString(),
-  //         claimedAmount,
-  //         txId,
-  //         claimDate: new Date().toISOString(),
-  //       };
-  
-  //       // Check if there's already a claim record for the wallet
-  //       const userRef = doc(db, 'claims', wallet.publicKey.toString());
-  //       const userDoc = await getDoc(userRef);
-  
-  //       if (userDoc.exists()) {
-  //         // If claim exists, update the existing document
-  //         await setDoc(userRef, {
-  //           ...claimData,
-  //           updatedAt: new Date().toISOString(), 
-  //         }, { merge: true });
-  //       } else {
-  //         await setDoc(userRef, claimData);
-  //       }
-  
-  //       setRefetch(!refetch);
-
-  //       toast.success("Beanspruchte Token");
+  //       toast.success("Token nicht eingesetzt");
   //       console.log("signature", txId);
   //       setRefetch(!refetch);
   //     }
@@ -245,14 +222,17 @@ const StakeUnstakeCard = ({
   //   }
   // };
 
+
+  const disableButtons = () => {
+    setStakingDisabled(true);
+  };
+  
+  const enableButtons = () => {
+    setStakingDisabled(false);
+  };
+
   const claimPool = async () => {
     handleCloseModal();
-    
-    if (isCooldownActive) {
-      toast.error('You must wait 24 hours after last claimed rewards.');
-      return;
-    }
-    
     try {
       if (!wallet) {
         toast.error("Bitte Wallet anschließen");
@@ -280,30 +260,7 @@ const StakeUnstakeCard = ({
       if (!txResult) {
         toast.error("Transaction not confirmed.");
       }
-  
-      // Proceed only if transaction confirmed
-      const claimedAmount = calculateClaimedAmount();
-      const claimData = {
-        walletAddress: wallet.publicKey.toString(),
-        claimedAmount,
-        txId,
-        claimDate: new Date().toISOString(),
-      };
-  
-      // Firestore update
-      const userRef = doc(db, 'claims', wallet.publicKey.toString());
-      const userDoc = await getDoc(userRef);
-  
-      if (userDoc.exists()) {
-        await setDoc(userRef, {
-          ...claimData,
-          updatedAt: new Date().toISOString(),
-        }, { merge: true });
-      } else {
-        await setDoc(userRef, claimData);
-      }
-  
-      setRefetch(!refetch);
+
       toast.success("Beanspruchte Token");
       console.log("signature", txId);
   
@@ -349,10 +306,7 @@ const StakeUnstakeCard = ({
     // Format the result (assuming formatDecimal returns a formatted string/number)
     return formatDecimal(totalRewards);
   };
-  const claimableRewards = getClaimableRewards(userStakeData, TOKEN_LAMPORTS);
-  const formattedLastClaimTime = lastClaimTime 
-  ? new Date(lastClaimTime).toLocaleString() // Adjust locale if needed
-  : '';
+
 
   return (
     <div
@@ -377,9 +331,6 @@ const StakeUnstakeCard = ({
       />
 
       <div  className="flex flex-col gap-3">
-      {lastClaimTime && (
-  <p className="text-[#E1E1E1]">Rewards last claimed: {formattedLastClaimTime}</p>
-)}
         <div>
         <button
           className=" text-[13px] font-bold px-6 py-1 rounded-md "
@@ -387,6 +338,7 @@ const StakeUnstakeCard = ({
           index={0}
           onClick={() => handleStake(0)}
           min="0"
+          disabled={stakingDisabled}
         >
           Stake
         </button>
@@ -396,8 +348,10 @@ const StakeUnstakeCard = ({
           index={1}
           onClick={() => handleStake(1)}
           min="0"
-        >
-          Unstake
+          disabled={cooldownActive}
+          >
+            {cooldownActive ? `Wait ${Math.ceil(timeRemaining / 3600000)} hrs` : "Unstake"}
+
         </button>
         <button
           className="text-[13px] font-bold px-6 py-1 ml-[-3px] rounded-r-md"
@@ -405,11 +359,44 @@ const StakeUnstakeCard = ({
           index={1}
           onClick={() => handleStake(2)}
           min="0"
+          disabled={stakingDisabled}
         >
           Claim Rewards
         </button>
       </div>
       </div>
+
+
+{/* <div  className="flex flex-col gap-3">
+        <div>
+        <button
+  className="text-[13px] font-bold px-6 py-1 rounded-md"
+  style={getButtonStyles(0)}
+  onClick={handleStake}
+  disabled={stakingDisabled}
+>
+  Stake
+</button>
+
+<button
+  className="text-[13px] font-bold px-6 py-1 mx-2 rounded-md"
+  style={getButtonStyles(1)}
+  onClick={handleUnstakeInit}
+  disabled={cooldownActive}
+>
+  {cooldownActive ? `Wait ${Math.ceil(timeRemaining / 3600000)} hrs` : "Unstake"}
+</button>
+
+<button
+  className="text-[13px] font-bold px-6 py-1 rounded-md"
+  style={getButtonStyles(2)}
+  onClick={claimPool}
+  disabled={stakingDisabled}
+>
+  Claim Rewards
+</button>
+      </div>
+      </div> */}
 
       {stakeTab === 2 && (
         <div className="md:mb-[190px]">
@@ -492,71 +479,8 @@ const StakeUnstakeCard = ({
           >
             Max
           </button>
-          {/* <Image
-          src={maxRound}
-          width={50}
-          height={50}
-          alt="Set Max Stake"
-          className="cursor-pointer"
-        /> */}
         </div>
       ) : null}
-
-      {/* {stakeTab === 1 ? (
-            <>
-              <p className="text-[#858585] text-[13px] font-normal flex text-left mt-4">
-                Redeem to
-              </p>
-              <select className="w-full mt-2 bg-[#121316] text-white p-2 rounded-lg border border-[#2E3037]">
-                <option value="Wallet1">Spot Wallet</option>
-                <option value="Wallet2">Wallet 2</option>
-                <option value="Wallet3">Wallet 3</option>
-              </select>
-            </>
-          ) : (
-            <>
-              {" "}
-              <p className="text-[#858585] text-[13px] font-normal flex text-left mt-4">
-                Select strategy{" "}
-              </p>
-              <select className="w-full mt-2 bg-[#121316] text-white p-2 rounded-lg border border-[#2E3037]">
-                <option value="strategy1">Strategy 1</option>
-                <option value="strategy2">Strategy 2</option>
-                <option value="strategy3">Strategy 3</option>
-              </select>{" "}
-            </>
-          )} */}
-
-      {/* {stakeTab === 0 && (
-            <div className="flex justify-between mt-8">
-              <DayButton
-                text="30 days"
-                index={0}
-                dayActive={dayActive}
-                onClick={handleClick}
-              />
-              <DayButton
-                text="60 days"
-                index={1}
-                dayActive={dayActive}
-                onClick={handleClick}
-              />
-              <DayButton
-                text="90 days"
-                index={2}
-                dayActive={dayActive}
-                onClick={handleClick}
-              />
-              <DayButton
-                text="120 days"
-                index={3}
-                dayActive={dayActive}
-                onClick={handleClick}
-              />
-            </div>
-          )} */}
-
-      {/* <div className="grid grid-cols-2 gap-4 mt-5"> */}
       <div className="flex gap-2 flex-col mt-6">
         {stakeTab === 0 && (
           <div>
