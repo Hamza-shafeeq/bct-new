@@ -21,6 +21,8 @@ import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { toast } from "react-toastify";
 import RewardRedeemModal from "../../RewardRedeemModal";
 import useCooldown from '../../../hooks/useFirebase'; 
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/firebase";
 
 const StakeUnstakeCard = ({
   stakeTab,
@@ -96,8 +98,8 @@ const StakeUnstakeCard = ({
   const stakePool = async () => {
     handleCloseModal();
     try {
-      if (claimButtonDisabled) {
-       toast.error('You must wait 24 hours before staking.');
+      if (isCooldownActive) {
+       toast.error('You must wait 24 hours after last claimed rewards.');
         return;
       }
       console.log("stakeAmount", stakeAmount);
@@ -141,8 +143,8 @@ const StakeUnstakeCard = ({
   const unstakePool = async () => {
     handleCloseModal();
     try {
-      if (claimButtonDisabled) {
-        toast.error('You must wait 24 hours before unstaking.');
+      if (isCooldownActive) {
+        toast.error('You must wait 24 hours after last claimed rewards.');
         return;
       }
       if (!wallet) {
@@ -177,68 +179,138 @@ const StakeUnstakeCard = ({
     }
   };
 
+  // const claimPool = async () => {
+  //   handleCloseModal();
+  //   if (isCooldownActive) {
+  //     toast.error('You must wait 24 hours before claiming rewards.');
+  //     return;
+  //   }
+  //   try {
+  //     if (!wallet) {
+  //       toast.error("Bitte Wallet anschließen");
+  //       return;
+  //     }
+
+  //     if (wallet) {
+  //       const tx = await claimReward(wallet);
+
+  //       if (!tx) {
+  //         return;
+  //       }
+  //       tx.feePayer = wallet.publicKey;
+  //       tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+  //       const signedTx = await wallet.signTransaction(tx);
+  //       const txId = await sendAndConfirmRawTransaction(
+  //         connection,
+  //         signedTx.serialize()
+  //       );
+
+  //       // For firestore
+  //       const claimedAmount = calculateClaimedAmount();
+  //       // const txId = 10;
+  //       const claimData = {
+  //         walletAddress: wallet.publicKey.toString(),
+  //         claimedAmount,
+  //         txId,
+  //         claimDate: new Date().toISOString(),
+  //       };
+  
+  //       // Check if there's already a claim record for the wallet
+  //       const userRef = doc(db, 'claims', wallet.publicKey.toString());
+  //       const userDoc = await getDoc(userRef);
+  
+  //       if (userDoc.exists()) {
+  //         // If claim exists, update the existing document
+  //         await setDoc(userRef, {
+  //           ...claimData,
+  //           updatedAt: new Date().toISOString(), 
+  //         }, { merge: true });
+  //       } else {
+  //         await setDoc(userRef, claimData);
+  //       }
+  
+  //       setRefetch(!refetch);
+
+  //       toast.success("Beanspruchte Token");
+  //       console.log("signature", txId);
+  //       setRefetch(!refetch);
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //     const error = getErrorMessageFromFormattedString(e.message);
+  //     toast.error(error);
+  //     // toast.error(
+  //     //   "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
+  //     // );
+  //   }
+  // };
+
   const claimPool = async () => {
     handleCloseModal();
-    if (claimButtonDisabled) {
-      toast.error('You must wait 24 hours before claiming rewards.');
+    
+    if (isCooldownActive) {
+      toast.error('You must wait 24 hours after last claimed rewards.');
       return;
     }
+    
     try {
       if (!wallet) {
         toast.error("Bitte Wallet anschließen");
         return;
       }
-
-      if (wallet) {
-        const tx = await claimReward(wallet);
-
-        if (!tx) {
-          return;
-        }
-        tx.feePayer = wallet.publicKey;
-        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-        const signedTx = await wallet.signTransaction(tx);
-        const txId = await sendAndConfirmRawTransaction(
-          connection,
-          signedTx.serialize()
-        );
-
-        // For firestore
-        const claimedAmount = calculateClaimedAmount(); 
-        const claimData = {
-          walletAddress: wallet.publicKey.toString(),
-          claimedAmount,
-          txId,
-          claimDate: new Date().toISOString(),
-        };
   
-        // Check if there's already a claim record for the wallet
-        const userRef = doc(db, 'claims', wallet.publicKey.toString());
-        const userDoc = await getDoc(userRef);
+      const tx = await claimReward(wallet);  // Assuming claimReward initiates a transaction
   
-        if (userDoc.exists()) {
-          // If claim exists, update the existing document
-          await setDoc(userRef, {
-            ...claimData,
-            updatedAt: new Date().toISOString(), 
-          }, { merge: true });
-        } else {
-          await setDoc(userRef, claimData);
-        }
-  
-        setRefetch(!refetch);
-
-        toast.success("Beanspruchte Token");
-        console.log("signature", txId);
-        setRefetch(!refetch);
+      if (!tx) {
+        throw new Error("Transaction failed or canceled.");
       }
+  
+      tx.feePayer = wallet.publicKey;
+      tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+      
+      const signedTx = await wallet.signTransaction(tx);
+      const txId = await sendAndConfirmRawTransaction(
+        connection,
+        signedTx.serialize()
+      );
+  
+      // Ensure the transaction is confirmed
+      const txResult = await connection.getTransaction(txId, { commitment: 'confirmed' });
+  
+      if (!txResult) {
+        toast.error("Transaction not confirmed.");
+      }
+  
+      // Proceed only if transaction confirmed
+      const claimedAmount = calculateClaimedAmount();
+      const claimData = {
+        walletAddress: wallet.publicKey.toString(),
+        claimedAmount,
+        txId,
+        claimDate: new Date().toISOString(),
+      };
+  
+      // Firestore update
+      const userRef = doc(db, 'claims', wallet.publicKey.toString());
+      const userDoc = await getDoc(userRef);
+  
+      if (userDoc.exists()) {
+        await setDoc(userRef, {
+          ...claimData,
+          updatedAt: new Date().toISOString(),
+        }, { merge: true });
+      } else {
+        await setDoc(userRef, claimData);
+      }
+  
+      setRefetch(!refetch);
+      toast.success("Beanspruchte Token");
+      console.log("signature", txId);
+  
     } catch (e) {
-      console.log(e);
+      console.error(e);
       const error = getErrorMessageFromFormattedString(e.message);
-      toast.error(error);
-      // toast.error(
-      //   "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
-      // );
+      toast.error(error || "Transaction failed. Please try again.");
     }
   };
 
@@ -278,6 +350,10 @@ const StakeUnstakeCard = ({
     return formatDecimal(totalRewards);
   };
   const claimableRewards = getClaimableRewards(userStakeData, TOKEN_LAMPORTS);
+  const formattedLastClaimTime = lastClaimTime 
+  ? new Date(lastClaimTime).toLocaleString() // Adjust locale if needed
+  : '';
+
   return (
     <div
       className="bg-gradient-to-b flex flex-col justify-around from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] px-8 md:px-[70px] py-8 max-w-full"
@@ -301,9 +377,9 @@ const StakeUnstakeCard = ({
       />
 
       <div  className="flex flex-col gap-3">
-      {/* {claimButtonDisabled && (
-        <p className="text-[#E1E1E1]">Last claimed: {new Date(cooldown).toLocaleString()}</p>
-      )} */}
+      {lastClaimTime && (
+  <p className="text-[#E1E1E1]">Rewards last claimed: {formattedLastClaimTime}</p>
+)}
         <div>
         <button
           className=" text-[13px] font-bold px-6 py-1 rounded-md "
