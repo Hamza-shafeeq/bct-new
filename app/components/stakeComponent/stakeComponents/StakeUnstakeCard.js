@@ -70,31 +70,31 @@ const StakeUnstakeCard = ({
     color: stakeTab === index ? "#E41E34" : "#FFFFFF",
   });
 
-  const dayData = {
-    0: {
-      JährlicheRendite: "0.01831087 BCT",
-      currentAmount: "0.01831087 BCT",
-      dailyRewards: "0.89629221 BCT",
-    },
-    1: {
-      JährlicheRendite: "0.01941087 BCT",
-      currentAmount: "0.02831087 BCT",
-      dailyRewards: "0.59629221 BCT",
-    },
-    2: {
-      JährlicheRendite: "0.02231087 BCT",
-      currentAmount: "0.03831087 BCT",
-      dailyRewards: "0.79629221 BCT",
-    },
-    3: {
-      JährlicheRendite: "0.02431087 BCT",
-      currentAmount: "0.04831087 BCT",
-      dailyRewards: "0.89629221 BCT",
-    },
-  };
+  // const dayData = {
+  //   0: {
+  //     JährlicheRendite: "0.01831087 BCT",
+  //     currentAmount: "0.01831087 BCT",
+  //     dailyRewards: "0.89629221 BCT",
+  //   },
+  //   1: {
+  //     JährlicheRendite: "0.01941087 BCT",
+  //     currentAmount: "0.02831087 BCT",
+  //     dailyRewards: "0.59629221 BCT",
+  //   },
+  //   2: {
+  //     JährlicheRendite: "0.02231087 BCT",
+  //     currentAmount: "0.03831087 BCT",
+  //     dailyRewards: "0.79629221 BCT",
+  //   },
+  //   3: {
+  //     JährlicheRendite: "0.02431087 BCT",
+  //     currentAmount: "0.04831087 BCT",
+  //     dailyRewards: "0.89629221 BCT",
+  //   },
+  // };
 
-  const selectedData = dayData[dayActive];
-  const claimButtonDisabled = isCooldownActive;
+  // const selectedData = dayData[dayActive];
+  // const claimButtonDisabled = isCooldownActive;
   const stakePool = async () => {
     handleCloseModal();
     try {
@@ -114,20 +114,54 @@ const StakeUnstakeCard = ({
       }
 
       if (wallet) {
-        const tx = await stakeTokens(wallet, stakeAmount);
+      //   const tx = await stakeTokens(wallet, stakeAmount);
 
-        if (!tx) {
-          return;
-        }
-        tx.feePayer = wallet.publicKey;
-        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-        const signedTx = await wallet.signTransaction(tx);
-        const txId = await sendAndConfirmRawTransaction(
-          connection,
-          signedTx.serialize()
-        );
+      //   if (!tx) {
+      //     return;
+      //   }
+      //   tx.feePayer = wallet.publicKey;
+      //   tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+      //   const signedTx = await wallet.signTransaction(tx);
+      //   const txId = await sendAndConfirmRawTransaction(
+      //     connection,
+      //     signedTx.serialize()
+      //   );
+
+
+      // // Ensure the transaction is confirmed
+      // const txResult = await connection.getTransaction(txId, { commitment: 'confirmed' });
+  
+      // if (!txResult) {
+      //   toast.error("Transaction not confirmed.");
+      // }
+  
+      // Proceed only if transaction confirmed
+      const Amount = unstakeAmount;
+      const claimData = {
+        walletAddress: wallet.publicKey.toString(),
+        Amount,
+        // txId,
+        claimDate: new Date().toISOString(),
+      };
+  
+      // Firestore update
+      const userRef = doc(db, 'unstake', wallet.publicKey.toString());
+      const userDoc = await getDoc(userRef);
+  
+      if (userDoc.exists()) {
+        await setDoc(userRef, {
+          ...claimData,
+          updatedAt: new Date().toISOString(),
+        }, { merge: true });
+      } else {
+        await setDoc(userRef, claimData);
+      }
+  
+      setRefetch(!refetch);
+
+
         toast.success("Abgesteckte Token");
-        console.log("signature", txId);
+        // console.log("signature", txId);
         setRefetch(!refetch);
       }
     } catch (e) {
@@ -139,7 +173,7 @@ const StakeUnstakeCard = ({
       // );
     }
   };
-
+console.log("isCooldownActive", isCooldownActive)
   const unstakePool = async () => {
     handleCloseModal();
     try {
@@ -165,6 +199,7 @@ const StakeUnstakeCard = ({
           connection,
           signedTx.serialize()
         );
+
         toast.success("Token nicht eingesetzt");
         console.log("signature", txId);
         setRefetch(!refetch);
@@ -274,36 +309,6 @@ const StakeUnstakeCard = ({
         signedTx.serialize()
       );
   
-      // Ensure the transaction is confirmed
-      const txResult = await connection.getTransaction(txId, { commitment: 'confirmed' });
-  
-      if (!txResult) {
-        toast.error("Transaction not confirmed.");
-      }
-  
-      // Proceed only if transaction confirmed
-      const claimedAmount = calculateClaimedAmount();
-      const claimData = {
-        walletAddress: wallet.publicKey.toString(),
-        claimedAmount,
-        txId,
-        claimDate: new Date().toISOString(),
-      };
-  
-      // Firestore update
-      const userRef = doc(db, 'claims', wallet.publicKey.toString());
-      const userDoc = await getDoc(userRef);
-  
-      if (userDoc.exists()) {
-        await setDoc(userRef, {
-          ...claimData,
-          updatedAt: new Date().toISOString(),
-        }, { merge: true });
-      } else {
-        await setDoc(userRef, claimData);
-      }
-  
-      setRefetch(!refetch);
       toast.success("Beanspruchte Token");
       console.log("signature", txId);
   

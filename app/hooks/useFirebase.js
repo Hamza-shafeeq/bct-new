@@ -18,9 +18,14 @@ const useCooldown = (wallet) => {
         const currentTime = new Date().getTime();
         const claimTime = new Date(claimDate).getTime();
 
+        console.log("claimTime", claimTime);
+        console.log("currentTime", currentTime);
+
         // Check if 24 hours have passed (86400000 ms)
         const res = currentTime - claimTime;
-        // console.log("currentTime - claimTime", res)
+        console.log("Time difference (ms):", res);
+        console.log("24 hours in ms:", 86400000);
+        
         // for one minute for testing use 600000
         if (currentTime - claimTime < 86400000) {
           
