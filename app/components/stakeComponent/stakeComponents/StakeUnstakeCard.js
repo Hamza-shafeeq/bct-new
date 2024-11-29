@@ -152,19 +152,65 @@ const StakeUnstakeCard = ({
         return;
       }
 
-      if (wallet) {
-        const tx = await unstakeTokens(wallet, unstakeAmount);
 
-        if (!tx) {
-          return;
-        }
-        tx.feePayer = wallet.publicKey;
-        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-        const signedTx = await wallet.signTransaction(tx);
-        const txId = await sendAndConfirmRawTransaction(
-          connection,
-          signedTx.serialize()
-        );
+      // Firestore update
+      const userRef = doc(db, 'firstTime', wallet.publicKey.toString());
+      const userDoc = await getDoc(userRef);
+  
+      if (!userDoc.exists()) {
+        await setDoc(userRef, wallet);
+    
+          
+
+      } else {
+    
+        await setDoc(userRef, {
+          ...claimData,
+          updatedAt: new Date().toISOString(),
+        }, { merge: true });
+      }
+
+
+
+      if (wallet) {
+        // const tx = await unstakeTokens(wallet, unstakeAmount);
+
+        // if (!tx) {
+        //   return;
+        // }
+        // tx.feePayer = wallet.publicKey;
+        // tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+        // const signedTx = await wallet.signTransaction(tx);
+        // const txId = await sendAndConfirmRawTransaction(
+        //   connection,
+        //   signedTx.serialize()
+        // );
+
+      // Proceed only if transaction confirmed
+      const claimedAmount = claimableRewards;
+      const claimData = {
+        walletAddress: wallet.publicKey.toString(),
+        claimedAmount,
+        txId,
+        claimDate: new Date().toISOString(),
+      };
+  
+      // Firestore update
+      const userRef = doc(db, 'unstake', wallet.publicKey.toString());
+      const userDoc = await getDoc(userRef);
+  
+      if (userDoc.exists()) {
+        await setDoc(userRef, {
+          ...claimData,
+          updatedAt: new Date().toISOString(),
+        }, { merge: true });
+      } else {
+        await setDoc(userRef, claimData);
+      }
+  
+      setRefetch(!refetch);
+
+
         toast.success("Token nicht eingesetzt");
         console.log("signature", txId);
         setRefetch(!refetch);
@@ -259,51 +305,29 @@ const StakeUnstakeCard = ({
         return;
       }
   
-      const tx = await claimReward(wallet);  // Assuming claimReward initiates a transaction
+      // const tx = await claimReward(wallet);  // Assuming claimReward initiates a transaction
   
-      if (!tx) {
-        throw new Error("Transaction failed or canceled.");
-      }
+      // if (!tx) {
+      //   throw new Error("Transaction failed or canceled.");
+      // }
   
-      tx.feePayer = wallet.publicKey;
-      tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+      // tx.feePayer = wallet.publicKey;
+      // tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
       
-      const signedTx = await wallet.signTransaction(tx);
-      const txId = await sendAndConfirmRawTransaction(
-        connection,
-        signedTx.serialize()
-      );
+      // const signedTx = await wallet.signTransaction(tx);
+      // const txId = await sendAndConfirmRawTransaction(
+      //   connection,
+      //   signedTx.serialize()
+      // );
   
-      // Ensure the transaction is confirmed
-      const txResult = await connection.getTransaction(txId, { commitment: 'confirmed' });
+      // // Ensure the transaction is confirmed
+      // const txResult = await connection.getTransaction(txId, { commitment: 'confirmed' });
   
-      if (!txResult) {
-        toast.error("Transaction not confirmed.");
-      }
+      // if (!txResult) {
+      //   toast.error("Transaction not confirmed.");
+      // }
   
-      // Proceed only if transaction confirmed
-      const claimedAmount = calculateClaimedAmount();
-      const claimData = {
-        walletAddress: wallet.publicKey.toString(),
-        claimedAmount,
-        txId,
-        claimDate: new Date().toISOString(),
-      };
-  
-      // Firestore update
-      const userRef = doc(db, 'claims', wallet.publicKey.toString());
-      const userDoc = await getDoc(userRef);
-  
-      if (userDoc.exists()) {
-        await setDoc(userRef, {
-          ...claimData,
-          updatedAt: new Date().toISOString(),
-        }, { merge: true });
-      } else {
-        await setDoc(userRef, claimData);
-      }
-  
-      setRefetch(!refetch);
+
       toast.success("Beanspruchte Token");
       console.log("signature", txId);
   
