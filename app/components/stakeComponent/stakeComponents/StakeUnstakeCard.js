@@ -20,13 +20,13 @@ import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { toast } from "react-toastify";
 import RewardRedeemModal from "../../RewardRedeemModal";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 
 const StakeUnstakeCard = ({
   stakeTab,
   setStakeTab,
-  dayActive, 
+  dayActive,
   // handleOpenModal,
 }) => {
   const [stakeAmount, setStakeAmount] = useState(0);
@@ -35,9 +35,11 @@ const StakeUnstakeCard = ({
   const [userStakeData, setUserStakeData] = useState();
   const [refetch, setRefetch] = useState(false);
   const wallet = useAnchorWallet();
+  const [unstakeCompleted, setUnstakeCompleted] = useState(false);
   const [cooldownActive, setCooldownActive] = useState(false);
-const [timeRemaining, setTimeRemaining] = useState(0);
-  
+  const [postCooldown, setPostCooldown] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(0);
+
   const [blcDetail, setBlcDetail] = useState({
     total: 5000, // Simulating total balance
     staked: 2980, // Simulating staked balance
@@ -70,34 +72,33 @@ const [timeRemaining, setTimeRemaining] = useState(0);
     color: stakeTab === index ? "#E41E34" : "#FFFFFF",
   });
 
-
   useEffect(() => {
     checkCooldown();
   }, [wallet]);
 
-
   const checkCooldown = async () => {
     if (!wallet) return;
-  
+
     const docRef = doc(db, "unstakeCooldowns", wallet.publicKey.toString());
     const docSnap = await getDoc(docRef);
-  
+
     if (docSnap.exists()) {
       const { timestamp } = docSnap.data();
       const now = Date.now();
       const elapsedTime = now - timestamp;
-  
-      if (elapsedTime < 86400000) { // 24 hours in milliseconds
+
+      if (elapsedTime < 36000) {
+        // 1 hour in milliseconds
         setCooldownActive(true);
-        setTimeRemaining(86400000 - elapsedTime);
-        disableButtons();
+        setPostCooldown(false);
+        setTimeRemaining(36000 - elapsedTime); // Update time remaining
       } else {
-        await deleteDoc(docRef); // Cooldown expired
         setCooldownActive(false);
-        enableButtons();
+        setPostCooldown(true); // Mark that cooldown is over, but not yet unstaked
       }
     } else {
       setCooldownActive(false);
+      setPostCooldown(false); // Default state
     }
   };
 
@@ -116,18 +117,18 @@ const [timeRemaining, setTimeRemaining] = useState(0);
       }
 
       if (wallet) {
-        const tx = await stakeTokens(wallet, stakeAmount);
+        // const tx = await stakeTokens(wallet, stakeAmount);
 
-        if (!tx) {
-          return;
-        }
-        tx.feePayer = wallet.publicKey;
-        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-        const signedTx = await wallet.signTransaction(tx);
-        const txId = await sendAndConfirmRawTransaction(
-          connection,
-          signedTx.serialize()
-        );
+        // if (!tx) {
+        //   return;
+        // }
+        // tx.feePayer = wallet.publicKey;
+        // tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+        // const signedTx = await wallet.signTransaction(tx);
+        // const txId = await sendAndConfirmRawTransaction(
+        //   connection,
+        //   signedTx.serialize()
+        // );
         toast.success("Abgesteckte Token");
         console.log("signature", txId);
         setRefetch(!refetch);
@@ -142,7 +143,6 @@ const [timeRemaining, setTimeRemaining] = useState(0);
     }
   };
 
-
   const handleUnstakeInit = async () => {
     if (!wallet) {
       toast.error("Bitte Wallet anschließen");
@@ -150,33 +150,74 @@ const [timeRemaining, setTimeRemaining] = useState(0);
     }
   
     const docRef = doc(db, "unstakeCooldowns", wallet.publicKey.toString());
-    await setDoc(docRef, {
-      timestamp: Date.now()
-    });
   
-    toast.info("Unstake request initiated. Please wait 24 hours.");
-    setCooldownActive(true);
-    disableButtons();
+    // Set the cooldown timestamp only if it doesn't exist or the cooldown has expired
+    const docSnapshot = await getDoc(docRef);
+    if (!docSnapshot.exists()) {
+      await setDoc(docRef, {
+        timestamp: Date.now(),
+      });
+  
+      toast.info("Unstake request initiated. Please wait 24 hours.");
+      setCooldownActive(true);
+      disableButtons();
+    } else {
+      toast.warning("Cooldown already active. Please wait.");
+    }
+  };
+  
+  const handleUnstake = async () => {
+    if (!wallet) {
+      toast.error("Bitte Wallet anschließen");
+      return;
+    }
+  
+    const docRef = doc(db, "unstakeCooldowns", wallet.publicKey.toString());
+    const docSnapshot = await getDoc(docRef);
+  
+    // Check if the cooldown period is over
+    const cooldownTime = 24 * 60 * 60 * 1000;  // 24 hours in milliseconds
+    const timestamp = docSnapshot.data()?.timestamp;
+    
+    if (Date.now() - timestamp >= cooldownTime) {
+      try {
+        // Perform unstake action
+        await unstakePool();  // Assuming this is your unstake function
+  
+        // Remove the cooldown entry after successful unstake
+        await deleteDoc(docRef);
+  
+        setCooldownActive(false);
+        toast.success("Tokens successfully unstaked!");
+      } catch (error) {
+        console.error("Unstake failed:", error);
+        toast.error("Unstaking failed. Please try again.");
+      }
+    } else {
+      toast.warning("Cooldown not over yet. Please wait.");
+    }
   };
   
   const unstakePool = async () => {
     handleCloseModal();
     if (cooldownActive) {
-      toast.warn(`Please wait ${Math.ceil(timeRemaining / 3600000)} hours to unstake.`);
+      toast.warn(
+        `Please wait ${Math.ceil(timeRemaining / 3600000)} hours to unstake.`
+      );
       return;
     }
-  
+
     try {
       // Existing unstake logic
-      const tx = await unstakeTokens(wallet, unstakeAmount);
-      if (!tx) return;
-  
-      tx.feePayer = wallet.publicKey;
-      tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-      const signedTx = await wallet.signTransaction(tx);
-      const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize());
-  
-      await deleteDoc(doc(db, "unstakeCooldowns", wallet.publicKey.toString())); // Clear cooldown
+      // const tx = await unstakeTokens(wallet, unstakeAmount);
+      // if (!tx) return;
+
+      // tx.feePayer = wallet.publicKey;
+      // tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+      // const signedTx = await wallet.signTransaction(tx);
+      // const txId = await sendAndConfirmRawTransaction(connection, signedTx.serialize());
+
+      // await deleteDoc(doc(db, "unstakeCooldowns", wallet.publicKey.toString())); // Clear cooldown
       toast.success("Tokens successfully unstaked!");
       setRefetch(!refetch);
       enableButtons();
@@ -185,48 +226,10 @@ const [timeRemaining, setTimeRemaining] = useState(0);
       toast.error("Transaction failed. Please try again.");
     }
   };
-
-
-  // const unstakePool = async () => {
-  //   handleCloseModal();
-  //   try {
-  //     if (!wallet) {
-  //       toast.error("Bitte Wallet anschließen");
-  //       return;
-  //     }
-
-  //     if (wallet) {
-  //       const tx = await unstakeTokens(wallet, unstakeAmount);
-
-  //       if (!tx) {
-  //         return;
-  //       }
-  //       tx.feePayer = wallet.publicKey;
-  //       tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-  //       const signedTx = await wallet.signTransaction(tx);
-  //       const txId = await sendAndConfirmRawTransaction(
-  //         connection,
-  //         signedTx.serialize()
-  //       );
-  //       toast.success("Token nicht eingesetzt");
-  //       console.log("signature", txId);
-  //       setRefetch(!refetch);
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //     const error = getErrorMessageFromFormattedString(e.message);
-  //     toast.error(error);
-  //     // toast.error(
-  //     //   "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
-  //     // );
-  //   }
-  // };
-
-
   const disableButtons = () => {
     setStakingDisabled(true);
   };
-  
+
   const enableButtons = () => {
     setStakingDisabled(false);
   };
@@ -238,32 +241,33 @@ const [timeRemaining, setTimeRemaining] = useState(0);
         toast.error("Bitte Wallet anschließen");
         return;
       }
-  
-      const tx = await claimReward(wallet);  // Assuming claimReward initiates a transaction
-  
+
+      const tx = await claimReward(wallet); // Assuming claimReward initiates a transaction
+
       if (!tx) {
         throw new Error("Transaction failed or canceled.");
       }
-  
+
       tx.feePayer = wallet.publicKey;
       tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-      
+
       const signedTx = await wallet.signTransaction(tx);
       const txId = await sendAndConfirmRawTransaction(
         connection,
         signedTx.serialize()
       );
-  
+
       // Ensure the transaction is confirmed
-      const txResult = await connection.getTransaction(txId, { commitment: 'confirmed' });
-  
+      const txResult = await connection.getTransaction(txId, {
+        commitment: "confirmed",
+      });
+
       if (!txResult) {
         toast.error("Transaction not confirmed.");
       }
 
       toast.success("Beanspruchte Token");
       console.log("signature", txId);
-  
     } catch (e) {
       console.error(e);
       const error = getErrorMessageFromFormattedString(e.message);
@@ -293,110 +297,83 @@ const [timeRemaining, setTimeRemaining] = useState(0);
 
   const getClaimableRewards = (userStakeData, TOKEN_LAMPORTS) => {
     if (!userStakeData) return 0; // Return 0 if there's no stake data
-  
+
     const stakedAmount = Number(userStakeData?.account?.amount) || 0;
     const lastStakedAt = Number(userStakeData?.account?.lastStakedAt) || 0;
     const existingRewards = Number(userStakeData?.account?.rewards) || 0;
-  
+
     // Calculate total rewards
     const totalRewards =
       (calculateRewards(stakedAmount, lastStakedAt) + existingRewards) /
       TOKEN_LAMPORTS;
-  
+
     // Format the result (assuming formatDecimal returns a formatted string/number)
     return formatDecimal(totalRewards);
   };
 
+  const claimableRewards = getClaimableRewards(userStakeData, TOKEN_LAMPORTS);
 
   return (
     <div
       className="bg-gradient-to-b flex flex-col justify-around from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] px-8 md:px-[70px] py-8 max-w-full"
       style={{ border: "2px solid #222429", height: "-webkit-fill-available" }}
     >
-        <RewardRedeemModal
+      <RewardRedeemModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        stakeUnstake={stakeTab === 1 ? unstakeAmount : stakeTab === 0 ? stakeAmount : claimableRewards }
-        userStakeData = {userStakeData}
-        userBalance = {userBalance}
-        unstakeAmount = {unstakeAmount}
+        stakeUnstake={
+          stakeTab === 1
+            ? unstakeAmount
+            : stakeTab === 0
+            ? stakeAmount
+            : claimableRewards
+        }
+        userStakeData={userStakeData}
+        userBalance={userBalance}
+        unstakeAmount={unstakeAmount}
         stakeTab={stakeTab}
-        // spotWallet={modalData.spotWallet}
-        // Zusammenfassung={modalData.Zusammenfassung}
-        // referrer={modalData.referrer}
-        // ratio={modalData.ratio}
-        // earnedDex={modalData.earnedDex}
-        // exitFeeRate={modalData.exitFeeRate}
-        onRedeem={stakeTab === 1 ? unstakePool : stakeTab === 2 ? claimPool : stakePool}
+        onRedeem={
+          stakeTab === 1
+            ? handleUnstakeInit
+            : stakeTab === 2
+            ? claimPool
+            : stakePool
+        }
       />
 
-      <div  className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         <div>
-        <button
-          className=" text-[13px] font-bold px-6 py-1 rounded-md "
-          style={getButtonStyles(0)}
-          index={0}
-          onClick={() => handleStake(0)}
-          min="0"
-          disabled={stakingDisabled}
-        >
-          Stake
-        </button>
-        <button
-          className="text-[13px] font-bold px-6 py-1 ml-[-3px] rounded-r-md"
-          style={getButtonStyles(1)}
-          index={1}
-          onClick={() => handleStake(1)}
-          min="0"
-          disabled={cooldownActive}
+          {/* // Ensure stakingDisabled is only used when needed, and cooldownActive only affects Unstake. */}
+          <button
+            className="text-[13px] font-bold px-6 py-1 rounded-md"
+            style={getButtonStyles(0)}
+            onClick={() => handleStake(0)}
+            disabled={cooldownActive || postCooldown} // Disable if cooldown active or postCooldown state
           >
-            {cooldownActive ? `Wait ${Math.ceil(timeRemaining / 3600000)} hrs` : "Unstake"}
+            Stake
+          </button>
 
-        </button>
-        <button
-          className="text-[13px] font-bold px-6 py-1 ml-[-3px] rounded-r-md"
-          style={getButtonStyles(2)}
-          index={1}
-          onClick={() => handleStake(2)}
-          min="0"
-          disabled={stakingDisabled}
-        >
-          Claim Rewards
-        </button>
+          <button
+            className="text-[13px] font-bold px-6 py-1 ml-[-3px] rounded-r-md"
+            style={getButtonStyles(1)}
+            onClick={() => handleStake(1)}
+            disabled={!postCooldown} // Enable only if postCooldown state is true
+          >
+            {cooldownActive
+              ? `Wait ${Math.ceil(timeRemaining / 60000)} min`
+              : "Unstake"}
+          </button>
+
+          <button
+            className="text-[13px] font-bold px-6 py-1 ml-[-3px] rounded-r-md"
+            style={getButtonStyles(2)}
+            onClick={() => handleStake(2)}
+            disabled={cooldownActive || postCooldown} // Disable if cooldown or postCooldown is true
+          >
+            Claim Rewards
+          </button>
+        </div>
       </div>
-      </div>
-
-
-{/* <div  className="flex flex-col gap-3">
-        <div>
-        <button
-  className="text-[13px] font-bold px-6 py-1 rounded-md"
-  style={getButtonStyles(0)}
-  onClick={handleStake}
-  disabled={stakingDisabled}
->
-  Stake
-</button>
-
-<button
-  className="text-[13px] font-bold px-6 py-1 mx-2 rounded-md"
-  style={getButtonStyles(1)}
-  onClick={handleUnstakeInit}
-  disabled={cooldownActive}
->
-  {cooldownActive ? `Wait ${Math.ceil(timeRemaining / 3600000)} hrs` : "Unstake"}
-</button>
-
-<button
-  className="text-[13px] font-bold px-6 py-1 rounded-md"
-  style={getButtonStyles(2)}
-  onClick={claimPool}
-  disabled={stakingDisabled}
->
-  Claim Rewards
-</button>
-      </div>
-      </div> */}
 
       {stakeTab === 2 && (
         <div className="md:mb-[190px]">
