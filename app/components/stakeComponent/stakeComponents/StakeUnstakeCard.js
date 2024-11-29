@@ -20,33 +20,41 @@ import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { toast } from "react-toastify";
 import RewardRedeemModal from "../../RewardRedeemModal";
+import useCooldown from '../../../hooks/useFirebase'; 
+import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/firebase";
+
 const StakeUnstakeCard = ({
   stakeTab,
   setStakeTab,
-  dayActive,
+  dayActive, 
   // handleOpenModal,
 }) => {
   const [stakeAmount, setStakeAmount] = useState(0);
   const [unstakeAmount, setUnstakeAmount] = useState(0);
   const [userBalance, setUserBalance] = useState(0);
   const [userStakeData, setUserStakeData] = useState();
+  const [forceRecheckCooldown, setForceRecheckCooldown] = useState(false);
+
   const [refetch, setRefetch] = useState(false);
   const wallet = useAnchorWallet();
-  //  const [stakeTab, setStakeTab] = useState(0); // 0 for staking, 1 for unstaking
-  const [blcDetail, setBlcDetail] = useState({
-    total: 5000, // Simulating total balance
-    staked: 2980, // Simulating staked balance
-    available: 5000 - 2980, // Available balance is total - staked
-  });
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
-
+  // From Firebase
+  // const { cooldown, isCooldownActive, setClaimCooldown } = useFirebase(wallet ? wallet.publicKey.toString() : null);
+  const { isCooldownActive, lastClaimTime, btnsDisabled } = useCooldown(wallet, forceRecheckCooldown);
+  const [stakingDisabled, setStakingDisabled] = useState(false);
   // Handle stakeTab change (either stake or unstake)
   const handleStake = (index) => {
     setStakeTab(index);
   };
 
+  // console.log("btnsDisabled", btnsDisabled)
+
+
+  // console.log("forceRecheckCooldown", forceRecheckCooldown)
   const handleMaxClick = () => {
     // When user clicks max, set stakeAmount to available balance for staking
     if (stakeTab === 0) {
@@ -63,34 +71,47 @@ const StakeUnstakeCard = ({
     color: stakeTab === index ? "#E41E34" : "#FFFFFF",
   });
 
-  const dayData = {
-    0: {
-      JährlicheRendite: "0.01831087 BCT",
-      currentAmount: "0.01831087 BCT",
-      dailyRewards: "0.89629221 BCT",
-    },
-    1: {
-      JährlicheRendite: "0.01941087 BCT",
-      currentAmount: "0.02831087 BCT",
-      dailyRewards: "0.59629221 BCT",
-    },
-    2: {
-      JährlicheRendite: "0.02231087 BCT",
-      currentAmount: "0.03831087 BCT",
-      dailyRewards: "0.79629221 BCT",
-    },
-    3: {
-      JährlicheRendite: "0.02431087 BCT",
-      currentAmount: "0.04831087 BCT",
-      dailyRewards: "0.89629221 BCT",
-    },
-  };
+  // const dayData = {
+  //   0: {
+  //     JährlicheRendite: "0.01831087 BCT",
+  //     currentAmount: "0.01831087 BCT",
+  //     dailyRewards: "0.89629221 BCT",
+  //   },
+  //   1: {
+  //     JährlicheRendite: "0.01941087 BCT",
+  //     currentAmount: "0.02831087 BCT",
+  //     dailyRewards: "0.59629221 BCT",
+  //   },
+  //   2: {
+  //     JährlicheRendite: "0.02231087 BCT",
+  //     currentAmount: "0.03831087 BCT",
+  //     dailyRewards: "0.79629221 BCT",
+  //   },
+  //   3: {
+  //     JährlicheRendite: "0.02431087 BCT",
+  //     currentAmount: "0.04831087 BCT",
+  //     dailyRewards: "0.89629221 BCT",
+  //   },
+  // };
 
-  const selectedData = dayData[dayActive];
-
+  // const selectedData = dayData[dayActive];
+  // const claimButtonDisabled = isCooldownActive;
+  useEffect(() => {
+    // console.log("Wallet updated:", wallet); // Log to check wallet changes
+  }, [wallet]);
+  
   const stakePool = async () => {
+    handleCloseModal();
     try {
-      console.log("stakeAmount", stakeAmount);
+      // console.log("isCooldownActive before check:", isCooldownActive); // Debugging log
+      // if () {
+
+      // }
+      if (isCooldownActive || btnsDisabled) {
+       toast.error('You have unstaked your tokens. This process takes 24 hours, during which you cannot interact with the dashboard. Your tokens will be credited to your account within 24 hours.');
+        return;
+      }
+      // console.log("stakeAmount", stakeAmount);
       if (stakeAmount < 10) {
         toast.error("Für den Einsatz sind mindestens 10 Token erforderlich");
         return;
@@ -114,8 +135,9 @@ const StakeUnstakeCard = ({
           connection,
           signedTx.serialize()
         );
+
         toast.success("Abgesteckte Token");
-        console.log("signature", txId);
+        // console.log("signature", txId);
         setRefetch(!refetch);
       }
     } catch (e) {
@@ -127,14 +149,23 @@ const StakeUnstakeCard = ({
       // );
     }
   };
-
+// console.log("isCooldownActive", isCooldownActive)
   const unstakePool = async () => {
+    handleCloseModal();
     try {
       if (!wallet) {
         toast.error("Bitte Wallet anschließen");
         return;
       }
-
+      if(unstakeAmount < 1) {
+        toast.error('Für den unstake sind mindestens 1 Token erforderlich');
+        return;
+      }
+      if (isCooldownActive) {
+        toast.error('You must wait 24 hours after last claimed rewards.');
+        return;
+      }
+ 
       if (wallet) {
         const tx = await unstakeTokens(wallet, unstakeAmount);
 
@@ -148,8 +179,49 @@ const StakeUnstakeCard = ({
           connection,
           signedTx.serialize()
         );
-        toast.success("Token nicht eingesetzt");
-        console.log("signature", txId);
+        
+      // Ensure the transaction is confirmed
+      const txResult = await connection.getTransaction(txId, { commitment: 'confirmed' });
+  
+      if (!txResult) {
+        toast.error("Transaction not confirmed.");
+        return;
+      }
+
+      // Proceed only if transaction confirmed
+      const Amount = unstakeAmount;
+      const claimData = {
+        walletAddress: wallet.publicKey.toString(),
+        Amount,
+        // txId,
+        claimDate: new Date().toISOString(),
+      };
+  
+      // Firestore update
+      const userRef = doc(db, 'unstake', wallet.publicKey.toString());
+      const userDoc = await getDoc(userRef);
+  
+      if (userDoc.exists()) {
+        await setDoc(userRef, {
+          ...claimData,
+          updatedAt: new Date().toISOString(),
+        }, { merge: true });
+      } else {
+        await setDoc(userRef, claimData);
+      }
+  
+      setRefetch(!refetch);
+      setForceRecheckCooldown(prevState => !prevState);
+
+        if (btnsDisabled) {
+          await deleteDoc(userRef);
+          toast.success("Token nicht eingesetzt");
+        }
+        
+        toast.success("You have unstaked your tokens. This process takes 24 hours, during which you cannot interact with the dashboard. Your tokens will be credited to your account within 24 hours.");
+      
+
+        // console.log("signature", txId);
         setRefetch(!refetch);
       }
     } catch (e) {
@@ -163,36 +235,41 @@ const StakeUnstakeCard = ({
   };
 
   const claimPool = async () => {
+    handleCloseModal();
+    
+    if (isCooldownActive || btnsDisabled) {
+      toast.error('You have unstaked your tokens. This process takes 24 hours, during which you cannot interact with the dashboard. Your tokens will be credited to your account within 24 hours.');
+      return;
+    }
+    
     try {
       if (!wallet) {
         toast.error("Bitte Wallet anschließen");
         return;
       }
-
-      if (wallet) {
-        const tx = await claimReward(wallet);
-
-        if (!tx) {
-          return;
-        }
-        tx.feePayer = wallet.publicKey;
-        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-        const signedTx = await wallet.signTransaction(tx);
-        const txId = await sendAndConfirmRawTransaction(
-          connection,
-          signedTx.serialize()
-        );
-        toast.success("Beanspruchte Token");
-        console.log("signature", txId);
-        setRefetch(!refetch);
+  
+      const tx = await claimReward(wallet);  // Assuming claimReward initiates a transaction
+  
+      if (!tx) {
+        throw new Error("Transaction failed or canceled.");
       }
+  
+      tx.feePayer = wallet.publicKey;
+      tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+      
+      const signedTx = await wallet.signTransaction(tx);
+      const txId = await sendAndConfirmRawTransaction(
+        connection,
+        signedTx.serialize()
+      );
+  
+      toast.success("Beanspruchte Token");
+      // console.log("signature", txId);
+  
     } catch (e) {
-      console.log(e);
+      console.error(e);
       const error = getErrorMessageFromFormattedString(e.message);
-      toast.error(error);
-      // toast.error(
-      //   "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut"
-      // );
+      toast.error(error || "Transaction failed. Please try again.");
     }
   };
 
@@ -232,6 +309,10 @@ const StakeUnstakeCard = ({
     return formatDecimal(totalRewards);
   };
   const claimableRewards = getClaimableRewards(userStakeData, TOKEN_LAMPORTS);
+  const formattedLastClaimTime = lastClaimTime 
+  ? new Date(lastClaimTime).toLocaleString() // Adjust locale if needed
+  : '';
+
   return (
     <div
       className="bg-gradient-to-b flex flex-col justify-around from-[rgba(34,36,41,0.5)] to-[#050505] rounded-[22px] px-8 md:px-[70px] py-8 max-w-full"
@@ -253,7 +334,12 @@ const StakeUnstakeCard = ({
         // exitFeeRate={modalData.exitFeeRate}
         onRedeem={stakeTab === 1 ? unstakePool : stakeTab === 2 ? claimPool : stakePool}
       />
-      <div>
+
+      <div  className="flex flex-col gap-3">
+      {lastClaimTime && (
+  <p className="text-[#E1E1E1]">Unstake Initialized at: {formattedLastClaimTime}</p>
+)}
+        <div>
         <button
           className=" text-[13px] font-bold px-6 py-1 rounded-md "
           style={getButtonStyles(0)}
@@ -281,6 +367,7 @@ const StakeUnstakeCard = ({
         >
           Claim Rewards
         </button>
+      </div>
       </div>
 
       {stakeTab === 2 && (

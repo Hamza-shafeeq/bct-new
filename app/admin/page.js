@@ -110,7 +110,7 @@ const page = () => {
           signedTx.serialize()
         );
         toast.success("Pool initialisiert");
-        console.log("signature", txId);
+        // console.log("signature", txId);
         // setRefetch(!refetch)
       }
     } catch (e) {
@@ -140,7 +140,7 @@ const page = () => {
           signedTx.serialize()
         );
         toast.success("Pool initialisiert");
-        console.log("signature", txId);
+        // console.log("signature", txId);
         // setRefetch(!refetch)
       }
     } catch (e) {
@@ -173,7 +173,7 @@ const page = () => {
           signedTx.serialize()
         );
         toast.success("Pool initialisiert");
-        console.log("signature", txId);
+        // console.log("signature", txId);
         // setRefetch(!refetch)
       }
     } catch (e) {
@@ -248,7 +248,7 @@ const page = () => {
         }
       }
 
-      console.log("allTxns", allTxns);
+      // console.log("allTxns", allTxns);
 
       const signedTx = await signAllTransactions(allTxns);
       for (let tx of signedTx) {
@@ -289,7 +289,7 @@ const page = () => {
           signedTx.serialize()
         );
         toast.success("Owner Update Succesful");
-        console.log("signature", txId);
+        // console.log("signature", txId);
         setRefetch(!refetch);
       }
     } catch (e) {

@@ -15,9 +15,7 @@ export default function StakeComponent() {
   const [stakeTab, setStakeTab] = useState(0);
   const wallet = useAnchorWallet()
   const [userStakeData, setUserStakeData] = useState()
-  
-
-  
+    
   const modalData = {
     available: "6.01831087",
     spotWallet: "Spot Wallet",
@@ -29,7 +27,7 @@ export default function StakeComponent() {
   };
   
   const handleRedeem = () => {
-    console.log("Redeem button clicked");
+    // console.log("Redeem button clicked");
     handleCloseModal();
   };
   
