@@ -1,50 +1,51 @@
-import { useEffect, useState } from 'react';
-import { db } from '../../firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from "react";
+import { db } from "../../firebase";
+import { doc, getDoc } from "firebase/firestore";
 
-const useCooldown = (wallet) => {
+const useCooldown = (wallet, forceRecheckCooldown) => {
   const [isCooldownActive, setIsCooldownActive] = useState(false);
+  const [btnsDisabled, setBtnsDisabled] = useState(false);
   const [lastClaimTime, setLastClaimTime] = useState(null);
 
   useEffect(() => {
     const checkCooldown = async () => {
       if (!wallet) return;
 
-      const userRef = doc(db, 'claims', wallet.publicKey.toString());
+      const userRef = doc(db, "unstake", wallet.publicKey.toString());
       const userDoc = await getDoc(userRef);
+      
       if (userDoc.exists()) {
         const claimData = userDoc.data();
-        const claimDate = claimData.claimDate;
+        const claimDate = claimData.claimDate; // ISO string
         const currentTime = new Date().getTime();
+
+        // Parse the claimDate to a Date object
         const claimTime = new Date(claimDate).getTime();
 
-        console.log("claimTime", claimTime);
-        console.log("currentTime", currentTime);
+        // Check if 24 hours (86400000 ms) have passed
+        const timeDifference = currentTime - claimTime;
 
-        // Check if 24 hours have passed (86400000 ms)
-        const res = currentTime - claimTime;
-        console.log("Time difference (ms):", res);
-        console.log("24 hours in ms:", 86400000);
-        
-        // for one minute for testing use 600000
-        if (currentTime - claimTime < 86400000) {
-          
+        if (timeDifference < 86400000) {
           setIsCooldownActive(true);
-        } else {
+        } 
+        else if(timeDifference >= 0 ){
+            setBtnsDisabled(true);
+        }
+        else {
           setIsCooldownActive(false);
         }
-
-        // Save the claim time to state (optional, if you need to display it)
+        // Optionally save the claim time to state
         setLastClaimTime(claimTime);
       } else {
         setIsCooldownActive(false);
+        setBtnsDisabled(false); //
       }
     };
 
     checkCooldown();
-  }, [wallet]);
+  }, [wallet, forceRecheckCooldown]);
 
-  return { isCooldownActive, lastClaimTime };
+  return { isCooldownActive, lastClaimTime, btnsDisabled };
 };
 
 export default useCooldown;

@@ -27,7 +27,7 @@ export default function StakeComponent() {
   };
   
   const handleRedeem = () => {
-    console.log("Redeem button clicked");
+    // console.log("Redeem button clicked");
     handleCloseModal();
   };
   

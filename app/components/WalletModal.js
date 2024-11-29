@@ -3,7 +3,7 @@ import React from "react";
 
 const WalletModal = ({ isOpen, onClose, wallets, onConnect }) => {
   if (!isOpen) return null;
-  console.log("wallets", wallets);
+  // console.log("wallets", wallets);
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50"
