@@ -114,20 +114,53 @@ const StakeUnstakeCard = ({
       }
 
       if (wallet) {
-        const tx = await stakeTokens(wallet, stakeAmount);
+        // const tx = await stakeTokens(wallet, stakeAmount);
 
-        if (!tx) {
-          return;
-        }
-        tx.feePayer = wallet.publicKey;
-        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-        const signedTx = await wallet.signTransaction(tx);
-        const txId = await sendAndConfirmRawTransaction(
-          connection,
-          signedTx.serialize()
-        );
+        // if (!tx) {
+        //   return;
+        // }
+        // tx.feePayer = wallet.publicKey;
+        // tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+        // const signedTx = await wallet.signTransaction(tx);
+        // const txId = await sendAndConfirmRawTransaction(
+        //   connection,
+        //   signedTx.serialize()
+        // );
+
+
+
+      // Proceed only if transaction confirmed
+      const claimedAmount = claimableRewards;
+      const claimData = {
+        walletAddress: wallet.publicKey.toString(),
+        claimedAmount,
+        // txId,
+        claimDate: new Date().toISOString(),
+      };
+  
+      // Firestore update
+      const userRef = doc(db, 'unstake', wallet.publicKey.toString());
+      const userDoc = await getDoc(userRef);
+  
+      if (userDoc.exists()) {
+        await setDoc(userRef, {
+          ...claimData,
+          updatedAt: new Date().toISOString(),
+        }, { merge: true });
+      } else {
+        await setDoc(userRef, claimData);
+      }
+  
+      setRefetch(!refetch);
+
+
+        toast.success("Token nicht eingesetzt");
+        // console.log("signature", txId);
+        setRefetch(!refetch);
+
+
         toast.success("Abgesteckte Token");
-        console.log("signature", txId);
+        // console.log("signature", txId);
         setRefetch(!refetch);
       }
     } catch (e) {
@@ -152,68 +185,20 @@ const StakeUnstakeCard = ({
         return;
       }
 
-
-      // Firestore update
-      const userRef = doc(db, 'firstTime', wallet.publicKey.toString());
-      const userDoc = await getDoc(userRef);
-  
-      if (!userDoc.exists()) {
-        await setDoc(userRef, wallet);
-    
-          
-
-      } else {
-    
-        await setDoc(userRef, {
-          ...claimData,
-          updatedAt: new Date().toISOString(),
-        }, { merge: true });
-      }
-
-
-
       if (wallet) {
-        // const tx = await unstakeTokens(wallet, unstakeAmount);
+        const tx = await unstakeTokens(wallet, unstakeAmount);
 
-        // if (!tx) {
-        //   return;
-        // }
-        // tx.feePayer = wallet.publicKey;
-        // tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-        // const signedTx = await wallet.signTransaction(tx);
-        // const txId = await sendAndConfirmRawTransaction(
-        //   connection,
-        //   signedTx.serialize()
-        // );
+        if (!tx) {
+          return;
+        }
+        tx.feePayer = wallet.publicKey;
+        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+        const signedTx = await wallet.signTransaction(tx);
+        const txId = await sendAndConfirmRawTransaction(
+          connection,
+          signedTx.serialize()
+        );
 
-      // Proceed only if transaction confirmed
-      const claimedAmount = claimableRewards;
-      const claimData = {
-        walletAddress: wallet.publicKey.toString(),
-        claimedAmount,
-        txId,
-        claimDate: new Date().toISOString(),
-      };
-  
-      // Firestore update
-      const userRef = doc(db, 'unstake', wallet.publicKey.toString());
-      const userDoc = await getDoc(userRef);
-  
-      if (userDoc.exists()) {
-        await setDoc(userRef, {
-          ...claimData,
-          updatedAt: new Date().toISOString(),
-        }, { merge: true });
-      } else {
-        await setDoc(userRef, claimData);
-      }
-  
-      setRefetch(!refetch);
-
-
-        toast.success("Token nicht eingesetzt");
-        console.log("signature", txId);
-        setRefetch(!refetch);
       }
     } catch (e) {
       console.log(e);
